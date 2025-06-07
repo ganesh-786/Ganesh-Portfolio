@@ -30,7 +30,7 @@ The site is built using:
 
 The portfolio highlights my skills, projects, and ways to connect with me.
 
-> **Live Demo:** [ganesh-786.github.io/Ganesh-Portfolio](https://ganesh-786.github.io/Ganesh-Portfolio/)
+> **Live Demo:** [My-Portfolio](https://ganesh-portfolio-jy4f.onrender.com)
 
 ---
 
