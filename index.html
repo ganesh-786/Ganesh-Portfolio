@@ -1,179 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Ganesh Chaudhary - Full Stack Developer Portfolio. Building modern, scalable web applications with cutting-edge technologies." />
+    <meta name="keywords" content="Ganesh Chaudhary, Full Stack Developer, Web Developer, React, TypeScript, Portfolio" />
+    <meta name="author" content="Ganesh Chaudhary" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganesh Chaudhary | Web Developer Portfolio</title>
+    <!-- Open Graph -->
+    <meta property="og:title" content="Ganesh Chaudhary | Full Stack Developer" />
+    <meta property="og:description" content="Building modern, scalable web applications with cutting-edge technologies." />
+    <meta property="og:type" content="website" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-    <!-- Font Awesome (for icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Ganesh Chaudhary | Full Stack Developer</title>
 
-    <!-- Your Stylesheet -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Script in head to prevent Flash of Incorrect Theme (FOUC) -->
+    <!-- Prevent Flash of Incorrect Theme -->
     <script>
-        // Immediately set the theme on page load
-        (function () {
-            const theme = localStorage.getItem('theme');
-            if (theme === 'light') {
-                document.documentElement.classList.add('light-mode');
-            }
-        })();
+      (function () {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
     </script>
-</head>
-
-<body>
-
-    <header>
-        <nav class="container">
-            <a href="#" class="logo">Ganesh.dev</a>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <!-- Hero Section -->
-        <section id="hero">
-            <div class="hero-content container">
-                <h1>Hello, I'm Ganesh Chaudhary</h1>
-                <p class="subtitle">I build modern and responsive <span class="dynamic-text"></span></p>
-                <p class="description">
-                    A passionate developer focused on creating seamless user experiences and performant web
-                    applications.
-                </p>
-                <a href="#projects" class="btn">View My Work</a>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="container section-padding">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I am a dedicated Frontend Developer with a knack for turning complex problems into beautiful,
-                        intuitive interfaces. My expertise lies in HTML, CSS, and JavaScript, and I love bringing
-                        designs to life with frameworks like Bootstrap and clean, optimized code.</p>
-                    <p>I thrive in collaborative environments and I'm passionate about building web solutions that are
-                        not only visually appealing but also accessible and highly functional. Let's build something
-                        amazing together!</p>
-                </div>
-                <div class="skills">
-                    <h3>My Skills</h3>
-                    <div class="skills-grid">
-                        <div class="skill-item"><i class="fab fa-html5"></i> HTML</div>
-                        <div class="skill-item"><i class="fab fa-css3-alt"></i> CSS</div>
-                        <div class="skill-item"><i class="fab fa-js-square"></i> JavaScript</div>
-                        <div class="skill-item"><i class="fab fa-bootstrap"></i> Bootstrap</div>
-                        <div class="skill-item"><i class="fab fa-react"></i> React</div>
-                        <!-- Add or remove skills as needed -->
-                        <div class="skill-item"><i class="fab fa-git-alt"></i> Git</div>
-                        <div class="skill-item"><i class="fab fa-github"></i> GitHub</div>
-                        <div class="skill-item"><i class="fas fa-mobile-alt"></i> Responsive Design</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="section-padding">
-            <div class="container">
-                <h2 class="section-title">My Projects</h2>
-                <div class="projects-grid">
-
-                    <!-- Project 1: SwiftVerify -->
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="images/swift.jpg" alt="SwiftVerify Homepage">
-                        </div>
-                        <div class="project-info">
-                            <h3>SwiftVerify - Document Verification System</h3>
-                            <p>As the Frontend Developer, I built a user-friendly and fully responsive interface for a
-                                seamless document verification workflow. I focused on optimizing front-end code for
-                                performance and integrated the UI with the back-end and YOLO model.</p>
-                            <div class="project-tech">
-                                <span>HTML</span>
-                                <span>CSS</span>
-                                <span>JavaScript</span>
-                                <span>Bootstrap</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://github.com/aachaltiwari/Document-Verification" target="_blank"
-                                    class="btn-outline"><i class="fab fa-github"></i> GitHub</a>
-                                <!-- <a href="#" target="_blank" class="btn-outline"><i class="fas fa-external-link-alt"></i> Live Demo</a> -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 2: Ganesh Ecommerce -->
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="images/myweb.jpg" alt="Ganesh Ecommerce Website Homepage">
-                        </div>
-                        <div class="project-info">
-                            <h3>Ganesh Ecommerce for Farmers</h3>
-                            <p>An e-commerce platform designed to empower farmers in Nepal. Key features include a
-                                user-friendly interface in Nepali, weather information, farming techniques, and disease
-                                identification to improve the local agri-system.</p>
-                            <div class="project-tech">
-                                <span>HTML</span>
-                                <span>CSS</span>
-                                <span>JavaScript</span>
-                                <span>Responsive</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="https://ganesh-ecommerce-web-gaco.onrender.com" target="_blank"
-                                    class="btn-outline"><i class="fas fa-external-link-alt"></i> Live Site</a>
-                                <a href="https://github.com/ganesh-786/Ganesh-Ecommerce_Web" target="_blank"
-                                    class="btn-outline"><i class="fab fa-github"></i> GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="container section-padding">
-            <h2 class="section-title">Get In Touch</h2>
-            <p class="contact-text">I'm currently open to new opportunities and collaborations. Feel free to reach out!
-            </p>
-            <div class="contact-links">
-                <a href="mailto:ganesh98245.np@gmail.com" class="btn"><i class="fas fa-envelope"></i> Email Me</a>
-                <a href="https://www.linkedin.com/in/ganesh-chaudhary-684843269?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="btn-outline"><i
-                        class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://github.com/ganesh-786" target="_blank" class="btn-outline"><i
-                        class="fab fa-github"></i> GitHub</a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>© 2024 Ganesh Chaudhary. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Theme Toggle Button -->
-    <button id="theme-toggle" aria-label="Toggle dark and light mode">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </button>
-
-    <!-- Your Script -->
-    <script src="script.js"></script>
-
-</body>
-
+  </head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

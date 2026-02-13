@@ -1,97 +1,76 @@
-# 🚀 Ganesh Chaudhary Portfolio
+# Ganesh Chaudhary — Full Stack Developer Portfolio
 
-[![Portfolio](https://img.shields.io/badge/Visit-Portfolio-blue?logo=github)](https://ganesh-786.github.io/Ganesh-Portfolio/)
-[![GitHub](https://img.shields.io/github/followers/ganesh-786?label=Follow&style=social)](https://github.com/ganesh-786)
+A modern, professional portfolio website built with industry-standard technologies and best practices.
 
----
-
-👋 **Hello World!**  
-Welcome to my portfolio repository. I’m **Ganesh Chaudhary**, a passionate full stack developer with expertise in modern web technologies and a keen interest in building robust, scalable applications.
+**Live Demo:** [ganesh-portfolio-jy4f.onrender.com](https://ganesh-portfolio-jy4f.onrender.com)
 
 ---
 
-## 🧐 About Me
+## Tech Stack
 
-- 💻 Full Stack Developer with hands-on experience in HTML, CSS, JavaScript, Python, Flask, and Django.
-- 🌱 Constantly learning and exploring new technologies to improve my skills.
-- 🎯 Focused on delivering high-quality, user-centric digital solutions.
-- 🤝 Always open to collaborations and innovative ideas.
+| Category       | Technologies                                             |
+|----------------|----------------------------------------------------------|
+| **Framework**  | React 18, TypeScript                                     |
+| **Build Tool** | Vite 6                                                   |
+| **Styling**    | Tailwind CSS 3                                           |
+| **Animations** | Framer Motion 11                                         |
+| **Icons**      | Lucide React                                             |
+| **Utilities**  | clsx, tailwind-merge                                     |
 
----
+## Features
 
-## 📂 Project Overview
+- **Professional UI/UX** — Clean, minimal design with modern aesthetics
+- **Dark/Light Theme** — Smooth theme toggle with persistent preference
+- **Scroll Animations** — Staggered reveals, fade-ins, and micro-interactions via Framer Motion
+- **Responsive Design** — Mobile-first approach with glass morphism navbar and adaptive layouts
+- **TypeScript Strict Mode** — Full type safety across the codebase
+- **Industry Folder Structure** — Modular component architecture with separation of concerns
+- **SEO Optimized** — Semantic HTML, Open Graph meta tags, and proper document structure
+- **Performance** — Lazy loading images, optimized bundle, smooth 60fps animations
 
-This repository contains the source code for my personal portfolio website.  
-The site is built using:
+## Project Structure
 
-- **HTML5** for semantic structure
-- **CSS3** for modern and responsive design
-- **JavaScript** for interactivity
+```
+src/
+├── components/
+│   ├── layout/          # Navbar, Footer
+│   ├── sections/        # Hero, About, Skills, Projects, Contact
+│   └── ui/              # Reusable UI primitives
+├── hooks/               # Custom React hooks (useTheme)
+├── lib/                 # Utility functions (cn)
+├── data/                # Static content & constants
+├── types/               # TypeScript type definitions
+├── styles/              # Global CSS & Tailwind config
+├── App.tsx              # Root component
+└── main.tsx             # Application entry point
+```
 
-The portfolio highlights my skills, projects, and ways to connect with me.
+## Getting Started
 
-> **Live Demo:** [My-Portfolio](https://ganesh-portfolio-jy4f.onrender.com)
+```bash
+# Clone the repository
+git clone https://github.com/ganesh-786/Ganesh-Portfolio.git
+cd Ganesh-Portfolio
 
----
+# Install dependencies
+npm install
 
-## ✨ Features
+# Start development server
+npm run dev
 
-- Clean, modern, and responsive UI
-- Showcase of featured projects
-- Skills & technology stack section
-- Contact form for direct communication
-- Social media and GitHub integration
+# Build for production
+npm run build
 
----
+# Preview production build
+npm run preview
+```
 
-## 🚦 Getting Started
+## Contact
 
-To run the portfolio locally:
-
-1. **Clone the Repository**
-    ```bash
-    git clone https://github.com/ganesh-786/Ganesh-Portfolio.git
-    cd Ganesh-Portfolio
-    ```
-
-2. **Open `index.html` in your browser**
-    ```bash
-    # On most systems, you can simply double-click index.html
-    # Or use:
-    open index.html
-    ```
-
----
-
-## 🛠️ Technologies Used
-
-| Frontend   | Styling    | Interactivity |
-|------------|------------|--------------|
-| HTML5      | CSS3       | JavaScript   |
-
----
-
-## 📸 Screenshots
-
-![Preview](./assets/preview.png) <!-- Replace with actual screenshot path if available -->
-
----
-
-## 📬 Contact
-
-- **Portfolio:** [ganesh-786.github.io/Ganesh-Portfolio](https://ganesh-786.github.io/Ganesh-Portfolio/)
-- **Email:** [Mail me](mailto:ganesh98245.np@gmail.com)
+- **Email:** [ganesh98245.np@gmail.com](mailto:ganesh98245.np@gmail.com)
 - **GitHub:** [@ganesh-786](https://github.com/ganesh-786)
-- **LinkedIn:** [LinkedIn Profile](#) <!-- Replace # with your LinkedIn URL -->
+- **LinkedIn:** [Ganesh Chaudhary](https://www.linkedin.com/in/ganesh-chaudhary-684843269)
 
 ---
 
-## ⭐️ Show Your Support
-
-If you like this portfolio, please ⭐️ the repo and connect with me!
-
----
-
-<p align="center">
-  <b>Thank you for visiting!</b>
-</p>
+MIT License
