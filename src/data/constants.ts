@@ -77,7 +77,7 @@ export const PROJECTS: Project[] = [
     title: 'SwiftVerify',
     description:
       'A document verification system powered by AI. Built a fully responsive, user-friendly interface for seamless document verification workflows — optimizing frontend performance and integrating with the YOLO model backend.',
-    image: '/images/swift.jpg',
+    image: `${import.meta.env.BASE_URL}images/swift.jpg`,
     technologies: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Python', 'YOLO'],
     githubUrl: 'https://github.com/aachaltiwari/Document-Verification',
     featured: true,
@@ -87,7 +87,7 @@ export const PROJECTS: Project[] = [
     title: 'AgriConnect Nepal',
     description:
       'An e-commerce platform empowering Nepali farmers with a user-friendly interface in Nepali, real-time weather information, farming techniques, and AI-based disease identification to improve the local agricultural ecosystem.',
-    image: '/images/myweb.jpg',
+    image: `${import.meta.env.BASE_URL}images/myweb.jpg`,
     technologies: ['HTML', 'CSS', 'JavaScript', 'Responsive Design'],
     liveUrl: 'https://ganesh-ecommerce-web-gaco.onrender.com',
     githubUrl: 'https://github.com/ganesh-786/Ganesh-Ecommerce_Web',
