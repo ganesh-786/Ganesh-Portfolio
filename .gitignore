@@ -1,4 +1,4 @@
-# Dependencies
+ w# Dependencies
 node_modules/
 .pnp
 .pnp.js
@@ -26,3 +26,6 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+#cursor
+.cursor
