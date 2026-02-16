@@ -2,7 +2,7 @@
 
 A modern, professional portfolio website built with industry-standard technologies and best practices.
 
-**Live Demo:** [ganesh-portfolio-jy4f.onrender.com](https://ganesh-portfolio-jy4f.onrender.com)
+**Live Demo:** [ganeshtharu.com.np](https://www.ganeshtharu.com.np)
 
 ---
 
