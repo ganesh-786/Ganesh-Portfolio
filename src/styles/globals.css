@@ -32,17 +32,17 @@
 
   /* Selection colors */
   ::selection {
-    @apply bg-indigo-500/20;
+    @apply bg-blue-500/20;
   }
 
   .dark ::selection {
-    @apply bg-indigo-500/30 text-white;
+    @apply bg-blue-500/30 text-white;
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600;
   }
 }
 
@@ -50,11 +50,11 @@
 .text-gradient-animated {
   background: linear-gradient(
     90deg,
-    #6366f1,
-    #a855f7,
-    #ec4899,
-    #a855f7,
-    #6366f1
+    #3b82f6,
+    #0ea5e9,
+    #2563eb,
+    #0ea5e9,
+    #3b82f6
   );
   background-size: 300% 100%;
   -webkit-background-clip: text;
@@ -72,6 +72,17 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

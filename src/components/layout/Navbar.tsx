@@ -77,10 +77,10 @@ export function Navbar({ theme, toggleTheme }: NavbarProps) {
         <a
           href="#"
           onClick={(e) => scrollToSection(e, '#')}
-          className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200"
+          className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200"
         >
           Ganesh
-          <span className="text-indigo-500 dark:text-indigo-400">.dev</span>
+          <span className="text-blue-500 dark:text-blue-400">.dev</span>
         </a>
 
         {/* Desktop Navigation */}
@@ -93,7 +93,7 @@ export function Navbar({ theme, toggleTheme }: NavbarProps) {
               className={cn(
                 'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                 activeSection === href
-                  ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10'
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5'
               )}
             >
@@ -150,7 +150,7 @@ export function Navbar({ theme, toggleTheme }: NavbarProps) {
                   className={cn(
                     'px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
                     activeSection === href
-                      ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5'
                   )}
                 >

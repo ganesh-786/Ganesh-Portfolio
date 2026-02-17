@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, memo, useMemo } from 'react'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react'
 import { HERO_DATA, CONTACT_DATA } from '@/data/constants'
+import { Hero3DShape } from './Hero3DShape'
 
 const socialIcons = [
   { Icon: Github, href: CONTACT_DATA.socials.find((s) => s.name === 'GitHub')?.url ?? '#', label: 'GitHub' },
@@ -9,11 +10,10 @@ const socialIcons = [
   { Icon: Mail, href: CONTACT_DATA.socials.find((s) => s.name === 'Email')?.url ?? '#', label: 'Email' },
 ]
 
-/* ─── Spring configs for 3D effects ─── */
-const tiltSpring = { stiffness: 120, damping: 30, mass: 0.5 }
+/* ─── Spring configs for background parallax ─── */
 const orbSpring = { stiffness: 40, damping: 40, mass: 1 }
 
-/* ─── Floating ambient particles (memoised — unaffected by re-renders) ─── */
+/* ─── Floating ambient particles (memoised) ─── */
 const FloatingParticles = memo(function FloatingParticles() {
   const particles = useMemo(
     () =>
@@ -33,7 +33,7 @@ const FloatingParticles = memo(function FloatingParticles() {
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          className="absolute rounded-full bg-indigo-400/25 dark:bg-indigo-400/20"
+          className="absolute rounded-full bg-blue-400/25 dark:bg-blue-400/20"
           style={{ width: p.size, height: p.size, left: `${p.x}%`, top: `${p.y}%` }}
           animate={{ y: [0, -40, 0], opacity: [0, 0.7, 0] }}
           transition={{
@@ -48,26 +48,27 @@ const FloatingParticles = memo(function FloatingParticles() {
   )
 })
 
+/* ─── Entrance animation variants ─── */
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] as number[] },
+})
+
 /* ═══════════════════════════════════════════════════
-   Hero Section — 3D tilt, parallax orbs, name reveal
+   Hero Section — Two-column layout with 3D shape
    ═══════════════════════════════════════════════════ */
 export function Hero() {
   const [typedText, setTypedText] = useState('')
 
-  /* ── Mouse-driven 3D: motion values ── */
+  /* ── Background orb parallax ── */
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-
-  // Content tilt (±3°)
-  const tiltX = useSpring(useTransform(mouseY, [-0.5, 0.5], [3, -3]), tiltSpring)
-  const tiltY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-3, 3]), tiltSpring)
-
-  // Background orb parallax (±30px opposite direction)
   const orbX = useSpring(useTransform(mouseX, [-0.5, 0.5], [30, -30]), orbSpring)
   const orbY = useSpring(useTransform(mouseY, [-0.5, 0.5], [30, -30]), orbSpring)
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
-    if (window.innerWidth < 768) return // desktop only
+    if (window.innerWidth < 768) return
     const rect = e.currentTarget.getBoundingClientRect()
     mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
     mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
@@ -129,145 +130,143 @@ export function Hero() {
           className="absolute inset-0 opacity-40 dark:opacity-30"
           style={{
             backgroundImage:
-              'radial-gradient(circle, rgb(99 102 241 / 0.15) 1px, transparent 1px)',
+              'radial-gradient(circle, rgb(59 130 246 / 0.15) 1px, transparent 1px)',
             backgroundSize: '32px 32px',
           }}
         />
 
-        {/* Gradient orbs — move opposite to cursor for depth parallax */}
+        {/* Gradient orbs — parallax */}
         <motion.div className="absolute inset-0" style={{ x: orbX, y: orbY }}>
-          <div className="absolute top-1/4 left-1/4 w-[200px] sm:w-[400px] lg:w-[500px] h-[200px] sm:h-[400px] lg:h-[500px] bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-[60px] sm:blur-[120px] animate-float" />
-          <div className="absolute bottom-1/3 right-1/4 w-[180px] sm:w-[350px] lg:w-[400px] h-[180px] sm:h-[350px] lg:h-[400px] bg-purple-500/10 dark:bg-purple-500/15 rounded-full blur-[60px] sm:blur-[120px] animate-float-delayed" />
-          <div className="absolute top-1/2 right-1/3 w-[120px] sm:w-[200px] h-[120px] sm:h-[200px] bg-pink-500/5 dark:bg-pink-500/10 rounded-full blur-[40px] sm:blur-[80px] animate-float" />
+          <div className="absolute top-1/4 left-1/4 w-[200px] sm:w-[400px] lg:w-[500px] h-[200px] sm:h-[400px] lg:h-[500px] bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-[60px] sm:blur-[120px] animate-float" />
+          <div className="absolute bottom-1/3 right-1/4 w-[180px] sm:w-[350px] lg:w-[400px] h-[180px] sm:h-[350px] lg:h-[400px] bg-sky-500/10 dark:bg-sky-500/15 rounded-full blur-[60px] sm:blur-[120px] animate-float-delayed" />
+          <div className="absolute top-1/2 right-1/3 w-[120px] sm:w-[200px] h-[120px] sm:h-[200px] bg-blue-400/5 dark:bg-blue-400/10 rounded-full blur-[40px] sm:blur-[80px] animate-float" />
         </motion.div>
 
-        {/* Radial fade to background */}
+        {/* Radial fade */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgb(249_250_251)_70%)] dark:bg-[radial-gradient(ellipse_at_center,transparent_0%,rgb(3_7_18)_70%)]" />
 
         <FloatingParticles />
       </div>
 
-      {/* ── 3D Perspective wrapper ── */}
-      <div className="relative z-10" style={{ perspective: 1200 }}>
-        <motion.div
-          style={{ rotateX: tiltX, rotateY: tiltY }}
-          className="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center pt-28 sm:pt-36 lg:pt-44 pb-20 sm:pb-28 lg:pb-32"
-        >
-          {/* Status badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-5 sm:mb-6 lg:mb-8"
-          >
-            <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[0.65rem] sm:text-sm font-medium border border-indigo-200/60 dark:border-indigo-500/20">
-              <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-full w-full bg-indigo-500" />
+      {/* ── Main content: two-column grid ── */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center">
+
+          {/* ── Left column: text content ── */}
+          <div className="text-center lg:text-left order-2 lg:order-1">
+
+            {/* Status badge */}
+            <motion.div {...fadeUp(0.1)} className="mb-5 sm:mb-6 lg:mb-8">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[0.65rem] sm:text-sm font-medium border border-blue-200/60 dark:border-blue-500/20">
+                <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-full w-full bg-blue-500" />
+                </span>
+                Open to opportunities
               </span>
-              Open to opportunities
-            </span>
-          </motion.div>
+            </motion.div>
 
-          {/* ── Name — 3D flip entrance + animated gradient ── */}
-          <div className="mb-3 sm:mb-5 lg:mb-6" style={{ perspective: 800 }}>
-            <h1 className="text-[1.7rem] leading-tight sm:text-5xl lg:text-7xl font-bold tracking-tight">
-              {/* Greeting */}
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="block text-gray-900 dark:text-white mb-1 sm:mb-2"
-              >
-                {HERO_DATA.greeting}
-              </motion.span>
+            {/* Name */}
+            <div className="mb-3 sm:mb-5 lg:mb-6" style={{ perspective: 800 }}>
+              <h1 className="text-[1.7rem] leading-tight sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
+                <motion.span
+                  {...fadeUp(0.3)}
+                  className="block text-gray-900 dark:text-white mb-1 sm:mb-2"
+                >
+                  {HERO_DATA.greeting}
+                </motion.span>
 
-              {/* Name — single span so gradient renders correctly */}
-              <motion.span
-                initial={{ opacity: 0, rotateX: -40, y: 30, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, rotateX: 0, y: 0, filter: 'blur(0px)' }}
-                transition={{ delay: 0.55, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-block text-gradient-animated"
-                style={{ transformStyle: 'preserve-3d' }}
+                <motion.span
+                  initial={{ opacity: 0, rotateX: -40, y: 30, filter: 'blur(10px)' }}
+                  animate={{ opacity: 1, rotateX: 0, y: 0, filter: 'blur(0px)' }}
+                  transition={{ delay: 0.55, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-block text-gradient-animated"
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  {HERO_DATA.name}
+                </motion.span>
+              </h1>
+            </div>
+
+            {/* Typing subtitle */}
+            <motion.div
+              {...fadeUp(1.3)}
+              className="text-sm sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 min-h-[1.25rem] sm:min-h-[2rem]"
+            >
+              I build{' '}
+              <span className="text-blue-600 dark:text-blue-400 font-semibold">
+                {typedText}
+                <span className="animate-pulse ml-0.5 text-blue-500">|</span>
+              </span>
+            </motion.div>
+
+            {/* Description */}
+            <motion.p
+              {...fadeUp(1.5)}
+              className="text-xs sm:text-base lg:text-lg text-gray-500 max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8 lg:mb-10 leading-relaxed"
+            >
+              {HERO_DATA.description}
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              {...fadeUp(1.7)}
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8 sm:mb-10"
+            >
+              <a
+                href={HERO_DATA.cta.primary.href}
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
               >
-                {HERO_DATA.name}
-              </motion.span>
-            </h1>
+                {HERO_DATA.cta.primary.label}
+                <ArrowDown
+                  size={16}
+                  className="group-hover:translate-y-0.5 transition-transform duration-300"
+                />
+              </a>
+              <a
+                href={HERO_DATA.cta.secondary.href}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5"
+              >
+                {HERO_DATA.cta.secondary.label}
+              </a>
+            </motion.div>
+
+            {/* Social Icons */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.9, duration: 0.8 }}
+              className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3"
+            >
+              {socialIcons.map(({ Icon, href, label }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target={href.startsWith('mailto') ? undefined : '_blank'}
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="p-2.5 sm:p-3 rounded-xl text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
+            </motion.div>
           </div>
 
-          {/* Typing subtitle */}
+          {/* ── Right column: 3D interactive shape ── */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-sm sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 min-h-[1.25rem] sm:min-h-[2rem]"
+            className="flex items-center justify-center order-1 lg:order-2"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
-            I build{' '}
-            <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
-              {typedText}
-              <span className="animate-pulse ml-0.5 text-indigo-500">|</span>
-            </span>
+            <Hero3DShape />
           </motion.div>
 
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-xs sm:text-base lg:text-lg text-gray-500 max-w-2xl mx-auto mb-6 sm:mb-8 lg:mb-10 leading-relaxed"
-          >
-            {HERO_DATA.description}
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.7, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10"
-          >
-            <a
-              href={HERO_DATA.cta.primary.href}
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-indigo-500 hover:bg-indigo-600 text-white text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40"
-            >
-              {HERO_DATA.cta.primary.label}
-              <ArrowDown
-                size={16}
-                className="group-hover:translate-y-0.5 transition-transform duration-300"
-              />
-            </a>
-            <a
-              href={HERO_DATA.cta.secondary.href}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5"
-            >
-              {HERO_DATA.cta.secondary.label}
-            </a>
-          </motion.div>
-
-          {/* Social Icons */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.9, duration: 0.8 }}
-            className="flex items-center justify-center gap-2 sm:gap-3"
-          >
-            {socialIcons.map(({ Icon, href, label }) => (
-              <a
-                key={href}
-                href={href}
-                target={href.startsWith('mailto') ? undefined : '_blank'}
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="p-2.5 sm:p-3 rounded-xl text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
-              >
-                <Icon size={18} />
-              </a>
-            ))}
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Scroll indicator — visible on sm+ */}
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

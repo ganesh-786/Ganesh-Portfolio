@@ -37,12 +37,12 @@ export function About() {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-10 sm:mb-16">
-            <span className="text-indigo-500 dark:text-indigo-400 text-xs sm:text-sm font-mono tracking-wider uppercase">
+            <span className="text-blue-500 dark:text-blue-400 text-xs sm:text-sm font-mono tracking-wider uppercase">
               About Me
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mt-3">
               Passionate about crafting{' '}
-              <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-sky-500 bg-clip-text text-transparent">
                 digital experiences
               </span>
             </h2>
@@ -67,14 +67,16 @@ export function About() {
               {ABOUT_DATA.highlights.map((highlight, i) => {
                 const Icon = highlightIcons[i] ?? Code2
                 return (
-                  <div
+                  <motion.div
                     key={highlight.label}
-                    className="group flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-indigo-500/30 transition-all duration-300"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="group flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300"
                   >
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500 transition-colors duration-300 shrink-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300 shrink-0">
                       <Icon
                         size={20}
-                        className="text-indigo-500 group-hover:text-white transition-colors duration-300"
+                        className="text-blue-500 group-hover:text-white transition-colors duration-300"
                       />
                     </div>
                     <div>
@@ -85,7 +87,7 @@ export function About() {
                         {highlight.label}
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 )
               })}
             </motion.div>

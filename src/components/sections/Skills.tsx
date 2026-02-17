@@ -53,7 +53,7 @@ export function Skills() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5 }}
-              className="text-indigo-500 dark:text-indigo-400 text-xs sm:text-sm font-mono tracking-wider uppercase"
+              className="text-blue-500 dark:text-blue-400 text-xs sm:text-sm font-mono tracking-wider uppercase"
             >
               Tech Stack
             </motion.span>
@@ -64,7 +64,7 @@ export function Skills() {
               className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mt-3"
             >
               Skills &{' '}
-              <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-sky-500 bg-clip-text text-transparent">
                 Technologies
               </span>
             </motion.h2>
@@ -78,10 +78,11 @@ export function Skills() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 0.5, delay: catIndex * 0.15 }}
-                className="p-4 sm:p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-indigo-500/20 transition-all duration-300"
+                whileHover={{ y: -4 }}
+                className="p-4 sm:p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300"
               >
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                  <div className="w-2 h-2 rounded-full bg-blue-500" />
                   {category.title}
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-2.5">
@@ -100,13 +101,14 @@ export function Skills() {
                           duration: 0.3,
                           delay: catIndex * 0.15 + skillIndex * 0.05 + 0.3,
                         }}
-                        className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700/50 hover:border-indigo-500/40 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all duration-200 cursor-default"
+                        whileHover={{ scale: 1.06, y: -2 }}
+                        className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700/50 hover:border-blue-500/40 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:shadow-md hover:shadow-blue-500/10 transition-all duration-200 cursor-default"
                       >
                         <Icon
                           size={14}
-                          className="text-indigo-500 dark:text-indigo-400 shrink-0 sm:w-[15px] sm:h-[15px]"
+                          className="text-blue-500 dark:text-blue-400 shrink-0 sm:w-[15px] sm:h-[15px]"
                         />
-                        <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+                        <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                           {skill.name}
                         </span>
                       </motion.div>
