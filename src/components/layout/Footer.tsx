@@ -17,7 +17,7 @@ export function Footer() {
             className="text-lg font-bold text-gray-900 dark:text-white"
           >
             Ganesh
-            <span className="text-indigo-500 dark:text-indigo-400">.dev</span>
+            <span className="text-blue-500 dark:text-blue-400">.dev</span>
           </a>
 
           <div className="flex items-center gap-3">
@@ -29,7 +29,7 @@ export function Footer() {
                   href={social.url}
                   target={social.url.startsWith('mailto') ? undefined : '_blank'}
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
+                  className="p-2 rounded-lg text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
                   aria-label={social.name}
                 >
                   <Icon size={18} />

@@ -17,7 +17,7 @@ export function Projects() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5 }}
-              className="text-indigo-500 dark:text-indigo-400 text-xs sm:text-sm font-mono tracking-wider uppercase"
+              className="text-blue-500 dark:text-blue-400 text-xs sm:text-sm font-mono tracking-wider uppercase"
             >
               Portfolio
             </motion.span>
@@ -28,7 +28,7 @@ export function Projects() {
               className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mt-3"
             >
               Featured{' '}
-              <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-500 to-sky-500 bg-clip-text text-transparent">
                 Projects
               </span>
             </motion.h2>
@@ -42,7 +42,8 @@ export function Projects() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
                 transition={{ duration: 0.6, delay: i * 0.2 + 0.2 }}
-                className="group relative grid md:grid-cols-2 gap-0 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-indigo-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/5"
+                whileHover={{ y: -4 }}
+                className="group relative grid md:grid-cols-2 gap-0 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-blue-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/5"
               >
                 {/* Project Image */}
                 <div
@@ -58,7 +59,7 @@ export function Projects() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
 
                 {/* Project Info */}
@@ -68,13 +69,13 @@ export function Projects() {
                   }`}
                 >
                   <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <div className="w-2 h-2 rounded-full bg-indigo-500" />
-                    <span className="text-xs sm:text-sm font-mono text-indigo-500 dark:text-indigo-400">
+                    <div className="w-2 h-2 rounded-full bg-blue-500" />
+                    <span className="text-xs sm:text-sm font-mono text-blue-500 dark:text-blue-400">
                       Featured Project
                     </span>
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                     {project.title}
                   </h3>
 
@@ -87,7 +88,7 @@ export function Projects() {
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 sm:px-3 py-0.5 sm:py-1 text-[0.65rem] sm:text-xs font-medium rounded-md sm:rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200/50 dark:border-gray-700/50"
+                        className="px-2 sm:px-3 py-0.5 sm:py-1 text-[0.65rem] sm:text-xs font-medium rounded-md sm:rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200/50 dark:border-gray-700/50 hover:border-blue-500/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
                       >
                         {tech}
                       </span>
@@ -101,9 +102,9 @@ export function Projects() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200"
+                        className="group/link inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-all duration-200"
                       >
-                        <Github size={16} className="sm:w-[18px] sm:h-[18px]" />
+                        <Github size={16} className="sm:w-[18px] sm:h-[18px] group-hover/link:scale-110 transition-transform duration-200" />
                         Source Code
                       </a>
                     )}
@@ -112,9 +113,9 @@ export function Projects() {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group/link inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-200"
+                        className="group/link inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-all duration-200"
                       >
-                        <ExternalLink size={16} className="sm:w-[18px] sm:h-[18px]" />
+                        <ExternalLink size={16} className="sm:w-[18px] sm:h-[18px] group-hover/link:scale-110 transition-transform duration-200" />
                         Live Demo
                         <ArrowUpRight
                           size={12}

@@ -33,7 +33,7 @@ const FloatingParticles = memo(function FloatingParticles() {
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          className="absolute rounded-full bg-indigo-400/25 dark:bg-indigo-400/20"
+          className="absolute rounded-full bg-blue-400/25 dark:bg-blue-400/20"
           style={{ width: p.size, height: p.size, left: `${p.x}%`, top: `${p.y}%` }}
           animate={{ y: [0, -40, 0], opacity: [0, 0.7, 0] }}
           transition={{
@@ -130,16 +130,16 @@ export function Hero() {
           className="absolute inset-0 opacity-40 dark:opacity-30"
           style={{
             backgroundImage:
-              'radial-gradient(circle, rgb(99 102 241 / 0.15) 1px, transparent 1px)',
+              'radial-gradient(circle, rgb(59 130 246 / 0.15) 1px, transparent 1px)',
             backgroundSize: '32px 32px',
           }}
         />
 
         {/* Gradient orbs — parallax */}
         <motion.div className="absolute inset-0" style={{ x: orbX, y: orbY }}>
-          <div className="absolute top-1/4 left-1/4 w-[200px] sm:w-[400px] lg:w-[500px] h-[200px] sm:h-[400px] lg:h-[500px] bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-[60px] sm:blur-[120px] animate-float" />
-          <div className="absolute bottom-1/3 right-1/4 w-[180px] sm:w-[350px] lg:w-[400px] h-[180px] sm:h-[350px] lg:h-[400px] bg-purple-500/10 dark:bg-purple-500/15 rounded-full blur-[60px] sm:blur-[120px] animate-float-delayed" />
-          <div className="absolute top-1/2 right-1/3 w-[120px] sm:w-[200px] h-[120px] sm:h-[200px] bg-pink-500/5 dark:bg-pink-500/10 rounded-full blur-[40px] sm:blur-[80px] animate-float" />
+          <div className="absolute top-1/4 left-1/4 w-[200px] sm:w-[400px] lg:w-[500px] h-[200px] sm:h-[400px] lg:h-[500px] bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-[60px] sm:blur-[120px] animate-float" />
+          <div className="absolute bottom-1/3 right-1/4 w-[180px] sm:w-[350px] lg:w-[400px] h-[180px] sm:h-[350px] lg:h-[400px] bg-sky-500/10 dark:bg-sky-500/15 rounded-full blur-[60px] sm:blur-[120px] animate-float-delayed" />
+          <div className="absolute top-1/2 right-1/3 w-[120px] sm:w-[200px] h-[120px] sm:h-[200px] bg-blue-400/5 dark:bg-blue-400/10 rounded-full blur-[40px] sm:blur-[80px] animate-float" />
         </motion.div>
 
         {/* Radial fade */}
@@ -157,10 +157,10 @@ export function Hero() {
 
             {/* Status badge */}
             <motion.div {...fadeUp(0.1)} className="mb-5 sm:mb-6 lg:mb-8">
-              <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[0.65rem] sm:text-sm font-medium border border-indigo-200/60 dark:border-indigo-500/20">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[0.65rem] sm:text-sm font-medium border border-blue-200/60 dark:border-blue-500/20">
                 <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-full w-full bg-indigo-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-full w-full bg-blue-500" />
                 </span>
                 Open to opportunities
               </span>
@@ -194,9 +194,9 @@ export function Hero() {
               className="text-sm sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 min-h-[1.25rem] sm:min-h-[2rem]"
             >
               I build{' '}
-              <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
+              <span className="text-blue-600 dark:text-blue-400 font-semibold">
                 {typedText}
-                <span className="animate-pulse ml-0.5 text-indigo-500">|</span>
+                <span className="animate-pulse ml-0.5 text-blue-500">|</span>
               </span>
             </motion.div>
 
@@ -215,7 +215,7 @@ export function Hero() {
             >
               <a
                 href={HERO_DATA.cta.primary.href}
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-indigo-500 hover:bg-indigo-600 text-white text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-blue-500 hover:bg-blue-600 text-white text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
               >
                 {HERO_DATA.cta.primary.label}
                 <ArrowDown
@@ -225,7 +225,7 @@ export function Hero() {
               </a>
               <a
                 href={HERO_DATA.cta.secondary.href}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 text-sm sm:text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5"
               >
                 {HERO_DATA.cta.secondary.label}
               </a>
@@ -245,7 +245,7 @@ export function Hero() {
                   target={href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="p-2.5 sm:p-3 rounded-xl text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
+                  className="p-2.5 sm:p-3 rounded-xl text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
                 >
                   <Icon size={18} />
                 </a>

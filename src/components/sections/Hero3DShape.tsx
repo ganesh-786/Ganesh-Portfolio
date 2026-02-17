@@ -9,16 +9,7 @@ const orbitParticles = [0, 1, 2, 3] as const
 
 /**
  * Hero3DShape — A multi-layered 3D interactive geometric shape
- * that responds to mouse movement with depth parallax.
- *
- * Layers (back → front):
- *   1. Outer rotating conic-gradient ring
- *   2. Counter-rotating middle ring
- *   3. 3D card stack (back shadow → middle depth → front card)
- *   4. Grid pattern + rotating conic overlay
- *   5. Center hexagon SVG with glow
- *   6. Orbiting particles
- *   7. Corner accent dots + connecting lines
+ * using a professional blue / sky trust-palette.
  */
 export const Hero3DShape = memo(function Hero3DShape() {
   const [isHovering, setIsHovering] = useState(false)
@@ -67,7 +58,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
         className="absolute inset-0 rounded-full opacity-80 dark:opacity-100"
         style={{
           background:
-            'conic-gradient(from 0deg, rgba(99,102,241,0) 0deg, rgba(99,102,241,0.35) 90deg, rgba(99,102,241,0) 180deg, rgba(139,92,246,0.35) 270deg, rgba(99,102,241,0) 360deg)',
+            'conic-gradient(from 0deg, rgba(59,130,246,0) 0deg, rgba(59,130,246,0.35) 90deg, rgba(59,130,246,0) 180deg, rgba(14,165,233,0.35) 270deg, rgba(59,130,246,0) 360deg)',
         }}
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
@@ -75,7 +66,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
 
       {/* ── Layer 2: Middle counter-rotating ring ── */}
       <motion.div
-        className="absolute inset-6 sm:inset-8 md:inset-10 lg:inset-12 rounded-full border-[1.5px] border-indigo-400/30 dark:border-indigo-400/25"
+        className="absolute inset-6 sm:inset-8 md:inset-10 lg:inset-12 rounded-full border-[1.5px] border-blue-400/30 dark:border-blue-400/25"
         animate={{ rotate: -360 }}
         transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
       />
@@ -94,7 +85,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
           className="absolute inset-0 rounded-2xl md:rounded-3xl"
           style={{
             background:
-              'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2))',
+              'linear-gradient(135deg, rgba(59,130,246,0.2), rgba(14,165,233,0.2))',
             transform: 'translateZ(-80px)',
             filter: 'blur(20px)',
           }}
@@ -104,8 +95,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
         <motion.div
           className="absolute inset-0 rounded-2xl md:rounded-3xl"
           style={{
-            background:
-              'linear-gradient(135deg, #1e1b4b 0%, #0f0a2e 100%)',
+            background: 'linear-gradient(135deg, #0c2d57 0%, #071a36 100%)',
             transform: 'translateZ(-40px)',
             boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
           }}
@@ -116,15 +106,15 @@ export const Hero3DShape = memo(function Hero3DShape() {
           className="absolute inset-0 rounded-2xl md:rounded-3xl overflow-hidden"
           style={{
             background:
-              'linear-gradient(135deg, #312e81 0%, #1e1b4b 40%, #0f0a2e 100%)',
+              'linear-gradient(135deg, #1e3a5f 0%, #0c2d57 40%, #071a36 100%)',
             boxShadow:
-              '0 30px 90px rgba(0,0,0,0.7), inset 0 0 80px rgba(99,102,241,0.08)',
+              '0 30px 90px rgba(0,0,0,0.7), inset 0 0 80px rgba(59,130,246,0.08)',
             transform: 'translateZ(0px)',
           }}
           animate={{
             boxShadow: isHovering
-              ? '0 40px 120px rgba(0,0,0,0.8), inset 0 0 100px rgba(99,102,241,0.15)'
-              : '0 30px 90px rgba(0,0,0,0.7), inset 0 0 80px rgba(99,102,241,0.08)',
+              ? '0 40px 120px rgba(0,0,0,0.8), inset 0 0 100px rgba(59,130,246,0.15)'
+              : '0 30px 90px rgba(0,0,0,0.7), inset 0 0 80px rgba(59,130,246,0.08)',
           }}
           transition={{ duration: 0.4 }}
         >
@@ -133,7 +123,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
             className="absolute inset-0"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(99,102,241,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.08) 1px, transparent 1px)',
+                'linear-gradient(rgba(59,130,246,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.08) 1px, transparent 1px)',
               backgroundSize: '28px 28px',
             }}
           />
@@ -143,7 +133,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
             className="absolute inset-0"
             style={{
               background:
-                'conic-gradient(from 0deg, transparent 0deg, rgba(99,102,241,0.25) 60deg, transparent 120deg)',
+                'conic-gradient(from 0deg, transparent 0deg, rgba(59,130,246,0.25) 60deg, transparent 120deg)',
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
@@ -173,15 +163,15 @@ export const Hero3DShape = memo(function Hero3DShape() {
                   >
                     <stop
                       offset="0%"
-                      style={{ stopColor: '#818cf8', stopOpacity: 0.85 }}
+                      style={{ stopColor: '#60a5fa', stopOpacity: 0.85 }}
                     />
                     <stop
                       offset="50%"
-                      style={{ stopColor: '#a78bfa', stopOpacity: 0.65 }}
+                      style={{ stopColor: '#38bdf8', stopOpacity: 0.65 }}
                     />
                     <stop
                       offset="100%"
-                      style={{ stopColor: '#6366f1', stopOpacity: 0.85 }}
+                      style={{ stopColor: '#3b82f6', stopOpacity: 0.85 }}
                     />
                   </linearGradient>
                   <filter id="heroGlow">
@@ -197,7 +187,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
                 <polygon
                   points="100,18 172,60 172,140 100,182 28,140 28,60"
                   fill="url(#heroHexGrad)"
-                  stroke="#818cf8"
+                  stroke="#60a5fa"
                   strokeWidth="1.5"
                   filter="url(#heroGlow)"
                   opacity="0.9"
@@ -207,7 +197,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
                 <polygon
                   points="100,42 148,70 148,130 100,158 52,130 52,70"
                   fill="none"
-                  stroke="#a78bfa"
+                  stroke="#38bdf8"
                   strokeWidth="1.5"
                   opacity="0.5"
                 />
@@ -217,8 +207,8 @@ export const Hero3DShape = memo(function Hero3DShape() {
                   cx="100"
                   cy="100"
                   r="28"
-                  fill="rgba(99,102,241,0.25)"
-                  stroke="#818cf8"
+                  fill="rgba(59,130,246,0.25)"
+                  stroke="#60a5fa"
                   strokeWidth="1.5"
                 />
 
@@ -227,7 +217,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
                   cx="100"
                   cy="100"
                   r="8"
-                  fill="#818cf8"
+                  fill="#60a5fa"
                   filter="url(#heroGlow)"
                 />
               </svg>
@@ -236,9 +226,9 @@ export const Hero3DShape = memo(function Hero3DShape() {
               {orbitParticles.map((i) => (
                 <motion.div
                   key={i}
-                  className="absolute top-1/2 left-1/2 w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 rounded-full bg-indigo-400"
+                  className="absolute top-1/2 left-1/2 w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 rounded-full bg-blue-400"
                   style={{
-                    boxShadow: '0 0 16px rgba(129,140,248,0.8)',
+                    boxShadow: '0 0 16px rgba(96,165,250,0.8)',
                   }}
                   animate={{
                     x: [
@@ -266,7 +256,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
             className="absolute inset-0 rounded-2xl md:rounded-3xl"
             style={{
               background:
-                'radial-gradient(circle at 30% 20%, rgba(129,140,248,0.3) 0%, transparent 50%)',
+                'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.3) 0%, transparent 50%)',
             }}
           />
 
@@ -283,12 +273,12 @@ export const Hero3DShape = memo(function Hero3DShape() {
           <motion.div
             className="absolute inset-0 rounded-2xl md:rounded-3xl"
             style={{
-              boxShadow: 'inset 0 0 50px rgba(99,102,241,0.15)',
+              boxShadow: 'inset 0 0 50px rgba(59,130,246,0.15)',
             }}
             animate={{
               boxShadow: isHovering
-                ? 'inset 0 0 70px rgba(99,102,241,0.3)'
-                : 'inset 0 0 50px rgba(99,102,241,0.15)',
+                ? 'inset 0 0 70px rgba(59,130,246,0.3)'
+                : 'inset 0 0 50px rgba(59,130,246,0.15)',
             }}
             transition={{ duration: 0.4 }}
           />
@@ -299,7 +289,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
           className="absolute inset-4 sm:inset-5 md:inset-6 rounded-xl md:rounded-2xl"
           style={{
             background:
-              'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)',
+              'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)',
             transform: 'translateZ(40px)',
           }}
           animate={{
@@ -312,14 +302,14 @@ export const Hero3DShape = memo(function Hero3DShape() {
 
       {/* ── Corner accent dots ── */}
       <motion.div
-        className="absolute -top-1 -right-1 md:-top-3 md:-right-3 w-4 h-4 md:w-6 md:h-6 rounded-full bg-indigo-400"
-        style={{ boxShadow: '0 0 24px rgba(129,140,248,0.7)' }}
+        className="absolute -top-1 -right-1 md:-top-3 md:-right-3 w-4 h-4 md:w-6 md:h-6 rounded-full bg-blue-400"
+        style={{ boxShadow: '0 0 24px rgba(96,165,250,0.7)' }}
         animate={{ y: [-8, 8, -8], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
-        className="absolute -bottom-1 -left-1 md:-bottom-3 md:-left-3 w-3 h-3 md:w-5 md:h-5 rounded-full bg-violet-400"
-        style={{ boxShadow: '0 0 24px rgba(167,139,250,0.7)' }}
+        className="absolute -bottom-1 -left-1 md:-bottom-3 md:-left-3 w-3 h-3 md:w-5 md:h-5 rounded-full bg-sky-400"
+        style={{ boxShadow: '0 0 24px rgba(56,189,248,0.7)' }}
         animate={{ y: [8, -8, 8], opacity: [0.5, 1, 0.5] }}
         transition={{
           duration: 3,
@@ -331,7 +321,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
 
       {/* ── Connecting lines ── */}
       <motion.div
-        className="absolute top-0 left-1/2 w-px bg-gradient-to-t from-indigo-400/50 to-transparent"
+        className="absolute top-0 left-1/2 w-px bg-gradient-to-t from-blue-400/50 to-transparent"
         style={{ x: '-50%', y: '-100%' }}
         animate={{
           height: isHovering ? ['60px', '80px'] : ['40px', '60px'],
@@ -340,7 +330,7 @@ export const Hero3DShape = memo(function Hero3DShape() {
         transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
-        className="absolute bottom-0 left-1/2 w-px bg-gradient-to-b from-violet-400/50 to-transparent"
+        className="absolute bottom-0 left-1/2 w-px bg-gradient-to-b from-sky-400/50 to-transparent"
         style={{ x: '-50%', y: '100%' }}
         animate={{
           height: isHovering ? ['60px', '80px'] : ['40px', '60px'],

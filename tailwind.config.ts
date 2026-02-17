@@ -36,8 +36,8 @@ export default {
           to: { transform: 'rotate(0deg)' },
         },
         'glow-pulse': {
-          '0%, 100%': { boxShadow: '0 0 40px rgba(99,102,241,0.15)' },
-          '50%': { boxShadow: '0 0 60px rgba(99,102,241,0.3)' },
+          '0%, 100%': { boxShadow: '0 0 40px rgba(59,130,246,0.15)' },
+          '50%': { boxShadow: '0 0 60px rgba(59,130,246,0.3)' },
         },
       },
     },
