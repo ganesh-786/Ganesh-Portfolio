@@ -1,33 +1,38 @@
 {
   "name": "ganesh-portfolio",
+  "version": "3.0.0",
   "private": true,
-  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
+    "next": "^15.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "@react-three/fiber": "^9.1.2",
+    "@react-three/drei": "^10.0.6",
+    "three": "^0.175.0",
+    "gsap": "^3.12.7",
+    "framer-motion": "^12.7.3",
+    "next-themes": "^0.4.6",
+    "lucide-react": "^0.487.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.15.0",
-    "lucide-react": "^0.468.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^3.2.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
-    "@types/node": "^25.2.3",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
-    "playwright": "^1.58.2",
-    "postcss": "^8.4.49",
-    "puppeteer-core": "^24.37.2",
-    "tailwindcss": "^3.4.17",
-    "typescript": "~5.6.2",
-    "vite": "^6.0.5"
+    "typescript": "^5.8.3",
+    "@types/node": "^22.15.2",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@types/three": "^0.175.0",
+    "tailwindcss": "^4.1.4",
+    "@tailwindcss/postcss": "^4.1.4",
+    "postcss": "^8.5.3",
+    "@next/bundle-analyzer": "^15.3.1"
   }
 }
