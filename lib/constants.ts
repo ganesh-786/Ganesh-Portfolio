@@ -182,9 +182,13 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
 
 export const EDUCATION_DATA: EducationItem[] = [
   {
-    degree: 'Bachelor of Computer Engineering',
-    institution: 'Institute of Engineering, Dharan',
-    period: '2021 – 2025',
+    degree: 'Claude Code in Action',
+    institution: 'Anthropic Academy',
+    period: '2026',
+    details:
+      'Completed hands-on course on building with Claude Code — AI-assisted software engineering workflows.',
+    certificateUrl: 'https://verify.skilljar.com/c/kw9drjq2b2d5',
+    certificateImage: '/images/claude-code-certificate.png',
   },
   {
     degree: 'Full Stack Open Certificate',
@@ -194,6 +198,11 @@ export const EDUCATION_DATA: EducationItem[] = [
     certificateUrl:
       'https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/fba3bdf793a076746b18088b82237aca',
     certificateImage: '/images/helsinki-certificate.png',
+  },
+  {
+    degree: 'Bachelor of Computer Engineering',
+    institution: 'Institute of Engineering, Dharan',
+    period: '2021 – 2025',
   },
 ]
 

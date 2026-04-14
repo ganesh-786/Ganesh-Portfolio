@@ -74,6 +74,27 @@ const jsonLd = {
     '@type': 'EducationalOrganization',
     name: 'Institute of Engineering, Dharan',
   },
+  hasCredential: [
+    {
+      '@type': 'EducationalOccupationalCredential',
+      name: 'Full Stack Open Certificate',
+      credentialCategory: 'certificate',
+      recognizedBy: {
+        '@type': 'EducationalOrganization',
+        name: 'University of Helsinki',
+      },
+    },
+    {
+      '@type': 'EducationalOccupationalCredential',
+      name: 'Claude Code in Action',
+      url: 'https://verify.skilljar.com/c/kw9drjq2b2d5',
+      credentialCategory: 'certificate',
+      recognizedBy: {
+        '@type': 'EducationalOrganization',
+        name: 'Anthropic Academy',
+      },
+    },
+  ],
 }
 
 export default function RootLayout({
