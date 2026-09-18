@@ -5,7 +5,7 @@ import { useRef, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 interface SectionWrapperProps {
-  children: ReactNode
+  children: ReactNode | ((isInView: boolean) => ReactNode)
   id?: string
   className?: string
   fullWidth?: boolean
@@ -28,7 +28,7 @@ export function SectionWrapper({ children, id, className, fullWidth = false }: S
         className
       )}
     >
-      {children}
+      {typeof children === 'function' ? children(isInView) : children}
     </motion.section>
   )
 }

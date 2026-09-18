@@ -11,7 +11,6 @@ export interface Project {
 
 export interface SkillItem {
   name: string
-  icon: string
 }
 
 export interface SkillCategory {

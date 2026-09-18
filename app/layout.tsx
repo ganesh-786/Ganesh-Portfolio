@@ -16,6 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ganeshtharu.com.np'),
   title: 'Ganesh Chaudhary | Full Stack Developer',
   description:
     'Full Stack Developer specializing in React, Node.js, microservices, and AI-integrated systems. View my portfolio of production-grade web applications.',
@@ -32,16 +33,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
+    url: 'https://ganeshtharu.com.np',
     title: 'Ganesh Chaudhary | Full Stack Developer',
     description:
       'Full Stack Developer building production-grade web applications with React, Node.js, and AI integrations.',
     siteName: 'Ganesh Chaudhary Portfolio',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Ganesh Chaudhary — Full Stack Developer',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ganesh Chaudhary | Full Stack Developer',
     description:
       'Full Stack Developer building production-grade web applications with React, Node.js, and AI integrations.',
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,

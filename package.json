@@ -11,28 +11,27 @@
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
-    "next": "^15.3.1",
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.2",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.7.3",
+    "lucide-react": "^0.487.0",
+    "next": "^15.5.25",
+    "next-themes": "^0.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "@react-three/fiber": "^9.1.2",
-    "@react-three/drei": "^10.0.6",
-    "three": "^0.175.0",
-    "gsap": "^3.12.7",
-    "framer-motion": "^12.7.3",
-    "next-themes": "^0.4.6",
-    "lucide-react": "^0.487.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^3.2.0"
+    "tailwind-merge": "^3.2.0",
+    "three": "^0.175.0"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
+    "@next/bundle-analyzer": "^15.3.1",
+    "@tailwindcss/postcss": "^4.1.4",
     "@types/node": "^22.15.2",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/three": "^0.175.0",
+    "postcss": "^8.5.28",
     "tailwindcss": "^4.1.4",
-    "@tailwindcss/postcss": "^4.1.4",
-    "postcss": "^8.5.3",
-    "@next/bundle-analyzer": "^15.3.1"
+    "typescript": "^5.8.3"
   }
 }
