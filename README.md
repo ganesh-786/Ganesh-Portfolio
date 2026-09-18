@@ -67,7 +67,6 @@ npm run preview
 
 ## Contact
 
-- **Email:** [ganesh98245.np@gmail.com](mailto:ganesh98245.np@gmail.com)
 - **GitHub:** [@ganesh-786](https://github.com/ganesh-786)
 - **LinkedIn:** [Ganesh Chaudhary](https://www.linkedin.com/in/ganesh-chaudhary-684843269)
 
