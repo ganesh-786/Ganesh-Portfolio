@@ -1,48 +1,44 @@
 # Ganesh Chaudhary — Full Stack Developer Portfolio
 
-A modern, professional portfolio website built with industry-standard technologies and best practices.
+A personal portfolio site built with Next.js, showcasing projects, experience, and
+skills.
 
-**Live Demo:** [ganeshtharu.com.np](https://www.ganeshtharu.com.np)
+**Live site:** [ganeshtharu.com.np](https://www.ganeshtharu.com.np)
 
 ---
 
 ## Tech Stack
 
-| Category       | Technologies                                             |
-|----------------|----------------------------------------------------------|
-| **Framework**  | React 18, TypeScript                                     |
-| **Build Tool** | Vite 6                                                   |
-| **Styling**    | Tailwind CSS 3                                           |
-| **Animations** | Framer Motion 11                                         |
-| **Icons**      | Lucide React                                             |
-| **Utilities**  | clsx, tailwind-merge                                     |
+| Category       | Technologies                                      |
+|-----------------|----------------------------------------------------|
+| **Framework**   | Next.js 15 (App Router), React 19, TypeScript      |
+| **Rendering**   | Static export (`output: 'export'`)                 |
+| **Styling**     | Tailwind CSS 4 (CSS-first theme)                    |
+| **Animations**  | Framer Motion                                       |
+| **Icons**       | Lucide React                                        |
+| **Theming**     | next-themes (class-based dark mode)                 |
+| **Utilities**   | clsx, tailwind-merge                                |
 
 ## Features
 
-- **Professional UI/UX** — Clean, minimal design with modern aesthetics
-- **Dark/Light Theme** — Smooth theme toggle with persistent preference
-- **Scroll Animations** — Staggered reveals, fade-ins, and micro-interactions via Framer Motion
-- **Responsive Design** — Mobile-first approach with glass morphism navbar and adaptive layouts
-- **TypeScript Strict Mode** — Full type safety across the codebase
-- **Industry Folder Structure** — Modular component architecture with separation of concerns
-- **SEO Optimized** — Semantic HTML, Open Graph meta tags, and proper document structure
-- **Performance** — Lazy loading images, optimized bundle, smooth 60fps animations
+- Single-page layout: Hero, About, Skills, Projects, Experience, Education, Contact
+- Dark/light theme toggle with persisted preference and no flash of unstyled theme
+- Scroll-triggered reveal animations
+- Responsive, mobile-first layout with an accessible mobile navigation menu
+- Structured data (JSON-LD) for search engines
+- Open Graph and Twitter card metadata with a dedicated preview image
+- Fully static export, deployed via GitHub Pages behind a custom domain
 
 ## Project Structure
 
 ```
-src/
-├── components/
-│   ├── layout/          # Navbar, Footer
-│   ├── sections/        # Hero, About, Skills, Projects, Contact
-│   └── ui/              # Reusable UI primitives
-├── hooks/               # Custom React hooks (useTheme)
-├── lib/                 # Utility functions (cn)
-├── data/                # Static content & constants
-├── types/               # TypeScript type definitions
-├── styles/              # Global CSS & Tailwind config
-├── App.tsx              # Root component
-└── main.tsx             # Application entry point
+app/                # Routes, layout, metadata (sitemap, robots, manifest, icons)
+components/
+  layout/            # Navbar, Footer
+  sections/          # Hero, About, Skills, Projects, Experience, Education, Contact
+  ui/                # Reusable UI primitives (theme provider, section wrapper)
+lib/                 # Typed content constants, shared types, utilities
+public/              # Static assets
 ```
 
 ## Getting Started
@@ -55,15 +51,21 @@ cd Ganesh-Portfolio
 # Install dependencies
 npm install
 
-# Start development server
+# Start the dev server
 npm run dev
 
-# Build for production
+# Build the static export
 npm run build
-
-# Preview production build
-npm run preview
 ```
+
+The production build outputs a static site to the `out/` directory, which is what
+gets deployed.
+
+## Deployment
+
+Deployed to GitHub Pages via the workflow in `.github/workflows/deploy.yml`, which
+builds the static export and publishes it on push to `main`. The custom domain is
+configured through `public/CNAME`.
 
 ## Contact
 
