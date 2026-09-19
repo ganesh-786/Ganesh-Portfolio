@@ -27,13 +27,16 @@ const ALLOWED_CSP_HOSTS = ['https://api.web3forms.com']
 // Where the contact form posts. The page bundle has to contain exactly this address.
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
 
-// About 15 percent above the build measured on 2026-09-19, in bytes. Total JavaScript was
-// measured on two machines, a Windows laptop and the CI runner (Linux, Node 22).
+// About 15 percent above the build measured on 2026-09-20 with Next 16.3.5, in bytes. The JavaScript
+// numbers are the same on a Windows laptop and on the CI runner (Linux, Node 22), because Turbopack
+// output does not depend on the machine. Next 16 ships a larger client runtime than Next 15 (about
+// 29 kB more gzipped up front, 124,612 before) and loads no lazy chunks, so it has less JavaScript in
+// total but more of it up front.
 const BUDGET = {
-  totalJs: 977_000, // all JavaScript under _next/static, measured 850,137 and 843,900
-  initialJsGzip: 143_000, // JavaScript the home page loads up front, gzipped, measured 124,325
-  css: 43_000, // all CSS, measured 37,451
-  anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 202,750 (index.html)
+  totalJs: 733_000, // all JavaScript under _next/static, measured 637,629 (Next 15 had 874,185)
+  initialJsGzip: 176_000, // JavaScript the home page loads up front, gzipped, measured 153,270
+  css: 43_000, // all CSS, measured 37,545
+  anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 203,522 (index.html)
   pdf: 2_000_000, // a CV heavier than this is nearly always an uncompressed image, today 151,110
 }
 

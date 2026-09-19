@@ -12,7 +12,7 @@ recruiters and clients a direct way to get in touch.
 
 | Category      | Technologies                                                   |
 |---------------|----------------------------------------------------------------|
-| **Framework** | Next.js 15 (App Router), React 19, TypeScript (strict)         |
+| **Framework** | Next.js 16 (App Router), React 19, TypeScript (strict)         |
 | **Rendering** | Static export (`output: 'export'`), no server at runtime       |
 | **Styling**   | Tailwind CSS 4 with a small set of semantic colour tokens      |
 | **Type**      | Newsreader, IBM Plex Sans and IBM Plex Mono via `next/font`    |
@@ -66,7 +66,7 @@ colour tokens and the two small CSS animations live in `app/globals.css`.
 
 ## Getting started
 
-Node.js 20 or newer.
+Node.js 22 or newer, the version the site is built and deployed with.
 
 ```bash
 git clone https://github.com/ganesh-786/Ganesh-Portfolio.git
