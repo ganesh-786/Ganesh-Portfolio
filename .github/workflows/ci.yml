@@ -1,0 +1,91 @@
+# Checks every pull request and every push to main, before anything is deployed.
+#
+# verify  Installs from the lockfile, type-checks, builds, then inspects the finished site
+#         (scripts/verify-build.mjs). This is the job to require in branch protection. The
+#         job name is the check name, so renaming it detaches the rule.
+# audit   Lists known vulnerabilities in dependencies as warnings on the run. It never fails:
+#         a newly published advisory must not block an unrelated change or leave a red mark
+#         on a commit. Dependabot alerts are what actually notify.
+#
+# The weekly schedule rebuilds main, so drift outside the repository (a font download that
+# starts failing, a runner image change) is noticed before the next deploy depends on it.
+#
+# The token is read-only and pull_request_target is never used, so code from a pull request
+# cannot reach a secret or write to the repository. Dependency install scripts are skipped.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '23 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same pull request replaces the older run. Runs on main are never
+# cancelled, so every commit that lands keeps its own result.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Type-check
+        run: npx --no-install tsc --noEmit
+
+      - name: Build
+        run: npm run build
+
+      - name: Check the built site
+        run: node scripts/verify-build.mjs
+
+  audit:
+    name: audit (informational)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Known vulnerabilities in production dependencies
+        run: |
+          npm audit --omit=dev || echo "::warning title=Dependency audit::Known vulnerabilities in production dependencies. The step log lists them. Nothing is blocked."
+
+      - name: Registry signatures of installed packages
+        run: |
+          npm audit signatures || echo "::warning title=Package signatures::Some installed packages could not be verified. The step log lists them."
