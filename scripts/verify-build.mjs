@@ -24,6 +24,9 @@ const DOMAIN = 'ganeshtharu.com.np'
 // The only third-party hosts the Content-Security-Policy may name.
 const ALLOWED_CSP_HOSTS = ['https://api.web3forms.com']
 
+// Where the contact form posts. The page bundle has to contain exactly this address.
+const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
+
 // About 15 percent above the build measured on 2026-09-19, in bytes. Total JavaScript was
 // measured on two machines, a Windows laptop and the CI runner (Linux, Node 22).
 const BUDGET = {
@@ -143,17 +146,58 @@ const tagsOf = (html, name) =>
     index: m.index,
     attr: attributes(m[0]),
   }))
-const withoutScripts = (html) => html.replace(/<script\b[\s\S]*?<\/script>/gi, '')
+// Leaves out the <script> elements, so the checks only look at markup. This is a scan and not a
+// replace(): there is no pattern that a crafted fragment could rebuild after removal, and an end
+// tag such as </script > is still recognised.
+function withoutScripts(html) {
+  const opening = /<script(?=[\s/>])/gi
+  const closing = /<\/script[^>]*>/gi
+  let markup = ''
+  let from = 0
+  for (;;) {
+    opening.lastIndex = from
+    const start = opening.exec(html)
+    if (!start) return markup + html.slice(from)
+    markup += html.slice(from, start.index)
+    closing.lastIndex = start.index
+    const end = closing.exec(html)
+    if (!end) return markup
+    from = end.index + end[0].length
+  }
+}
 const metaWhere = (html, key, value) =>
   tagsOf(html, 'meta').filter((t) => t.attr[key]?.toLowerCase() === value.toLowerCase())
 
-// Turns a URL from the page into a path inside out/, or null when it points elsewhere.
+// True when an absolute URL belongs to this site. The origin is compared exactly, because a prefix
+// test such as startsWith(ORIGIN) would also accept https://ganeshtharu.com.np.example.org.
+const isOurs = (url) => {
+  try {
+    return new URL(url).origin === ORIGIN
+  } catch {
+    return false
+  }
+}
+
+// The host of a URL given as text, or an empty string when it is not a URL.
+const hostOf = (value) => {
+  try {
+    return new URL(String(value)).hostname
+  } catch {
+    return ''
+  }
+}
+
+// Turns a URL from the page into a path inside out/, or null when it points to another site.
 function localPath(url) {
-  let u = url.trim()
-  if (u.startsWith(ORIGIN)) u = u.slice(ORIGIN.length) || '/'
-  if (!u.startsWith('/') || u.startsWith('//')) return null
-  u = decodeURIComponent(u.split('#')[0].split('?')[0])
-  return u.endsWith('/') ? `${u}index.html`.slice(1) : u.slice(1)
+  let parsed
+  try {
+    parsed = new URL(url.trim(), `${ORIGIN}/`)
+  } catch {
+    return null
+  }
+  if (parsed.origin !== ORIGIN) return null
+  const path = decodeURIComponent(parsed.pathname)
+  return path.endsWith('/') ? `${path}index.html`.slice(1) : path.slice(1)
 }
 function resolvesToFile(url) {
   const rel = localPath(url)
@@ -237,7 +281,7 @@ check('Home page', 'link previews use an image that exists at the size it claims
     const tag = metaWhere(home, key.startsWith('og') ? 'property' : 'name', key)[0]
     return [key, tag?.attr.content]
   })
-  const problems = urls.filter(([, u]) => !u || !u.startsWith(`${ORIGIN}/`) || !resolvesToFile(u)).map(([k]) => k)
+  const problems = urls.filter(([, u]) => !u || !isOurs(u) || !resolvesToFile(u)).map(([k]) => k)
   if (problems.length) return fail(`${problems.join(', ')} missing or not a file on ${DOMAIN}`)
   const png = readBytes(localPath(urls[0][1]))
   const isPng = png.subarray(0, 8).toString('hex') === '89504e470d0a1a0a'
@@ -250,7 +294,7 @@ check('Home page', 'structured data (JSON-LD) is valid and describes the person'
   if (!block) return fail('no JSON-LD block found')
   const data = JSON.parse(block[1])
   const problems = []
-  if (!String(data['@context']).includes('schema.org')) problems.push('@context')
+  if (hostOf(data['@context']) !== 'schema.org') problems.push('@context')
   if (data['@type'] !== 'Person') problems.push('@type is not Person')
   if (!data.name) problems.push('name')
   if (data.url?.replace(/\/$/, '') !== ORIGIN) problems.push('url')
@@ -340,7 +384,8 @@ check('Contact form', 'the form endpoint and access key are in the page bundle',
   const uuid = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
   const wired = files.some((f) => f.rel.endsWith('.js') && f.rel.startsWith('_next/static/') && (() => {
     const text = readFileSync(f.full, 'utf8')
-    return text.includes('https://api.web3forms.com/submit') && uuid.test(text)
+    const urls = text.match(/https:\/\/[^\s"'`\\)]+/g) ?? []
+    return urls.some((u) => u === FORM_ENDPOINT) && uuid.test(text)
   })())
   return expect(wired, 'no script contains both the Web3Forms endpoint and an access key, so the site would fall back to no form')
 })
@@ -394,7 +439,7 @@ check('Crawlers', 'robots.txt welcomes crawlers and lists the sitemap', () => {
 })
 check('Crawlers', 'sitemap.xml only lists pages on the live domain', () => {
   const locs = [...readText('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
-  const wrong = locs.filter((u) => !(u === ORIGIN || u.startsWith(`${ORIGIN}/`)))
+  const wrong = locs.filter((u) => !isOurs(u))
   return expect(locs.length > 0 && wrong.length === 0, locs.length ? `off-domain: ${wrong.join(', ')}` : 'no URLs listed', `${locs.length} URL`)
 })
 check('Crawlers', 'the web app manifest parses and its icons exist', () => {
