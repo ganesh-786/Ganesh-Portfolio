@@ -1,25 +1,32 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sun, Moon } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Menu, Moon, Sun, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { NAV_ITEMS } from '@/lib/constants'
+import { HERO_DATA, NAV_ITEMS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
+
+function scrollBehavior(): ScrollBehavior {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
-  const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-
-  useEffect(() => { setMounted(true) }, [])
+  const { resolvedTheme, setTheme } = useTheme()
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => {
@@ -27,131 +34,132 @@ export function Navbar() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(`#${entry.target.id}`)
+            setActiveSection(entry.target.id === 'top' ? '' : `#${entry.target.id}`)
           }
         })
       },
-      { rootMargin: '-40% 0px -55% 0px' }
+      { rootMargin: '-40% 0px -55% 0px' },
     )
-
-    const ids = NAV_ITEMS.map((item) => item.href.replace('#', ''))
-    ids.forEach((id) => {
+    ;['top', ...NAV_ITEMS.map((item) => item.href.slice(1))].forEach((id) => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
-
     return () => observer.disconnect()
   }, [])
 
-  const handleNavClick = useCallback((href: string) => {
-    const isMobileMenuOpen = mobileOpen
-    setMobileOpen(false)
-
-    if (isMobileMenuOpen) {
-      setTimeout(() => {
-        const el = document.querySelector(href)
-        if (el) el.scrollIntoView({ behavior: 'smooth' })
-      }, 350)
-    } else {
-      const el = document.querySelector(href)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [mobileOpen])
+  const goTo = useCallback(
+    (href: string) => {
+      const wasOpen = mobileOpen
+      setMobileOpen(false)
+      const scroll = () =>
+        document.querySelector(href)?.scrollIntoView({ behavior: scrollBehavior() })
+      if (wasOpen) setTimeout(scroll, 250)
+      else scroll()
+    },
+    [mobileOpen],
+  )
 
   const toggleTheme = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled
-          ? 'bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm'
-          : 'bg-transparent'
+        'fixed inset-x-0 top-0 z-50 border-b transition-colors duration-200',
+        scrolled || mobileOpen ? 'border-rule bg-paper' : 'border-transparent bg-transparent',
       )}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-            className="text-lg sm:text-xl font-bold text-gradient"
-          >
-            GC
-          </a>
+      <nav
+        aria-label="Primary"
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8"
+      >
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault()
+            window.scrollTo({ top: 0, behavior: scrollBehavior() })
+          }}
+          className="font-display text-xl tracking-tight text-ink"
+        >
+          <span className="sm:hidden">GC</span>
+          <span className="hidden sm:inline">{HERO_DATA.name}</span>
+        </a>
 
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => handleNavClick(item.href)}
-                className={cn(
-                  'px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200',
-                  activeSection === item.href
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800/50'
-                )}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+        <ul className="hidden items-center gap-7 lg:flex">
+          {NAV_ITEMS.map((item) => {
+            const active = activeSection === item.href
+            return (
+              <li key={item.href}>
+                <button
+                  type="button"
+                  onClick={() => goTo(item.href)}
+                  aria-current={active ? 'true' : undefined}
+                  className={cn(
+                    'border-b pb-0.5 text-sm transition-colors',
+                    active
+                      ? 'border-accent text-ink'
+                      : 'border-transparent text-muted hover:text-ink',
+                  )}
+                >
+                  {item.label}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
 
-          <div className="flex items-center gap-2">
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className="p-2.5 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
-                aria-label="Toggle theme"
-              >
-                {resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
-            )}
-
+        <div className="flex items-center gap-1">
+          {mounted && (
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2.5 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
-              aria-label="Toggle menu"
+              type="button"
+              onClick={toggleTheme}
+              aria-label={resolvedTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              className="rounded-md p-2.5 text-muted transition-colors hover:text-ink"
             >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              {resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-          </div>
+          )}
+          <button
+            type="button"
+            onClick={() => setMobileOpen((open) => !open)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            className="rounded-md p-2.5 text-muted transition-colors hover:text-ink lg:hidden"
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </nav>
 
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden overflow-hidden bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50"
+            id="mobile-menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="border-t border-rule bg-paper lg:hidden"
           >
-            <div className="px-4 py-3 space-y-1">
+            <ul className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
               {NAV_ITEMS.map((item) => (
-                <button
-                  key={item.href}
-                  onClick={() => handleNavClick(item.href)}
-                  className={cn(
-                    'block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors',
-                    activeSection === item.href
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800/50'
-                  )}
-                >
-                  {item.label}
-                </button>
+                <li key={item.href} className="border-b border-rule last:border-b-0">
+                  <button
+                    type="button"
+                    onClick={() => goTo(item.href)}
+                    className={cn(
+                      'block w-full py-4 text-left font-display text-2xl tracking-tight',
+                      activeSection === item.href ? 'text-accent' : 'text-ink',
+                    )}
+                  >
+                    {item.label}
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   )
 }

@@ -29,6 +29,7 @@ export interface SocialLink {
   name: string
   url: string
   icon: string
+  handle?: string
 }
 
 export interface NavItem {

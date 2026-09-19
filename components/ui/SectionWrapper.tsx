@@ -5,30 +5,25 @@ import { useRef, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 interface SectionWrapperProps {
-  children: ReactNode | ((isInView: boolean) => ReactNode)
+  children: ReactNode
   id?: string
   className?: string
-  fullWidth?: boolean
 }
 
-export function SectionWrapper({ children, id, className, fullWidth = false }: SectionWrapperProps) {
+export function SectionWrapper({ children, id, className }: SectionWrapperProps) {
   const ref = useRef<HTMLElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' })
 
   return (
     <motion.section
       ref={ref}
       id={id}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        'section-content py-16 sm:py-20 lg:py-24',
-        !fullWidth && 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
-        className
-      )}
+      initial={{ opacity: 0, y: 12 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className={cn('border-t border-rule', className)}
     >
-      {typeof children === 'function' ? children(isInView) : children}
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">{children}</div>
     </motion.section>
   )
 }

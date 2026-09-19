@@ -20,12 +20,11 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const HERO_DATA = {
-  greeting: "Hi, I'm",
   name: "Ganesh Chaudhary",
   title: "Full Stack Developer",
   status: "Open to full-time roles and freelance work",
   description:
-    "Full stack developer working from React interfaces to the Node.js services and databases behind them, including AI features such as retrieval-augmented support agents.",
+    "I build across the stack, from React interfaces to the Node.js services and databases behind them, including AI features such as retrieval-augmented support agents.",
   cta: {
     primary: { label: "View My Work", href: "#projects" },
     secondary: { label: "Get In Touch", href: "#contact" },
@@ -34,11 +33,17 @@ export const HERO_DATA = {
     label: "Download Resume",
     href: "/Ganesh_Chaudhary_CV_2026.pdf",
   } as { label: string; href: string } | null,
-  typingWords: [
-    "Web Applications.",
-    "Microservices.",
-    "AI Integrations.",
-    "Scalable Systems.",
+  facts: [
+    { label: "Role", value: "Junior Software Developer, TEJ Center" },
+    {
+      label: "Focus",
+      value: "Web applications, microservices, AI integrations",
+    },
+    { label: "Based in", value: "Kathmandu, Nepal" },
+    {
+      label: "Certified",
+      value: "Full Stack Open, University of Helsinki (Grade 5)",
+    },
   ],
 } as const;
 
@@ -346,11 +351,13 @@ export const CONTACT_DATA = {
       name: "GitHub",
       url: "https://github.com/ganesh-786",
       icon: "github",
+      handle: "github.com/ganesh-786",
     },
     {
       name: "LinkedIn",
       url: "https://www.linkedin.com/in/ganesh-chaudhary-684843269",
       icon: "linkedin",
+      handle: "Ganesh Chaudhary on LinkedIn",
     },
     {
       name: "Email",

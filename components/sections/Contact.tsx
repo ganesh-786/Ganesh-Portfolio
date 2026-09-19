@@ -1,76 +1,61 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { Send, Github, Linkedin, Mail } from 'lucide-react'
-import { SectionWrapper } from '@/components/ui/SectionWrapper'
+import { ArrowUpRight, Send } from 'lucide-react'
 import { ContactForm } from '@/components/sections/ContactForm'
+import { SectionHeader } from '@/components/ui/SectionHeader'
+import { SectionWrapper } from '@/components/ui/SectionWrapper'
 import { CONTACT_DATA } from '@/lib/constants'
-
-const socialIcons: Record<string, typeof Github> = {
-  github: Github,
-  linkedin: Linkedin,
-  mail: Mail,
-}
 
 export function Contact() {
   return (
-    <SectionWrapper id="contact" className="text-center max-w-2xl">
-      {(isInView) => (
-        <>
-          <div className="mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {CONTACT_DATA.heading.split(' ').map((word, i, arr) => (
-                <span key={i}>
-                  {i === arr.length - 1 ? <span className="text-gradient">{word}</span> : word}
-                  {i < arr.length - 1 ? ' ' : ''}
-                </span>
-              ))}
-            </h2>
-            <div className="w-16 h-1 bg-blue-500 rounded-full mx-auto mb-6" />
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
-              {CONTACT_DATA.description}
-            </p>
-          </div>
+    <SectionWrapper id="contact">
+      <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <SectionHeader index="07" title={CONTACT_DATA.heading} className="mb-6 sm:mb-6">
+            <p className="mt-6 text-lg leading-8 text-muted">{CONTACT_DATA.description}</p>
+          </SectionHeader>
 
+          <ul className="border-t border-ink">
+            {CONTACT_DATA.socials.map((social) => {
+              const isMail = social.url.startsWith('mailto')
+              return (
+                <li key={social.name} className="border-b border-rule">
+                  <a
+                    href={social.url}
+                    target={isMail ? undefined : '_blank'}
+                    rel={isMail ? undefined : 'noopener noreferrer'}
+                    className="group flex items-baseline justify-between gap-4 py-4 transition-colors hover:text-accent"
+                  >
+                    <span className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
+                      {social.name}
+                    </span>
+                    <span className="flex items-center gap-1 text-base text-ink group-hover:text-accent">
+                      {isMail ? CONTACT_DATA.email : (social.handle ?? social.url)}
+                      <ArrowUpRight
+                        size={15}
+                        aria-hidden="true"
+                        className="shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      />
+                    </span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+
+        <div className="lg:col-span-7 lg:pt-3">
           {CONTACT_DATA.formAccessKey ? (
             <ContactForm accessKey={CONTACT_DATA.formAccessKey} />
           ) : (
-            <motion.a
+            <a
               href={`mailto:${CONTACT_DATA.email}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 mb-10"
+              className="inline-flex items-center gap-2 rounded-md bg-ink px-6 py-3.5 text-sm font-medium text-paper transition-colors hover:bg-accent hover:text-accent-ink"
             >
-              <Send size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              Say Hello
-            </motion.a>
+              <Send size={16} />
+              Say hello
+            </a>
           )}
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="flex items-center justify-center gap-3"
-          >
-            {CONTACT_DATA.socials.map((social) => {
-              const Icon = socialIcons[social.icon] || Mail
-              return (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target={social.url.startsWith('mailto') ? undefined : '_blank'}
-                  rel="noopener noreferrer"
-                  aria-label={social.name}
-                  className="p-3 rounded-xl text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-800"
-                >
-                  <Icon size={20} />
-                </a>
-              )
-            })}
-          </motion.div>
-        </>
-      )}
+        </div>
+      </div>
     </SectionWrapper>
   )
 }
