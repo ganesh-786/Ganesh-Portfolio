@@ -188,10 +188,12 @@ const hostOf = (value) => {
 }
 
 // Turns a URL from the page into a path inside out/, or null when it points to another site.
-function localPath(url) {
+// A relative URL is resolved against `base`: the site root for a page, and the stylesheet's own
+// address for a url() inside CSS, because some bundlers write those relative to the stylesheet.
+function localPath(url, base = `${ORIGIN}/`) {
   let parsed
   try {
-    parsed = new URL(url.trim(), `${ORIGIN}/`)
+    parsed = new URL(url.trim(), base)
   } catch {
     return null
   }
@@ -199,8 +201,8 @@ function localPath(url) {
   const path = decodeURIComponent(parsed.pathname)
   return path.endsWith('/') ? `${path}index.html`.slice(1) : path.slice(1)
 }
-function resolvesToFile(url) {
-  const rel = localPath(url)
+function resolvesToFile(url, base) {
+  const rel = localPath(url, base)
   if (rel === null) return null
   const inside = (p) => resolve(abs(p)).startsWith(outDir + sep) || resolve(abs(p)) === outDir
   return [rel, `${rel}.html`, `${rel}/index.html`].some((p) => inside(p) && exists(p) && statSync(abs(p)).isFile())
@@ -352,8 +354,9 @@ check('References', 'every local file the pages and stylesheets point to exists'
   }
   for (const css of files.filter((f) => f.rel.endsWith('.css'))) {
     const text = readFileSync(css.full, 'utf8')
+    const base = `${ORIGIN}/${css.rel}`
     for (const m of text.matchAll(/url\(\s*(['"]?)([^)'"]+)\1\s*\)/g)) {
-      if (!m[2].startsWith('data:') && resolvesToFile(m[2]) === false) missing.push(`${m[2]} (from ${css.rel})`)
+      if (!m[2].startsWith('data:') && resolvesToFile(m[2], base) === false) missing.push(`${m[2]} (from ${css.rel})`)
     }
   }
   return expect(missing.length === 0, `not found in the build: ${[...new Set(missing)].join(', ')}`)
