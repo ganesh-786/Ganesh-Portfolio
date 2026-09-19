@@ -91,7 +91,7 @@ export function Navbar() {
           </a>
         </div>
 
-        <ul className="hidden items-center gap-7 lg:flex">
+        <ul className="hidden items-center gap-7 xl:flex">
           {NAV_ITEMS.map((item) => {
             const active = activeSection === item.href
             return (
@@ -131,7 +131,7 @@ export function Navbar() {
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            className={cn(iconButton, 'lg:hidden')}
+            className={cn(iconButton, 'xl:hidden')}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -146,7 +146,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-rule bg-paper lg:hidden"
+            className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-rule bg-paper xl:hidden"
           >
             <ul className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
               {NAV_ITEMS.map((item) => (

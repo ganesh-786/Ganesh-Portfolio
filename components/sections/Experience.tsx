@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
 import { EXPERIENCE_DATA } from '@/lib/constants'
@@ -5,7 +6,7 @@ import { EXPERIENCE_DATA } from '@/lib/constants'
 export function Experience() {
   return (
     <SectionWrapper id="experience">
-      <SectionHeader index="05" title="Experience" />
+      <SectionHeader index="06" title="Experience" />
 
       <ol className="border-t border-ink">
         {EXPERIENCE_DATA.map((job) => (
@@ -29,6 +30,20 @@ export function Experience() {
                   </li>
                 ))}
               </ul>
+
+              {job.link && (
+                <a
+                  href={job.link.href}
+                  className="group mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
+                >
+                  {job.link.label}
+                  <ArrowRight
+                    size={16}
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </a>
+              )}
             </div>
           </li>
         ))}

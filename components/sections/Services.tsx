@@ -6,7 +6,7 @@ import { SERVICES_DATA } from '@/lib/constants'
 export function Services() {
   return (
     <SectionWrapper id="services">
-      <SectionHeader index="04" title={SERVICES_DATA.heading}>
+      <SectionHeader index="05" title={SERVICES_DATA.heading}>
         <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">{SERVICES_DATA.intro}</p>
       </SectionHeader>
 

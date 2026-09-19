@@ -9,7 +9,7 @@ export function Contact() {
     <SectionWrapper id="contact">
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
-          <SectionHeader index="07" title={CONTACT_DATA.heading} className="mb-6 sm:mb-6">
+          <SectionHeader index="08" title={CONTACT_DATA.heading} className="mb-6 sm:mb-6">
             <p className="mt-6 text-lg leading-8 text-muted">{CONTACT_DATA.description}</p>
           </SectionHeader>
 
