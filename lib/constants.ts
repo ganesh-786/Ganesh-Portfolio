@@ -7,10 +7,14 @@ import type {
   SkillCategory,
   ExperienceItem,
   EducationItem,
+  CaseStudyHighlight,
+  CaseStudyFigure,
+  CaseStudyPractice,
 } from "./types";
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "About", href: "#about" },
+  { label: "Current work", href: "#current-work" },
   { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
   { label: "Services", href: "#services" },
@@ -20,12 +24,11 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const HERO_DATA = {
-  greeting: "Hi, I'm",
   name: "Ganesh Chaudhary",
   title: "Full Stack Developer",
   status: "Open to full-time roles and freelance work",
   description:
-    "Full stack developer working from React interfaces to the Node.js services and databases behind them, including AI features such as retrieval-augmented support agents.",
+    "I build across the stack, from React interfaces to the Node.js services and databases behind them, including AI features such as retrieval-augmented support agents.",
   cta: {
     primary: { label: "View My Work", href: "#projects" },
     secondary: { label: "Get In Touch", href: "#contact" },
@@ -34,21 +37,28 @@ export const HERO_DATA = {
     label: "Download Resume",
     href: "/Ganesh_Chaudhary_CV_2026.pdf",
   } as { label: string; href: string } | null,
-  typingWords: [
-    "Web Applications.",
-    "Microservices.",
-    "AI Integrations.",
-    "Scalable Systems.",
+  facts: [
+    { label: "Role", value: "Full-Stack Developer, Compass Decisions Science LLC" },
+    {
+      label: "Focus",
+      value: "Web applications, microservices, AI integrations",
+    },
+    { label: "Based in", value: "Kathmandu, Nepal" },
+    {
+      label: "Certified",
+      value: "Full Stack Open, University of Helsinki (Grade 5)",
+    },
+    { label: "Also known as", value: "Ganesh Tharu" },
   ],
 } as const;
 
 export const ABOUT_DATA = {
   paragraphs: [
-    "I'm a full stack developer who likes owning a feature end to end: the React interface, the API behind it, and the database it depends on. At TEJ Center I've built React interfaces for two enterprise client applications inside Agile sprints, and through the fellowship I built systems that range from event-driven order processing to AI support agents.",
-    "I started on the design side, as a web design intern turning Figma wireframes into responsive layouts, and later worked as a freelance front-end developer building dashboards for training platforms. I keep my foundations current through structured coursework, most recently the University of Helsinki's Full Stack Open and Anthropic's Claude Code in Action, and I care about readable code, disciplined Git workflows, and honest peer review.",
+    "I'm a full stack developer who likes owning a feature end to end: the React interface, the API behind it, and the database it depends on. Right now that means UnTangler, a voice-first app for students with ADHD, where I work everywhere from the database and API to voice, notifications and accessibility.",
+    "Before that I was at TEJ Center, where I built React interfaces for two enterprise client applications inside Agile sprints and, through the fellowship, systems ranging from event-driven order processing to AI support agents. I started on the design side, as a web design intern turning Figma wireframes into responsive layouts, and I have freelanced as a front-end developer building dashboards for training platforms. I keep my foundations current through structured coursework, most recently the University of Helsinki's Full Stack Open and Anthropic's Claude Code in Action, and I care about readable code, disciplined Git workflows, and honest peer review.",
   ],
   highlights: [
-    { label: "Projects Built", value: "8" },
+    { label: "Projects Built", value: "9" },
     { label: "Technologies", value: "20+" },
     { label: "Years Building", value: "3+" },
   ] satisfies Highlight[],
@@ -59,6 +69,7 @@ export const SKILLS_DATA: SkillCategory[] = [
     title: "Languages",
     skills: [
       { name: "JavaScript (ES6+)" },
+      { name: "TypeScript" },
       { name: "Python" },
       { name: "SQL" },
       { name: "HTML5" },
@@ -84,6 +95,7 @@ export const SKILLS_DATA: SkillCategory[] = [
       { name: "PostgreSQL" },
       { name: "MongoDB" },
       { name: "Redis" },
+      { name: "Supabase" },
       { name: "Pinecone" },
     ],
   },
@@ -98,6 +110,10 @@ export const SKILLS_DATA: SkillCategory[] = [
       { name: "ESLint" },
       { name: "Prettier" },
       { name: "Figma" },
+      { name: "Vercel" },
+      { name: "GitHub Actions" },
+      { name: "Vitest" },
+      { name: "Jira" },
     ],
   },
   {
@@ -109,11 +125,18 @@ export const SKILLS_DATA: SkillCategory[] = [
       { name: "Agile" },
       { name: "Responsive Design" },
       { name: "UX/UI Design" },
+      { name: "Progressive Web Apps" },
+      { name: "Accessibility (WCAG AA)" },
     ],
   },
   {
     title: "AI / ML",
-    skills: [{ name: "Gemini API" }, { name: "YOLO" }, { name: "TrOCR" }],
+    skills: [
+      { name: "Gemini API" },
+      { name: "Gemini Live" },
+      { name: "YOLO" },
+      { name: "TrOCR" },
+    ],
   },
 ];
 
@@ -244,7 +267,7 @@ export const SERVICES_DATA = {
     {
       title: "Front-end interfaces",
       description:
-        "Responsive, cross-browser React interfaces built from Figma designs into modular, maintainable code. Delivered for enterprise client applications at TEJ Center and as a freelance front-end developer.",
+        "Responsive, accessible React interfaces, including WCAG AA fixes, built from Figma designs into modular, maintainable code. Delivered for enterprise client applications, a production PWA, and as a freelance front-end developer.",
     },
     {
       title: "Backend services and data",
@@ -254,7 +277,7 @@ export const SERVICES_DATA = {
     {
       title: "AI-integrated features",
       description:
-        "Retrieval-augmented assistants with Pinecone and Gemini, plus computer vision and OCR pipelines with YOLO and TrOCR.",
+        "Voice and retrieval-augmented assistants with Gemini Live, Pinecone and Gemini, plus computer vision and OCR pipelines with YOLO and TrOCR.",
     },
   ] satisfies ServiceItem[],
   process: [
@@ -264,11 +287,140 @@ export const SERVICES_DATA = {
   ],
 };
 
+export const CURRENT_WORK = {
+  id: "current-work",
+  heading: "Current work",
+  name: "UnTangler",
+  lead: "Full-stack developer on a production, voice-first productivity PWA for students with ADHD.",
+  facts: [
+    { label: "Role", value: "Full-Stack Developer" },
+    { label: "Company", value: "Compass Decisions Science LLC" },
+    { label: "Since", value: "Jul 2026" },
+    { label: "Team", value: "Two developers, a product owner, Jira and pull request review" },
+  ],
+  summary:
+    "UnTangler helps students with ADHD turn an overwhelming task into small steps, then schedules those steps into Google Calendar, Google Tasks and Google Classroom. I build and ship features across the whole stack, from the database and API to voice, notifications and accessibility.",
+  stack: [
+    "React 19",
+    "TypeScript",
+    "Vite",
+    "Tailwind CSS 4",
+    "Express 5",
+    "Zod",
+    "Supabase (Postgres, Auth, RLS)",
+    "Gemini Live",
+    "Google Calendar, Tasks and Classroom APIs",
+    "Web Push",
+    "Vercel",
+    "GitHub Actions",
+    "Vitest",
+  ],
+  highlights: [
+    {
+      label: "Voice",
+      title: "Speak a to-do, refine it by talking",
+      body: "I integrated Gemini Live so a student can say a task out loud and adjust it in conversation, with no restart. The backend issues short-lived, single-use, model-locked tokens and the browser connects straight to Gemini, so the whole backend runs as one Vercel serverless function with no WebSocket proxy.",
+    },
+    {
+      label: "Dates",
+      title: "Spoken times that land on the right day",
+      body: "I built a timezone-aware converter from wall-clock time to UTC and threaded the student's real timezone through every date-resolution path, so a phrase like “tomorrow at 5” resolves correctly. Students can also correct the resolved due date by hand.",
+    },
+    {
+      label: "Google",
+      title: "Calendar, Tasks and Classroom sync",
+      body: "I worked on syncing to all three, including writing task completion back to the real Calendar event. I fixed sync states that got stuck silently, and made the app treat an unreadable Google connection as something to recover from instead of a crash.",
+    },
+    {
+      label: "Check-ins",
+      title: "End-of-day check-in and notifications",
+      body: "I designed and built the whole flow.",
+      points: [
+        "Finish-time entry, snooze, daily confirmation and catch-up",
+        "Reminder times saved per user in the database, not in an in-memory global",
+        "Web Push and an in-app notification bell",
+        "A scheduled job (GitHub Actions and a Supabase cron migration) that dispatches due check-ins",
+      ],
+    },
+    {
+      label: "PWA",
+      title: "Installable on iOS and Android",
+      body: "Cross-platform work so the app behaves like a real installed app.",
+      points: [
+        "iOS and standalone-mode detection, install metadata and an install option in the app",
+        "Fixes for service worker and manifest caching problems",
+        "Microphone permission fixed in the installed iPhone app, plus detection of a mic that connects but never captures audio",
+        "A real-browser end-to-end suite for iOS and Android push",
+      ],
+    },
+    {
+      label: "Accessibility",
+      title: "An app-wide audit, fixed to WCAG AA",
+      body: "I ran a UX audit across the app and resolved the Very Major and Major findings, plus the Minor ones. The fixes covered WCAG AA colour contrast, aria-live and role=alert on async status text, ARIA landmarks, touch-target sizes, and consistent focus and disabled states.",
+    },
+    {
+      label: "Reliability",
+      title: "Security and stability",
+      body: "The Live token endpoint requires authentication, voice sessions are guarded against re-entry, and Supabase calls are wrapped in error handling. I also fixed flaky tests, including a time-dependent scheduling test and an extraction test that made real network calls.",
+    },
+    {
+      label: "Delivery",
+      title: "CI, deploys and migrations",
+      body: "I set up the CI workflow, sped up deploys by installing frontend and backend dependencies in parallel, and fixed production build failures. Schema changes go through versioned Supabase migrations.",
+    },
+  ] satisfies CaseStudyHighlight[],
+  figures: [
+    { value: "160 of 286", label: "non-merge commits are mine" },
+    { value: "~190", label: "pull requests merged" },
+    { value: "19", label: "database migrations" },
+    { value: "77", label: "test files" },
+    { value: "2", label: "CI workflows" },
+    { value: "88 of 89", label: "Jira tickets assigned to me are done" },
+  ] satisfies CaseStudyFigure[],
+  figuresNote:
+    "Taken from the project's git history and Jira board on 17 September 2026, covering 17 July to 17 September. Both are private, so there is no public link to check them against.",
+  practices: [
+    {
+      title: "Specs become software",
+      body: "I work from plain-language product specs written by the product owner, often with screenshots, and treat each epic as the source of truth for intent. I break epics into stories and subtasks, and I am the reporter on 128 of the project's 181 tickets.",
+    },
+    {
+      title: "Ask before building",
+      body: "On the weekly summary feature I posted my starting plan and asked for a decision first. I proposed a read-only link a student can share instead of sending email in version one, and generating the summary on demand instead of sending it every week. I explained that this keeps the first version simple, and left the choice to the product owner. When a ticket leaves out a priority or an estimate, I ask instead of guessing.",
+    },
+    {
+      title: "Two audiences, two registers",
+      body: "Technical status goes to the engineers, and a plain-language note closes the ticket for the product owner, for example: “Notifications are now more reliable if a send fails, and we catch a case where a student’s phone thinks it’s set up but it isn’t.” Pull requests read the same way: what changed for the student, not which files.",
+    },
+    {
+      title: "Own the gaps",
+      body: "On a push-reliability ticket I wrote that my first comment only covered half the spec, then reported the rest: a status endpoint, a banner in Preferences, a one-tap fix and tests. I also flagged a gap my own cleanup of dead subscriptions could cause, and fixed it in the same ticket.",
+    },
+    {
+      title: "Small, reviewable changes",
+      body: "Every change goes through a pull request with a named reviewer, on a branch off main. I keep one pull request to one coherent change, describe it as context, what it solves and how, and add a small diagram when the change has a shape worth drawing.",
+    },
+  ] satisfies CaseStudyPractice[],
+};
+
 export const EXPERIENCE_DATA: ExperienceItem[] = [
+  {
+    role: "Full-Stack Developer",
+    company: "Compass Decisions Science LLC",
+    period: "Jul 2026 – Present",
+    bullets: [
+      "Building UnTangler, a production voice-first PWA that turns an overwhelming task into small steps for students with ADHD and schedules them into Google Calendar, Tasks and Classroom.",
+      "Built the Gemini Live voice-to-schedule pipeline, timezone-aware date handling, and Calendar, Tasks and Classroom sync.",
+      "Designed the end-of-day check-in flow and its notifications: Web Push, an in-app notification bell, and a scheduled dispatch job.",
+      "Ran an app-wide accessibility audit and fixed the findings to WCAG AA, and set up CI and versioned Supabase migrations.",
+      "Work in a two-developer team with a product owner, tracked in Jira, with every change reviewed through a pull request.",
+    ],
+    link: { label: "Read the UnTangler case study", href: "#current-work" },
+  },
   {
     role: "Junior Software Developer",
     company: "TEJ Center Private Limited",
-    period: "Jan 2026 – Present",
+    period: "Jan 2026 – Jul 2026",
     bullets: [
       "Built responsive, cross-browser React interfaces for 2 enterprise client applications.",
       "Turned complex Figma mockups into modular, production-ready front-end code with Tailwind CSS. Strict peer reviews contributed to a 40% reduction in UI rendering bugs.",
@@ -315,6 +467,7 @@ export const EDUCATION_DATA: EducationItem[] = [
       "Completed hands-on course on building with Claude Code — AI-assisted software engineering workflows.",
     certificateUrl: "https://verify.skilljar.com/c/kw9drjq2b2d5",
     certificateImage: "/images/claude-code-certificate.png",
+    note: "Issued under the name Ganesh Tharu.",
   },
   {
     degree: "Full Stack Open Certificate",
@@ -346,11 +499,13 @@ export const CONTACT_DATA = {
       name: "GitHub",
       url: "https://github.com/ganesh-786",
       icon: "github",
+      handle: "github.com/ganesh-786",
     },
     {
       name: "LinkedIn",
       url: "https://www.linkedin.com/in/ganesh-chaudhary-684843269",
       icon: "linkedin",
+      handle: "Ganesh Chaudhary on LinkedIn",
     },
     {
       name: "Email",

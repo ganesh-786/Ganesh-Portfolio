@@ -1,37 +1,33 @@
-import { Github, Linkedin, Mail } from 'lucide-react'
 import { CONTACT_DATA, FOOTER_DATA } from '@/lib/constants'
-
-const socialIcons: Record<string, typeof Github> = {
-  github: Github,
-  linkedin: Linkedin,
-  mail: Mail,
-}
 
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-gray-200/50 dark:border-gray-800/50 bg-white/50 dark:bg-gray-950/50 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500 dark:text-gray-400">{FOOTER_DATA.text}</p>
+    <footer className="border-t border-rule">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <p className="text-sm text-muted">{FOOTER_DATA.text}</p>
 
-          <div className="flex items-center gap-3">
-            {CONTACT_DATA.socials.map((social) => {
-              const Icon = socialIcons[social.icon] || Mail
-              return (
+        <ul className="flex flex-wrap gap-x-6 font-mono text-xs uppercase tracking-[0.16em] text-muted">
+          {CONTACT_DATA.socials.map((social) => {
+            const isMail = social.url.startsWith('mailto')
+            return (
+              <li key={social.name}>
                 <a
-                  key={social.name}
                   href={social.url}
-                  target={social.url.startsWith('mailto') ? undefined : '_blank'}
-                  rel="noopener noreferrer"
-                  aria-label={social.name}
-                  className="p-2.5 rounded-xl text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200"
+                  target={isMail ? undefined : '_blank'}
+                  rel={isMail ? undefined : 'noopener noreferrer'}
+                  className="inline-flex min-h-11 items-center transition-colors hover:text-ink"
                 >
-                  <Icon size={18} />
+                  {social.name}
                 </a>
-              )
-            })}
-          </div>
-        </div>
+              </li>
+            )
+          })}
+          <li>
+            <a href="#" className="inline-flex min-h-11 items-center transition-colors hover:text-ink">
+              Back to top
+            </a>
+          </li>
+        </ul>
       </div>
     </footer>
   )

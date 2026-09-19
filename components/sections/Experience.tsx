@@ -1,71 +1,53 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { Briefcase } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
 import { EXPERIENCE_DATA } from '@/lib/constants'
 
 export function Experience() {
   return (
     <SectionWrapper id="experience">
-      {(isInView) => (
-        <>
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Work <span className="text-gradient">Experience</span>
-            </h2>
-            <div className="w-16 h-1 bg-blue-500 rounded-full mx-auto" />
-          </div>
+      <SectionHeader index="06" title="Experience" />
 
-          <div className="relative max-w-3xl mx-auto">
-            {/* Timeline line */}
-            <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-800" />
+      <ol className="border-t border-ink">
+        {EXPERIENCE_DATA.map((job) => (
+          <li
+            key={`${job.role}-${job.company}`}
+            className="grid gap-x-12 gap-y-3 border-b border-rule py-9 md:grid-cols-12"
+          >
+            <p className="font-mono text-sm text-muted md:col-span-3 md:pt-2">{job.period}</p>
 
-            <div className="space-y-8 sm:space-y-10">
-              {EXPERIENCE_DATA.map((exp, i) => (
-                <motion.div
-                  key={`${exp.role}-${exp.company}`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.2 + i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative pl-12 sm:pl-16"
+            <div className="md:col-span-9">
+              <h3 className="font-display text-3xl leading-tight tracking-tight text-ink">
+                {job.role}
+              </h3>
+              <p className="mt-1 text-base font-medium text-accent">{job.company}</p>
+
+              <ul className="mt-5 max-w-3xl space-y-3">
+                {job.bullets.map((bullet) => (
+                  <li key={bullet} className="flex gap-4 text-base leading-7 text-muted">
+                    <span aria-hidden="true" className="mt-3.5 h-px w-3 shrink-0 bg-ink/40" />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+
+              {job.link && (
+                <a
+                  href={job.link.href}
+                  className="group mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
                 >
-                  {/* Timeline dot */}
-                  <div className="absolute left-2.5 sm:left-4 top-1 w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-blue-500 border-4 border-white dark:border-gray-950 ring-2 ring-blue-500/20" />
-
-                  <div className="group p-5 sm:p-6 rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-200/80 dark:border-gray-800/80 hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/5">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 mb-3">
-                      <div className="flex items-center gap-2">
-                        <Briefcase size={16} className="text-blue-500 shrink-0" />
-                        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
-                          {exp.role}
-                        </h3>
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">
-                        {exp.period}
-                      </span>
-                    </div>
-                    <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-3">
-                      {exp.company}
-                    </p>
-                    <ul className="space-y-2">
-                      {exp.bullets.map((bullet, bi) => (
-                        <li
-                          key={bi}
-                          className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
-                        >
-                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-500/50 shrink-0" />
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              ))}
+                  {job.link.label}
+                  <ArrowRight
+                    size={16}
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </a>
+              )}
             </div>
-          </div>
-        </>
-      )}
+          </li>
+        ))}
+      </ol>
     </SectionWrapper>
   )
 }

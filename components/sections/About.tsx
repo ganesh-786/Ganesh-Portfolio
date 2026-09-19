@@ -1,70 +1,53 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { User, Code, Trophy } from 'lucide-react'
+import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
+import { cn } from '@/lib/utils'
 import { ABOUT_DATA } from '@/lib/constants'
 
-const highlightIcons = [Trophy, Code, User]
-
 export function About() {
+  const [lead, ...rest] = ABOUT_DATA.paragraphs
+
   return (
     <SectionWrapper id="about">
-      {(isInView) => (
-        <>
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              About <span className="text-gradient">Me</span>
-            </h2>
-            <div className="w-16 h-1 bg-blue-500 rounded-full mx-auto" />
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-4">
+          <div className="lg:sticky lg:top-28">
+            <SectionHeader index="01" title="About" className="mb-0 sm:mb-0" />
+          </div>
+        </div>
+
+        <div className="lg:col-span-8">
+          <p className="font-display text-xl leading-snug text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.35]">
+            {lead}
+          </p>
+          <div className="mt-8 space-y-5">
+            {rest.map((paragraph) => (
+              <p key={paragraph} className="max-w-2xl text-lg leading-8 text-muted">
+                {paragraph}
+              </p>
+            ))}
           </div>
 
-          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-3 space-y-4 sm:space-y-5">
-              {ABOUT_DATA.paragraphs.map((p, i) => (
-                <motion.p
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.2 + i * 0.15, duration: 0.6 }}
-                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed"
-                >
-                  {p}
-                </motion.p>
-              ))}
-            </div>
-
-            <div className="lg:col-span-2 grid grid-cols-3 lg:grid-cols-1 gap-4">
-              {ABOUT_DATA.highlights.map((h, i) => {
-                const Icon = highlightIcons[i] || Trophy
-                return (
-                  <motion.div
-                    key={h.label}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-                    className="relative group p-4 sm:p-5 rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-200/80 dark:border-gray-800/80 hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/5"
-                  >
-                    <div className="flex items-center gap-3 lg:gap-4">
-                      <div className="hidden lg:flex p-2.5 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-500">
-                        <Icon size={20} />
-                      </div>
-                      <div className="text-center lg:text-left w-full lg:w-auto">
-                        <div className="text-2xl sm:text-3xl font-bold text-gradient mb-0.5">
-                          {h.value}
-                        </div>
-                        <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                          {h.label}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </>
-      )}
+          <dl className="mt-14 border-t border-ink sm:grid sm:grid-cols-3">
+            {ABOUT_DATA.highlights.map((item, i) => (
+              <div
+                key={item.label}
+                className={cn(
+                  'flex items-baseline justify-between gap-4 border-b border-rule py-4',
+                  'sm:flex-col-reverse sm:items-start sm:justify-end sm:gap-3 sm:border-b-0 sm:pb-0 sm:pt-5',
+                  i === 0 ? 'sm:pr-8' : 'sm:border-l sm:pl-8',
+                )}
+              >
+                <dt className="font-mono text-xs uppercase tracking-wider text-muted">
+                  {item.label}
+                </dt>
+                <dd className="font-display text-4xl leading-none tracking-tight text-ink sm:text-6xl">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
     </SectionWrapper>
   )
 }

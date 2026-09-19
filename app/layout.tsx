@@ -1,19 +1,36 @@
-import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import type { Metadata, Viewport } from 'next'
+import { IBM_Plex_Mono, IBM_Plex_Sans, Newsreader } from 'next/font/google'
 import { ThemeProvider } from '@/components/ui/ThemeProvider'
 import './globals.css'
 
-const inter = Inter({
+const newsreader = Newsreader({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
+  axes: ['opsz'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-newsreader',
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const plexSans = IBM_Plex_Sans({
   subsets: ['latin'],
+  weight: ['400', '500', '600'],
   display: 'swap',
-  variable: '--font-jetbrains-mono',
+  variable: '--font-plex-sans',
 })
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  display: 'swap',
+  variable: '--font-plex-mono',
+})
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f6f4ee' },
+    { media: '(prefers-color-scheme: dark)', color: '#0e0f11' },
+  ],
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ganeshtharu.com.np'),
@@ -27,6 +44,7 @@ export const metadata: Metadata = {
     'Next.js',
     'Portfolio',
     'Ganesh Chaudhary',
+    'Ganesh Tharu',
     'Software Engineer',
   ],
   authors: [{ name: 'Ganesh Chaudhary' }],
@@ -71,7 +89,12 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Ganesh Chaudhary',
+  alternateName: 'Ganesh Tharu',
   jobTitle: 'Full Stack Developer',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Compass Decisions Science LLC',
+  },
   url: 'https://ganeshtharu.com.np',
   sameAs: [
     'https://github.com/ganesh-786',
@@ -114,8 +137,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable}`}>
       <head>
+        <noscript>
+          <style>{'[style*="opacity:0"]{opacity:1!important;transform:none!important}'}</style>
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -134,7 +160,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased transition-colors duration-300">
+      <body className="bg-paper font-sans text-ink antialiased">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-ink focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-paper"
+        >
+          Skip to content
+        </a>
         <ThemeProvider>
           {children}
         </ThemeProvider>

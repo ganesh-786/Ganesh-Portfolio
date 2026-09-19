@@ -29,6 +29,7 @@ export interface SocialLink {
   name: string
   url: string
   icon: string
+  handle?: string
 }
 
 export interface NavItem {
@@ -46,6 +47,7 @@ export interface ExperienceItem {
   company: string
   period: string
   bullets: string[]
+  link?: { label: string; href: string }
 }
 
 export interface EducationItem {
@@ -55,4 +57,22 @@ export interface EducationItem {
   details?: string
   certificateUrl?: string
   certificateImage?: string
+  note?: string
+}
+
+export interface CaseStudyHighlight {
+  label: string
+  title: string
+  body: string
+  points?: string[]
+}
+
+export interface CaseStudyFigure {
+  value: string
+  label: string
+}
+
+export interface CaseStudyPractice {
+  title: string
+  body: string
 }

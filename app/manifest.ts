@@ -10,8 +10,8 @@ export default function manifest(): MetadataRoute.Manifest {
       'Full Stack Developer portfolio — React, Node.js, microservices, and AI-integrated systems.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#0a0a0a',
-    theme_color: '#2563eb',
+    background_color: '#f6f4ee',
+    theme_color: '#f6f4ee',
     icons: [
       {
         src: '/icon.svg',

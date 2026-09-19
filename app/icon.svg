@@ -1,18 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <defs>
-    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2563eb" />
-      <stop offset="100%" stop-color="#0ea5e9" />
-    </linearGradient>
-  </defs>
-  <rect width="32" height="32" rx="8" fill="url(#brand)" />
+  <rect width="32" height="32" rx="6" fill="#16181d" />
   <text
     x="16"
-    y="22.5"
+    y="20.5"
     text-anchor="middle"
-    fill="#ffffff"
-    font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif"
+    fill="#f6f4ee"
+    font-family="Georgia, 'Times New Roman', serif"
     font-weight="700"
-    font-size="17"
+    font-size="15"
+    letter-spacing="-0.5"
   >GC</text>
+  <rect x="8" y="24" width="16" height="2" fill="#ff7a50" />
 </svg>
