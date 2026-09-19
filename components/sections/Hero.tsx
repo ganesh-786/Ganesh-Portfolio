@@ -1,18 +1,8 @@
-'use client'
-
-import { motion } from 'framer-motion'
+import type { CSSProperties } from 'react'
 import { ArrowDown, Download } from 'lucide-react'
 import { CONTACT_DATA, HERO_DATA } from '@/lib/constants'
 
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 14 },
-  animate: { opacity: 1, y: 0 },
-  transition: {
-    delay,
-    duration: 0.6,
-    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-  },
-})
+const delay = (seconds: number) => ({ '--rise-delay': `${seconds}s` }) as CSSProperties
 
 const profileLinks = CONTACT_DATA.socials.filter((s) => s.name !== 'Email')
 
@@ -23,38 +13,35 @@ export function Hero() {
     <section id="top" className="mx-auto max-w-6xl px-5 pb-20 pt-32 sm:px-8 sm:pb-28 sm:pt-44">
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
-          <motion.p
-            {...rise(0.05)}
-            className="mb-8 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-muted"
+          <p
+            style={delay(0)}
+            className="rise mb-8 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-muted"
           >
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
             {HERO_DATA.status}
-          </motion.p>
+          </p>
 
-          <motion.h1
-            {...rise(0.12)}
-            className="font-display text-[clamp(3.25rem,9.5vw,7rem)] leading-[0.92] tracking-[-0.03em] text-ink"
+          <h1
+            style={delay(0.04)}
+            className="rise font-display text-[clamp(3.25rem,9.5vw,7rem)] leading-[0.92] tracking-[-0.03em] text-ink"
           >
             {firstName} <em className="font-normal italic">{rest.join(' ')}</em>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            {...rise(0.2)}
-            className="mt-6 font-display text-2xl text-ink sm:text-3xl"
-          >
+          <p style={delay(0.08)} className="rise mt-6 font-display text-2xl text-ink sm:text-3xl">
             {HERO_DATA.title}
-          </motion.p>
+          </p>
 
-          <motion.p
-            {...rise(0.28)}
-            className="mt-6 max-w-xl text-[1.0625rem] leading-7 text-muted sm:text-lg sm:leading-8"
+          <p
+            style={delay(0.12)}
+            className="rise mt-6 max-w-xl text-[1.0625rem] leading-7 text-muted sm:text-lg sm:leading-8"
           >
             {HERO_DATA.description}
-          </motion.p>
+          </p>
 
-          <motion.div
-            {...rise(0.36)}
-            className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center"
+          <div
+            style={delay(0.16)}
+            className="rise mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center"
           >
             <a
               href={HERO_DATA.cta.primary.href}
@@ -82,11 +69,11 @@ export function Hero() {
                 {HERO_DATA.resume.label}
               </a>
             )}
-          </motion.div>
+          </div>
 
-          <motion.ul
-            {...rise(0.44)}
-            className="mt-4 flex flex-wrap gap-x-6 font-mono text-xs uppercase tracking-[0.16em] text-muted"
+          <ul
+            style={delay(0.2)}
+            className="rise mt-4 flex flex-wrap gap-x-6 font-mono text-xs uppercase tracking-[0.16em] text-muted"
           >
             {profileLinks.map((link) => (
               <li key={link.name}>
@@ -100,13 +87,13 @@ export function Hero() {
                 </a>
               </li>
             ))}
-          </motion.ul>
+          </ul>
         </div>
 
-        <motion.aside
-          {...rise(0.3)}
+        <aside
+          style={delay(0.1)}
           aria-label="At a glance"
-          className="lg:col-span-5 lg:pt-3"
+          className="rise lg:col-span-5 lg:pt-3"
         >
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
             At a glance
@@ -124,7 +111,7 @@ export function Hero() {
               </div>
             ))}
           </dl>
-        </motion.aside>
+        </aside>
       </div>
     </section>
   )

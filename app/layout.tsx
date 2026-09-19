@@ -32,8 +32,27 @@ export const viewport: Viewport = {
   ],
 }
 
+// Static hosting cannot send response headers, so the policy ships as a meta tag.
+// Inline scripts stay allowed because the static export needs them, but scripts and
+// requests to any other origin, plugins, and a hijacked <base> tag are all blocked.
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self' https://api.web3forms.com",
+  "form-action 'self' https://api.web3forms.com",
+  "manifest-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "frame-src 'none'",
+  "worker-src 'none'",
+].join('; ')
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://ganeshtharu.com.np'),
+  alternates: { canonical: '/' },
   title: 'Ganesh Chaudhary | Full Stack Developer',
   description:
     'Full Stack Developer specializing in React, Node.js, microservices, and AI-integrated systems. View my portfolio of production-grade web applications.',
@@ -139,9 +158,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable}`}>
       <head>
-        <noscript>
-          <style>{'[style*="opacity:0"]{opacity:1!important;transform:none!important}'}</style>
-        </noscript>
+        {process.env.NODE_ENV === 'production' && (
+          <meta httpEquiv="Content-Security-Policy" content={CONTENT_SECURITY_POLICY} />
+        )}
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -149,6 +169,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              document.documentElement.classList.add('js')
               try {
                 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                   document.documentElement.classList.add('dark')
@@ -170,6 +191,27 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
         </ThemeProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                var root = document.documentElement
+                try {
+                  if (!('IntersectionObserver' in window)) return root.classList.remove('js')
+                  var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                      if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible')
+                        io.unobserve(entry.target)
+                      }
+                    })
+                  }, { rootMargin: '0px 0px -10% 0px' })
+                  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el) })
+                } catch (_) { root.classList.remove('js') }
+              })()
+            `,
+          }}
+        />
       </body>
     </html>
   )

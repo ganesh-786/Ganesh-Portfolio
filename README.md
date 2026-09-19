@@ -1,71 +1,87 @@
 # Ganesh Chaudhary — Full Stack Developer Portfolio
 
-A personal portfolio site built with Next.js, showcasing projects, experience, and
-skills.
+A personal portfolio built with Next.js and exported as a fully static site. It shows
+current work, projects with live demos, experience and certificates, and gives
+recruiters and clients a direct way to get in touch.
 
-**Live site:** [ganeshtharu.com.np](https://www.ganeshtharu.com.np)
+**Live site:** [ganeshtharu.com.np](https://ganeshtharu.com.np)
 
 ---
 
-## Tech Stack
+## Tech stack
 
-| Category       | Technologies                                      |
-|-----------------|----------------------------------------------------|
-| **Framework**   | Next.js 15 (App Router), React 19, TypeScript      |
-| **Rendering**   | Static export (`output: 'export'`)                 |
-| **Styling**     | Tailwind CSS 4 (CSS-first theme)                    |
-| **Animations**  | Framer Motion                                       |
-| **Icons**       | Lucide React                                        |
-| **Theming**     | next-themes (class-based dark mode)                 |
-| **Utilities**   | clsx, tailwind-merge                                |
+| Category      | Technologies                                                   |
+|---------------|----------------------------------------------------------------|
+| **Framework** | Next.js 15 (App Router), React 19, TypeScript (strict)         |
+| **Rendering** | Static export (`output: 'export'`), no server at runtime       |
+| **Styling**   | Tailwind CSS 4 with a small set of semantic colour tokens      |
+| **Type**      | Newsreader, IBM Plex Sans and IBM Plex Mono via `next/font`    |
+| **Icons**     | Lucide React                                                   |
+| **Theming**   | next-themes, follows the visitor's system setting by default   |
+| **Forms**     | Web3Forms (client side, no backend of my own)                  |
 
-## Features
+## What is on the page
 
-- Single-page layout: Hero, About, Skills, Projects, Experience, Education, Contact
-- Dark/light theme toggle with persisted preference and no flash of unstyled theme
-- Scroll-triggered reveal animations
-- Responsive, mobile-first layout with an accessible mobile navigation menu
-- Structured data (JSON-LD) for search engines
-- Open Graph and Twitter card metadata with a dedicated preview image
-- Fully static export, deployed via GitHub Pages behind a custom domain
+Hero with an at-a-glance fact sheet, About, Current work (a case study of the
+production app I am building now), Skills, Projects with live demos and code links,
+Services, Experience, Education with clickable certificates, and Contact.
 
-## Project Structure
+## Engineering notes
+
+- **Fast first paint.** The hero animates with CSS, so it never waits for JavaScript.
+  Sections reveal through a tiny script that fails open, which means a broken script
+  can never leave a blank page. There is no client-side animation library.
+- **Accessible.** axe-core reports no WCAG 2.2 AA violations in light and dark. There is
+  a skip link, visible focus on every control, the mobile menu closes with Escape, and
+  reduced-motion preferences are respected. Touch targets are at least 44px.
+- **Responsive.** Checked from 320px phones to 1440p desktops, including phone
+  landscape and tablets in both orientations, in Chromium, Firefox and WebKit.
+- **No tracking.** No cookies and no analytics. The theme choice is the only thing
+  stored, in local storage.
+- **Defence in depth.** A Content Security Policy ships as a meta tag in production.
+  Static hosting cannot send response headers, so the policy is deliberately
+  limited: it blocks third-party scripts, foreign network requests, plugins and a
+  hijacked base tag, but inline scripts stay allowed because the static export needs
+  them.
+
+## Browser support
+
+Current Chrome, Edge, Firefox and Safari. Tailwind CSS 4 sets the floor at Chrome and
+Edge 111, Safari 16.4 and Firefox 128.
+
+## Project structure
 
 ```
-app/                # Routes, layout, metadata (sitemap, robots, manifest, icons)
+app/                # Routes, layout, metadata (sitemap, robots, manifest, icons), 404
 components/
   layout/            # Navbar, Footer
-  sections/          # Hero, About, Skills, Projects, Experience, Education, Contact
-  ui/                # Reusable UI primitives (theme provider, section wrapper)
-lib/                 # Typed content constants, shared types, utilities
+  sections/          # One file per section of the page
+  ui/                # Section wrapper, section header, theme provider
+lib/                 # Typed content, shared types, utilities
 public/              # Static assets
 ```
 
-## Getting Started
+Content lives in `lib/constants.ts`, so copy changes never touch components. The
+colour tokens and the two small CSS animations live in `app/globals.css`.
+
+## Getting started
+
+Node.js 20 or newer.
 
 ```bash
-# Clone the repository
 git clone https://github.com/ganesh-786/Ganesh-Portfolio.git
 cd Ganesh-Portfolio
-
-# Install dependencies
 npm install
 
-# Start the dev server
-npm run dev
-
-# Build the static export
-npm run build
+npm run dev      # development server
+npm run build    # static export into out/
 ```
-
-The production build outputs a static site to the `out/` directory, which is what
-gets deployed.
 
 ## Deployment
 
-Deployed to GitHub Pages via the workflow in `.github/workflows/deploy.yml`, which
-builds the static export and publishes it on push to `main`. The custom domain is
-configured through `public/CNAME`.
+Deployed to GitHub Pages by the workflow in `.github/workflows/deploy.yml`, which
+builds the static export and publishes it on every push to `main`. The custom domain
+comes from `public/CNAME`. Every change reaches `main` through a pull request.
 
 ## Contact
 
