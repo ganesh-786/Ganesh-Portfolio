@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Send, Github, Linkedin, Mail } from 'lucide-react'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
+import { ContactForm } from '@/components/sections/ContactForm'
 import { CONTACT_DATA } from '@/lib/constants'
 
 const socialIcons: Record<string, typeof Github> = {
@@ -31,16 +32,20 @@ export function Contact() {
             </p>
           </div>
 
-          <motion.a
-            href={`mailto:${CONTACT_DATA.email}`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="group inline-flex items-center gap-2 px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 mb-10"
-          >
-            <Send size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            Say Hello
-          </motion.a>
+          {CONTACT_DATA.formAccessKey ? (
+            <ContactForm accessKey={CONTACT_DATA.formAccessKey} />
+          ) : (
+            <motion.a
+              href={`mailto:${CONTACT_DATA.email}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="group inline-flex items-center gap-2 px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-base rounded-xl font-medium transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 mb-10"
+            >
+              <Send size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              Say Hello
+            </motion.a>
+          )}
 
           <motion.div
             initial={{ opacity: 0 }}

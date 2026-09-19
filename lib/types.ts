@@ -1,12 +1,19 @@
 export interface Project {
   id: string
   title: string
-  description: string
+  badge?: string
+  note?: string
+  challenge: string
+  approach: string
+  role: string
   technologies: string[]
-  githubUrl: string
+  githubUrl?: string
   liveUrl?: string
-  metric: string
-  featured?: boolean
+}
+
+export interface ServiceItem {
+  title: string
+  description: string
 }
 
 export interface SkillItem {

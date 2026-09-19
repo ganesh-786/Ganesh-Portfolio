@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Heart } from 'lucide-react'
+import { Github, Linkedin, Mail } from 'lucide-react'
 import { CONTACT_DATA, FOOTER_DATA } from '@/lib/constants'
 
 const socialIcons: Record<string, typeof Github> = {
@@ -12,10 +12,7 @@ export function Footer() {
     <footer className="relative z-10 border-t border-gray-200/50 dark:border-gray-800/50 bg-white/50 dark:bg-gray-950/50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
-            <span>{FOOTER_DATA.text}</span>
-            <Heart size={14} className="text-red-500 mx-1" fill="currentColor" />
-          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{FOOTER_DATA.text}</p>
 
           <div className="flex items-center gap-3">
             {CONTACT_DATA.socials.map((social) => {

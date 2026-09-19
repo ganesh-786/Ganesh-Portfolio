@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowDown, Github, Linkedin, Mail, Zap, Users } from 'lucide-react'
+import { ArrowDown, Award, Briefcase, Download, Github, Linkedin, Mail } from 'lucide-react'
 import { HERO_DATA, CONTACT_DATA } from '@/lib/constants'
 
 const socialIcons = [
@@ -11,9 +11,9 @@ const socialIcons = [
   { Icon: Mail, href: CONTACT_DATA.socials.find((s) => s.name === 'Email')?.url ?? '#', label: 'Email' },
 ]
 
-const achievements = [
-  { icon: Zap, label: 'Under 3s RAG Response', color: 'text-amber-500' },
-  { icon: Users, label: '10K Concurrent Users', color: 'text-emerald-500' },
+const credentials = [
+  { icon: Briefcase, label: 'Junior Software Developer, TEJ Center', color: 'text-blue-500' },
+  { icon: Award, label: 'Full Stack Open, Grade 5', color: 'text-emerald-500' },
 ]
 
 const fadeUp = (delay: number) => ({
@@ -134,7 +134,7 @@ export function Hero() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-full w-full bg-blue-500" />
             </span>
-            Open to opportunities
+            {HERO_DATA.status}
           </span>
         </motion.div>
 
@@ -180,12 +180,12 @@ export function Hero() {
           {HERO_DATA.description}
         </motion.p>
 
-        {/* Key achievement pills */}
+        {/* Verifiable credentials */}
         <motion.div
           {...fadeUp(1.4)}
           className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-10"
         >
-          {achievements.map((a) => (
+          {credentials.map((a) => (
             <div
               key={a.label}
               className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white/70 dark:bg-white/5 border border-gray-200 dark:border-gray-800/80 text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-300 shadow-sm"
@@ -214,6 +214,16 @@ export function Hero() {
           >
             {HERO_DATA.cta.secondary.label}
           </a>
+          {HERO_DATA.resume && (
+            <a
+              href={HERO_DATA.resume.href}
+              download
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm sm:text-base rounded-xl font-medium transition-colors duration-300"
+            >
+              <Download size={16} />
+              {HERO_DATA.resume.label}
+            </a>
+          )}
         </motion.div>
 
         {/* Social Icons */}
