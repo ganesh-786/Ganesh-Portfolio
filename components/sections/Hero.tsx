@@ -115,7 +115,7 @@ export function Hero() {
             {HERO_DATA.facts.map((fact) => (
               <div
                 key={fact.label}
-                className="grid grid-cols-[6.25rem_1fr] gap-4 border-b border-rule py-4"
+                className="grid grid-cols-[7rem_1fr] gap-4 border-b border-rule py-4"
               >
                 <dt className="pt-1 font-mono text-xs uppercase tracking-wider text-muted">
                   {fact.label}

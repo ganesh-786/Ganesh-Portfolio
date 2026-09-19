@@ -9,7 +9,7 @@ const linkBase =
 export function Projects() {
   return (
     <SectionWrapper id="projects">
-      <SectionHeader index="03" title="Projects" />
+      <SectionHeader index="04" title="Projects" />
 
       <ol className="border-t border-ink">
         {PROJECTS.map((project, i) => (

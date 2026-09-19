@@ -44,6 +44,7 @@ export const metadata: Metadata = {
     'Next.js',
     'Portfolio',
     'Ganesh Chaudhary',
+    'Ganesh Tharu',
     'Software Engineer',
   ],
   authors: [{ name: 'Ganesh Chaudhary' }],
@@ -88,7 +89,12 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Ganesh Chaudhary',
+  alternateName: 'Ganesh Tharu',
   jobTitle: 'Full Stack Developer',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Compass Decisions Science LLC',
+  },
   url: 'https://ganeshtharu.com.np',
   sameAs: [
     'https://github.com/ganesh-786',

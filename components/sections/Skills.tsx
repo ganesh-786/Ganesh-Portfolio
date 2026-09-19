@@ -5,7 +5,7 @@ import { SKILLS_DATA } from '@/lib/constants'
 export function Skills() {
   return (
     <SectionWrapper id="skills">
-      <SectionHeader index="02" title="Skills" />
+      <SectionHeader index="03" title="Skills" />
 
       <dl className="border-t border-ink">
         {SKILLS_DATA.map((category) => (
