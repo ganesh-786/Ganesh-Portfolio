@@ -22,12 +22,12 @@ export function Contact() {
                     href={social.url}
                     target={isMail ? undefined : '_blank'}
                     rel={isMail ? undefined : 'noopener noreferrer'}
-                    className="group flex items-baseline justify-between gap-4 py-4 transition-colors hover:text-accent"
+                    className="group flex flex-col gap-1 py-4 transition-colors hover:text-accent sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
                   >
                     <span className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
                       {social.name}
                     </span>
-                    <span className="flex items-center gap-1 text-base text-ink group-hover:text-accent">
+                    <span className="flex min-w-0 items-center gap-1 break-words text-base text-ink group-hover:text-accent">
                       {isMail ? CONTACT_DATA.email : (social.handle ?? social.url)}
                       <ArrowUpRight
                         size={15}

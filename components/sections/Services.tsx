@@ -39,7 +39,7 @@ export function Services() {
         <div className="md:col-span-3 md:text-right">
           <a
             href="#contact"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
+            className="group inline-flex min-h-11 items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
           >
             Discuss a project
             <ArrowRight

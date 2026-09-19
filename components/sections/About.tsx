@@ -1,5 +1,6 @@
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
+import { cn } from '@/lib/utils'
 import { ABOUT_DATA } from '@/lib/constants'
 
 export function About() {
@@ -26,18 +27,22 @@ export function About() {
             ))}
           </div>
 
-          <dl className="mt-14 grid grid-cols-3 border-t border-ink">
+          <dl className="mt-14 border-t border-ink sm:grid sm:grid-cols-3">
             {ABOUT_DATA.highlights.map((item, i) => (
               <div
                 key={item.label}
-                className={i > 0 ? 'border-l border-rule pl-5 sm:pl-8' : 'pr-5 sm:pr-8'}
+                className={cn(
+                  'flex items-baseline justify-between gap-4 border-b border-rule py-4',
+                  'sm:flex-col-reverse sm:items-start sm:justify-end sm:gap-3 sm:border-b-0 sm:pb-0 sm:pt-5',
+                  i === 0 ? 'sm:pr-8' : 'sm:border-l sm:pl-8',
+                )}
               >
-                <dd className="pt-5 font-display text-4xl leading-none tracking-tight text-ink sm:text-6xl">
-                  {item.value}
-                </dd>
-                <dt className="mt-3 font-mono text-[0.68rem] uppercase tracking-wider text-muted sm:text-xs">
+                <dt className="font-mono text-xs uppercase tracking-wider text-muted">
                   {item.label}
                 </dt>
+                <dd className="font-display text-4xl leading-none tracking-tight text-ink sm:text-6xl">
+                  {item.value}
+                </dd>
               </div>
             ))}
           </dl>

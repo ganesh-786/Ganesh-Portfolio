@@ -11,8 +11,12 @@ function scrollBehavior(): ScrollBehavior {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
 }
 
+const iconButton =
+  'inline-flex h-11 w-11 items-center justify-center rounded-md text-muted transition-colors hover:text-ink'
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [pastHero, setPastHero] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
   const [mounted, setMounted] = useState(false)
@@ -23,7 +27,10 @@ export function Navbar() {
   }, [])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8)
+      setPastHero(window.scrollY > 400)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -68,21 +75,21 @@ export function Navbar() {
         scrolled || mobileOpen ? 'border-rule bg-paper' : 'border-transparent bg-transparent',
       )}
     >
-      <nav
-        aria-label="Primary"
-        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8"
-      >
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault()
-            window.scrollTo({ top: 0, behavior: scrollBehavior() })
-          }}
-          className="font-display text-xl tracking-tight text-ink"
-        >
-          <span className="sm:hidden">GC</span>
-          <span className="hidden sm:inline">{HERO_DATA.name}</span>
-        </a>
+      <nav aria-label="Primary" className="mx-auto flex h-16 max-w-6xl items-center px-5 sm:px-8">
+        <div className="flex flex-1 items-center">
+          <a
+            href="#"
+            aria-label={`${HERO_DATA.name}, back to top`}
+            onClick={(e) => {
+              e.preventDefault()
+              window.scrollTo({ top: 0, behavior: scrollBehavior() })
+            }}
+            className="inline-flex min-h-11 min-w-11 items-center font-display text-xl tracking-tight text-ink"
+          >
+            <span className={cn(pastHero && 'sm:hidden')}>GC</span>
+            {pastHero && <span className="hidden sm:inline">{HERO_DATA.name}</span>}
+          </a>
+        </div>
 
         <ul className="hidden items-center gap-7 lg:flex">
           {NAV_ITEMS.map((item) => {
@@ -94,10 +101,10 @@ export function Navbar() {
                   onClick={() => goTo(item.href)}
                   aria-current={active ? 'true' : undefined}
                   className={cn(
-                    'border-b pb-0.5 text-sm transition-colors',
+                    'inline-flex min-h-11 min-w-11 items-center justify-center text-sm transition-colors',
                     active
-                      ? 'border-accent text-ink'
-                      : 'border-transparent text-muted hover:text-ink',
+                      ? 'text-ink underline decoration-accent decoration-2 underline-offset-[10px]'
+                      : 'text-muted hover:text-ink',
                   )}
                 >
                   {item.label}
@@ -107,13 +114,13 @@ export function Navbar() {
           })}
         </ul>
 
-        <div className="flex items-center gap-1">
+        <div className="flex flex-1 items-center justify-end gap-1">
           {mounted && (
             <button
               type="button"
               onClick={toggleTheme}
               aria-label={resolvedTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-              className="rounded-md p-2.5 text-muted transition-colors hover:text-ink"
+              className={iconButton}
             >
               {resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -124,7 +131,7 @@ export function Navbar() {
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            className="rounded-md p-2.5 text-muted transition-colors hover:text-ink lg:hidden"
+            className={cn(iconButton, 'lg:hidden')}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -139,7 +146,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="border-t border-rule bg-paper lg:hidden"
+            className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-rule bg-paper lg:hidden"
           >
             <ul className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
               {NAV_ITEMS.map((item) => (

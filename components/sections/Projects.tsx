@@ -4,7 +4,7 @@ import { SectionWrapper } from '@/components/ui/SectionWrapper'
 import { PROJECTS } from '@/lib/constants'
 
 const linkBase =
-  'group inline-flex items-center gap-1 text-sm font-medium underline-offset-4 transition-colors hover:underline'
+  'group inline-flex min-h-11 items-center gap-1 text-sm font-medium underline-offset-4 transition-colors hover:underline'
 
 export function Projects() {
   return (
@@ -29,7 +29,7 @@ export function Projects() {
                 )}
 
                 {(project.liveUrl || project.githubUrl) && (
-                  <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+                  <div className="mt-3 flex flex-wrap gap-x-5">
                     {project.liveUrl && (
                       <a
                         href={project.liveUrl}

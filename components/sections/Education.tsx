@@ -32,16 +32,27 @@ export function Education() {
       <div className="mt-14 grid gap-x-10 gap-y-14 md:grid-cols-2">
         {certificates.map((cert) => (
           <figure key={cert.degree} className="flex flex-col">
-            <div className="border border-rule bg-raised p-2">
+            <a
+              href={cert.certificateUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={-1}
+              aria-hidden="true"
+              className="group/cert relative block border border-rule bg-raised p-2 transition-colors hover:border-accent"
+            >
               <Image
                 src={cert.certificateImage!}
-                alt={`${cert.degree} certificate awarded to Ganesh Chaudhary by ${cert.institution}`}
+                alt=""
                 width={1200}
                 height={900}
                 sizes="(max-width: 768px) 100vw, 540px"
                 className="h-auto w-full"
               />
-            </div>
+              <span className="absolute bottom-4 right-4 inline-flex items-center gap-1 bg-ink px-2.5 py-1.5 font-mono text-xs uppercase tracking-wider text-paper transition-colors group-hover/cert:bg-accent group-hover/cert:text-accent-ink">
+                Verify
+                <ArrowUpRight size={12} aria-hidden="true" />
+              </span>
+            </a>
             <figcaption className="mt-5">
               <p className="font-mono text-xs uppercase tracking-wider text-muted">
                 {cert.institution} · {cert.period}
@@ -57,8 +68,9 @@ export function Education() {
                   href={cert.certificateUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent underline-offset-4 hover:underline"
+                  className="group mt-2 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-accent underline-offset-4 hover:underline"
                 >
+                  <span className="sr-only">{cert.degree}: </span>
                   Verify certificate
                   <ArrowUpRight
                     size={15}

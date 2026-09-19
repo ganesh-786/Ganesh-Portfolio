@@ -86,7 +86,7 @@ export function Hero() {
 
           <motion.ul
             {...rise(0.44)}
-            className="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.16em] text-muted"
+            className="mt-4 flex flex-wrap gap-x-6 font-mono text-xs uppercase tracking-[0.16em] text-muted"
           >
             {profileLinks.map((link) => (
               <li key={link.name}>
@@ -94,7 +94,7 @@ export function Hero() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors hover:text-ink"
+                  className="inline-flex min-h-11 items-center transition-colors hover:text-ink"
                 >
                   {link.name}
                 </a>
