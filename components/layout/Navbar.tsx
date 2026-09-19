@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Menu, Moon, Sun, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { HERO_DATA, NAV_ITEMS } from '@/lib/constants'
@@ -21,6 +20,7 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState('')
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme, setTheme } = useTheme()
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -37,6 +37,8 @@ export function Navbar() {
   }, [])
 
   useEffect(() => {
+    // The scroll highlight is a nicety, so it must never be able to break the page.
+    if (!('IntersectionObserver' in window)) return
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -53,6 +55,23 @@ export function Navbar() {
     })
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (!mobileOpen) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setMobileOpen(false)
+      menuButtonRef.current?.focus()
+    }
+    const wide = window.matchMedia('(min-width: 1280px)')
+    const onWide = () => wide.matches && setMobileOpen(false)
+    document.addEventListener('keydown', onKeyDown)
+    wide.addEventListener('change', onWide)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      wide.removeEventListener('change', onWide)
+    }
+  }, [mobileOpen])
 
   const goTo = useCallback(
     (href: string) => {
@@ -79,7 +98,7 @@ export function Navbar() {
         <div className="flex flex-1 items-center">
           <a
             href="#"
-            aria-label={`${HERO_DATA.name}, back to top`}
+            aria-label={`GC, ${HERO_DATA.name}, back to top`}
             onClick={(e) => {
               e.preventDefault()
               window.scrollTo({ top: 0, behavior: scrollBehavior() })
@@ -126,6 +145,7 @@ export function Navbar() {
             </button>
           )}
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setMobileOpen((open) => !open)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -138,35 +158,29 @@ export function Navbar() {
         </div>
       </nav>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            id="mobile-menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-rule bg-paper xl:hidden"
-          >
-            <ul className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
-              {NAV_ITEMS.map((item) => (
-                <li key={item.href} className="border-b border-rule last:border-b-0">
-                  <button
-                    type="button"
-                    onClick={() => goTo(item.href)}
-                    className={cn(
-                      'block w-full py-4 text-left font-display text-2xl tracking-tight',
-                      activeSection === item.href ? 'text-accent' : 'text-ink',
-                    )}
-                  >
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileOpen && (
+        <div
+          id="mobile-menu"
+          className="fade-in max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-rule bg-paper xl:hidden"
+        >
+          <ul className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
+            {NAV_ITEMS.map((item) => (
+              <li key={item.href} className="border-b border-rule last:border-b-0">
+                <button
+                  type="button"
+                  onClick={() => goTo(item.href)}
+                  className={cn(
+                    'block w-full py-4 text-left font-display text-2xl tracking-tight',
+                    activeSection === item.href ? 'text-accent' : 'text-ink',
+                  )}
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </header>
   )
 }
