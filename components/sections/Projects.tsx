@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Zap } from 'lucide-react'
+import { ExternalLink, Github } from 'lucide-react'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
 import { PROJECTS } from '@/lib/constants'
 
@@ -27,10 +27,17 @@ export function Projects() {
                 className="group relative flex flex-col rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-200/80 dark:border-gray-800/80 overflow-hidden hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5"
               >
                 <div className="p-5 sm:p-6 lg:p-7 flex-1 flex flex-col">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                      {project.title}
-                    </h3>
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {project.title}
+                      </h3>
+                      {project.badge && (
+                        <span className="mt-2 inline-block px-2 py-0.5 rounded-md border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-600 dark:text-gray-400">
+                          {project.badge}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-center gap-2 ml-3 shrink-0">
                       <a
                         href={project.githubUrl}
@@ -55,14 +62,26 @@ export function Projects() {
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 flex-1">
-                    {project.description}
-                  </p>
+                  <dl className="space-y-3 mb-5 flex-1 text-sm leading-relaxed">
+                    {(
+                      [
+                        ['Challenge', project.challenge],
+                        ['Approach', project.approach],
+                        ['Outcome', project.outcome],
+                      ] as const
+                    ).map(([label, text]) => (
+                      <div key={label}>
+                        <dt className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-0.5">
+                          {label}
+                        </dt>
+                        <dd className="text-gray-600 dark:text-gray-400">{text}</dd>
+                      </div>
+                    ))}
+                  </dl>
 
-                  <div className="flex items-center gap-2 mb-4 text-xs sm:text-sm text-blue-600 dark:text-blue-400 font-medium">
-                    <Zap size={14} />
-                    <span>{project.metric}</span>
-                  </div>
+                  {project.note && (
+                    <p className="mb-4 text-xs text-gray-500 dark:text-gray-400">{project.note}</p>
+                  )}
 
                   <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {project.technologies.map((tech) => (

@@ -3,6 +3,7 @@ import type {
   Highlight,
   SocialLink,
   Project,
+  ServiceItem,
   SkillCategory,
   ExperienceItem,
   EducationItem,
@@ -12,6 +13,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
   { label: 'Projects', href: '#projects' },
+  { label: 'Services', href: '#services' },
   { label: 'Experience', href: '#experience' },
   { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
@@ -21,12 +23,15 @@ export const HERO_DATA = {
   greeting: "Hi, I'm",
   name: 'Ganesh Chaudhary',
   title: 'Full Stack Developer',
+  status: 'Open to full-time roles and freelance work',
   description:
-    'Recent Computer Engineering graduate with hands-on experience building production-grade web applications. Delivered 4+ real-world projects including microservices architectures and AI-integrated systems.',
+    'Full stack developer working from React interfaces to the Node.js services and databases behind them, including AI features such as retrieval-augmented support agents.',
   cta: {
     primary: { label: 'View My Work', href: '#projects' },
     secondary: { label: 'Get In Touch', href: '#contact' },
   },
+  // Drop the PDF into /public and set this to { label: 'Download Resume', href: '/your-file.pdf' }
+  resume: null as { label: string; href: string } | null,
   typingWords: [
     'Web Applications.',
     'Microservices.',
@@ -37,8 +42,8 @@ export const HERO_DATA = {
 
 export const ABOUT_DATA = {
   paragraphs: [
-    "I'm a Full Stack Developer who thrives on building web applications that are both visually compelling and technically robust. With a strong foundation in frontend and backend technologies, I bring ideas to life through clean, maintainable code.",
-    'I believe in continuous learning and staying current with industry best practices. Whether crafting pixel-perfect interfaces or architecting scalable backend systems, I approach every project with attention to detail and a commitment to excellence.',
+    "I'm a full stack developer who likes owning a feature end to end: the React interface, the API behind it, and the database it depends on. At TEJ Center I've delivered React interfaces for two client projects inside Agile sprints, and through the fellowship I built backend systems that range from event-driven order processing to AI support agents.",
+    "Before that I worked as a freelance front-end developer, building interactive dashboards for training platforms. I keep my foundations current through structured coursework, most recently the University of Helsinki's Full Stack Open and Anthropic's Claude Code in Action, and I care about readable code, unit tests, and honest code review.",
   ],
   highlights: [
     { label: 'Projects Delivered', value: '5+' },
@@ -106,47 +111,83 @@ export const PROJECTS: Project[] = [
   {
     id: 'shopify-agent',
     title: 'Shopify Merchant Support Agent',
-    description:
-      'AI-powered support agent for Shopify merchants using retrieval-augmented generation (RAG) with Pinecone vector database. Implemented MCP client-server architecture with tokenization for efficient context retrieval from merchant knowledge bases.',
+    badge: 'TEJ Fellowship project',
+    challenge:
+      'Give Shopify merchants accurate answers from a large knowledge base without waiting on a human support agent.',
+    approach:
+      'Retrieval-augmented generation over a Pinecone vector index, with Gemini writing grounded answers. An MCP client-server architecture with tokenization keeps context retrieval efficient.',
+    outcome: 'Under 3s response time through the RAG pipeline.',
     technologies: ['Node.js', 'Gemini API', 'Pinecone', 'MCP Architecture'],
     githubUrl:
       'https://github.com/TEJ-Fellowship/pbl/tree/main/PBL4/ShopifyMerchantSupportAgent',
-    metric: 'Under 3s response time via RAG pipeline',
-    featured: true,
   },
   {
     id: 'ecommerce-orders',
     title: 'E-commerce Order Management System',
-    description:
-      'Microservices-based order processing system with PostgreSQL primary/replica setup, Redis caching, and Kafka for event-driven order workflows. Implemented read/write splitting across database replicas and atomic inventory reservation.',
+    badge: 'TEJ Fellowship project',
+    challenge:
+      'Keep order processing correct and responsive under heavy concurrent load, without overselling inventory.',
+    approach:
+      'Microservices with a PostgreSQL primary and replicas (reads and writes split across them), Redis caching, and Kafka driving event-based order workflows. Inventory is reserved atomically.',
+    outcome: 'Designed for 10K concurrent users on a microservices architecture.',
     technologies: ['Node.js', 'Express', 'PostgreSQL', 'Redis', 'Kafka', 'Docker'],
     githubUrl:
       'https://github.com/TEJ-Fellowship/pbl/tree/Eganesh/PBL5/6_E-commerce_Orders',
-    metric: '10K concurrent users with microservices architecture',
-    featured: true,
   },
   {
     id: 'document-verification',
     title: 'Citizenship Verification System',
-    description:
-      'Real-time document verification system for Nepali citizenship cards and ID cards. Integrated YOLO for document classification, TrOCR for Nepali OCR text extraction, and face comparison for identity verification.',
+    badge: 'Team project',
+    note: "The repository lives under a teammate's GitHub account.",
+    challenge:
+      'Verify Nepali citizenship and ID cards automatically and in real time, including reading Nepali text from the card.',
+    approach:
+      'YOLO classifies the document type, TrOCR extracts the Nepali text, and face comparison supports identity verification, all served through Django with OpenCV handling the image work.',
+    outcome: 'Real-time verification with Nepali OCR.',
     technologies: ['Python', 'Django', 'YOLO', 'TrOCR', 'OpenCV'],
     githubUrl: 'https://github.com/aachaltiwari/Document-Verification',
-    metric: 'Real-time verification with Nepali OCR',
-    featured: true,
   },
   {
     id: 'gyan-tapari',
     title: 'GyanTapari',
-    description:
-      'Gamified learning web platform for grades 1-9 with integrated leaderboard, learning streaks, and achievement systems to make education engaging and interactive.',
+    badge: 'TEJ Fellowship project',
+    challenge: 'Make learning more engaging for students in grades 1 to 9.',
+    approach:
+      'A React and Vite web app with a leaderboard, learning streaks, and an achievement system layered onto the lessons.',
+    outcome: 'A gamified learning platform for grades 1 to 9.',
     technologies: ['React', 'Vite', 'Tailwind CSS', 'Gamification'],
     githubUrl:
       'https://github.com/TEJ-Fellowship/pbl/tree/main/PBL3/Gyaan_Tapari',
-    metric: 'Gamified learning for grades 1-9',
-    featured: true,
   },
 ]
+
+export const SERVICES_DATA = {
+  heading: 'What I Can Help With',
+  intro:
+    'Whether you are hiring for a team or scoping a project, this is the work I can take on.',
+  items: [
+    {
+      title: 'Front-end interfaces',
+      description:
+        'Responsive, accessible React and Next.js interfaces built to be maintained. Delivered for client projects at TEJ Center and as a freelance front-end developer.',
+    },
+    {
+      title: 'Backend services and data',
+      description:
+        'Node.js and Python services on PostgreSQL, MongoDB, or Redis, including event-driven designs with Kafka, containerised with Docker.',
+    },
+    {
+      title: 'AI-integrated features',
+      description:
+        'Retrieval-augmented assistants with Pinecone and Gemini, plus computer vision and OCR pipelines with YOLO and TrOCR.',
+    },
+  ] satisfies ServiceItem[],
+  process: [
+    'Work in Agile sprints with clear deliverables',
+    'Cover changes with unit tests and code review',
+    'Explain technical trade-offs in plain language',
+  ],
+}
 
 export const EXPERIENCE_DATA: ExperienceItem[] = [
   {
@@ -209,8 +250,12 @@ export const EDUCATION_DATA: EducationItem[] = [
 export const CONTACT_DATA = {
   heading: "Let's Work Together",
   description:
-    "I'm currently open to new opportunities and exciting collaborations. Whether you have a project in mind or just want to connect, I'd love to hear from you.",
+    "I'm open to full-time roles and freelance projects. If you have something in mind, send a few details and I'll get back to you.",
   email: 'ganesh98245.np@gmail.com',
+  // Web3Forms access key (safe to expose by design). While empty, the section
+  // falls back to the direct email button.
+  formAccessKey: '',
+  formSubject: 'New message from ganeshtharu.com.np',
   socials: [
     {
       name: 'GitHub',
@@ -231,5 +276,5 @@ export const CONTACT_DATA = {
 }
 
 export const FOOTER_DATA = {
-  text: `© ${new Date().getFullYear()} Ganesh Chaudhary. Crafted with passion.`,
+  text: `© ${new Date().getFullYear()} Ganesh Chaudhary`,
 }
