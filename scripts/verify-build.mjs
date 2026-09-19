@@ -27,13 +27,16 @@ const ALLOWED_CSP_HOSTS = ['https://api.web3forms.com']
 // Where the contact form posts. The page bundle has to contain exactly this address.
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
 
-// About 15 percent above the build measured on 2026-09-19, in bytes. Total JavaScript was
-// measured on two machines, a Windows laptop and the CI runner (Linux, Node 22).
+// About 15 percent above the build measured on 2026-09-20 with Next 16.3.5, in bytes. The JavaScript
+// numbers are the same on a Windows laptop and on the CI runner (Linux, Node 22), because Turbopack
+// output does not depend on the machine. Next 16 ships a larger client runtime than Next 15 (about
+// 29 kB more gzipped up front, 124,612 before) and loads no lazy chunks, so it has less JavaScript in
+// total but more of it up front.
 const BUDGET = {
-  totalJs: 977_000, // all JavaScript under _next/static, measured 850,137 and 843,900
-  initialJsGzip: 143_000, // JavaScript the home page loads up front, gzipped, measured 124,325
-  css: 43_000, // all CSS, measured 37,451
-  anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 202,750 (index.html)
+  totalJs: 733_000, // all JavaScript under _next/static, measured 637,629 (Next 15 had 874,185)
+  initialJsGzip: 176_000, // JavaScript the home page loads up front, gzipped, measured 153,270
+  css: 43_000, // all CSS, measured 37,545
+  anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 203,522 (index.html)
   pdf: 2_000_000, // a CV heavier than this is nearly always an uncompressed image, today 151,110
 }
 
@@ -188,10 +191,12 @@ const hostOf = (value) => {
 }
 
 // Turns a URL from the page into a path inside out/, or null when it points to another site.
-function localPath(url) {
+// A relative URL is resolved against `base`: the site root for a page, and the stylesheet's own
+// address for a url() inside CSS, because some bundlers write those relative to the stylesheet.
+function localPath(url, base = `${ORIGIN}/`) {
   let parsed
   try {
-    parsed = new URL(url.trim(), `${ORIGIN}/`)
+    parsed = new URL(url.trim(), base)
   } catch {
     return null
   }
@@ -199,8 +204,8 @@ function localPath(url) {
   const path = decodeURIComponent(parsed.pathname)
   return path.endsWith('/') ? `${path}index.html`.slice(1) : path.slice(1)
 }
-function resolvesToFile(url) {
-  const rel = localPath(url)
+function resolvesToFile(url, base) {
+  const rel = localPath(url, base)
   if (rel === null) return null
   const inside = (p) => resolve(abs(p)).startsWith(outDir + sep) || resolve(abs(p)) === outDir
   return [rel, `${rel}.html`, `${rel}/index.html`].some((p) => inside(p) && exists(p) && statSync(abs(p)).isFile())
@@ -352,8 +357,9 @@ check('References', 'every local file the pages and stylesheets point to exists'
   }
   for (const css of files.filter((f) => f.rel.endsWith('.css'))) {
     const text = readFileSync(css.full, 'utf8')
+    const base = `${ORIGIN}/${css.rel}`
     for (const m of text.matchAll(/url\(\s*(['"]?)([^)'"]+)\1\s*\)/g)) {
-      if (!m[2].startsWith('data:') && resolvesToFile(m[2]) === false) missing.push(`${m[2]} (from ${css.rel})`)
+      if (!m[2].startsWith('data:') && resolvesToFile(m[2], base) === false) missing.push(`${m[2]} (from ${css.rel})`)
     }
   }
   return expect(missing.length === 0, `not found in the build: ${[...new Set(missing)].join(', ')}`)
