@@ -5,9 +5,9 @@ export interface Project {
   note?: string
   challenge: string
   approach: string
-  outcome: string
+  role: string
   technologies: string[]
-  githubUrl: string
+  githubUrl?: string
   liveUrl?: string
 }
 
