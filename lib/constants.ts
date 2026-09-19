@@ -180,6 +180,7 @@ export const PROJECTS: Project[] = [
       "An e-commerce site for the store's machinery and tools, designed to be simple enough for farmers to use. Nepali language support and weather forecasts are planned.",
     role: "Started this on my own and am building it end to end.",
     technologies: [],
+    githubUrl: "https://github.com/ganesh-786/TrihutBaba",
   },
   {
     id: "gyan-tapari",
@@ -203,6 +204,7 @@ export const PROJECTS: Project[] = [
       "A learning platform with role-based authentication and authorization. Teachers post text lessons along with YouTube and other video links, and students learn from them.",
     role: "Core responsibility: role-based authentication and authorization for teachers and students.",
     technologies: ["Role-based access"],
+    githubUrl: "https://github.com/TEJ-Fellowship/pbl/tree/main/PBL2/GyanSathi",
     liveUrl: "https://gyaan-sathi-psrf.vercel.app/",
   },
   {
@@ -215,6 +217,8 @@ export const PROJECTS: Project[] = [
       "A task manager where AI summarises your to-do list and adds a quote to go with it.",
     role: "Our first project after joining the TEJ Fellowship. I integrated the AI summaries and the quotes, and Rahul built the front end.",
     technologies: ["AI integration"],
+    githubUrl:
+      "https://github.com/TEJ-Fellowship/pbl/tree/main/PBL1/FocusFlow-Project/frontend/focusflow",
     liveUrl: "https://focus-flow-tan.vercel.app/",
   },
   {
