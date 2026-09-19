@@ -5,10 +5,8 @@ on:
     branches: ['main']
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# No permissions by default. Each job below asks only for what it needs.
+permissions: {}
 
 concurrency:
   group: 'pages'
@@ -22,6 +20,8 @@ jobs:
     name: Build the site
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    permissions:
+      contents: read # to check out the code
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -44,11 +44,6 @@ jobs:
       - name: Check the built site
         run: node scripts/verify-build.mjs
 
-      - name: Setup Pages
-        uses: actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d # v4.0.0
-        with:
-          enablement: true
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
@@ -62,6 +57,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     needs: build
+    permissions:
+      pages: write # to publish the artifact to GitHub Pages
+      id-token: write # to prove to GitHub Pages that this workflow is the one publishing
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
