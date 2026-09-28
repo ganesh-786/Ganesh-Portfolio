@@ -1,14 +1,22 @@
 import type { Metadata } from 'next'
 import { ArrowLeft } from 'lucide-react'
-import { HERO_DATA } from '@/lib/constants'
+import { HERO_DATA, RETIRED_RESUME_PATHS } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Page not found | Ganesh Chaudhary',
 }
 
+// GitHub Pages answers /resume/ and the CV's old file names with this page, so pass them on.
+const toResume = JSON.stringify(['/resume/', ...RETIRED_RESUME_PATHS])
+
 export default function NotFound() {
   return (
     <main id="main" className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-5 py-24 sm:px-8">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `if (${toResume}.indexOf(location.pathname) !== -1) location.replace('/resume')`,
+        }}
+      />
       <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">404</p>
       <h1 className="font-display text-5xl leading-[1.05] tracking-tight text-ink sm:text-7xl">
         This page does not exist

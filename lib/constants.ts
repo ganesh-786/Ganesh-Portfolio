@@ -33,9 +33,12 @@ export const HERO_DATA = {
     primary: { label: "View My Work", href: "#projects" },
     secondary: { label: "Get In Touch", href: "#contact" },
   },
+  // Opens in the browser's own PDF viewer. /resume (app/resume) forwards here, so a shared
+  // /resume link keeps working when the file is renamed. scripts/verify-build.mjs checks both.
+  // When you rename the file, add the old address to RETIRED_RESUME_PATHS below.
   resume: {
-    label: "Download Resume",
-    href: "/Ganesh_Chaudhary_CV_2026.pdf",
+    label: "View Resume",
+    href: "/Ganesh_Chaudhary_Resume2026Oct.pdf",
   } as { label: string; href: string } | null,
   facts: [
     { label: "Role", value: "Full-Stack Developer, Compass Decisions Science LLC" },
@@ -51,6 +54,10 @@ export const HERO_DATA = {
     { label: "Also known as", value: "Ganesh Tharu" },
   ],
 } as const;
+
+// Addresses the CV used to live at. They may already be in applications and messages, so the
+// 404 page (app/not-found.tsx) sends them on to /resume instead of showing "not found".
+export const RETIRED_RESUME_PATHS = ["/Ganesh_Chaudhary_CV_2026.pdf"];
 
 export const ABOUT_DATA = {
   paragraphs: [
@@ -160,8 +167,8 @@ export const PROJECTS: Project[] = [
     challenge:
       "Give Shopify merchants fast, accurate support and insight into how their shop is doing.",
     approach:
-      "A retrieval-augmented pipeline with semantic and logical search, Pinecone embeddings, and chunking, plus an MCP architecture with tools for web search, a calculator, and a clock. A real Shopify app integration lets the AI analyse the store. The team worked to keep responses under 4 seconds.",
-    role: "Designed and built the merchant dashboard in Tailwind CSS and optimised the front end's async requests to keep the RAG round trips quick.",
+      "A retrieval-augmented pipeline with semantic and logical search, Pinecone embeddings, and chunking, plus an MCP architecture with tools for web search, a calculator, and a clock. A real Shopify app integration lets the AI analyse the store. Answers came back in under 4 seconds, about 3.5 according to the latency analysis in the repository.",
+    role: "I built most of the AI side: scraping, chunking and embedding the knowledge base into Pinecone, hybrid search, conversation history, the MCP tools, intent routing and caching, plus the merchant dashboard in Tailwind CSS. I also wrote the latency analysis, then cached and parallelised the slow steps. A teammate connected the Shopify Admin API for real store data.",
     technologies: [
       "Node.js",
       "Gemini API",
@@ -170,25 +177,27 @@ export const PROJECTS: Project[] = [
       "Tailwind CSS",
     ],
     githubUrl:
-      "https://github.com/TEJ-Fellowship/pbl/tree/main/PBL4/ShopifyMerchantSupportAgent",
+      "https://github.com/TEJ-Fellowship/pbl/tree/latency/PBL4/ShopifyMerchantSupportAgent",
   },
   {
     id: "ecommerce-orders",
     title: "E-commerce Order Management System",
-    badge: "TEJ Fellowship project",
+    badge: "TEJ Fellowship team project",
     challenge:
-      "Keep order processing correct and responsive across separate services, without overselling inventory.",
+      "Keep order processing correct and responsive under load, without overselling inventory.",
     approach:
-      "Microservices with a PostgreSQL primary and replicas (reads and writes split across them), Redis for caching and state, and Kafka driving event-based order workflows. The whole stack runs in Docker, with a mobile-first Tailwind CSS interface.",
-    role: "Engineered the system end to end: the event-driven order pipeline, the containerised environment, and the interface.",
+      "An Express API that sends writes to a PostgreSQL primary and spreads reads across two replicas, with Redis caching and payments handed to a separate worker through Kafka. Redis and Kafka run in Docker Compose, and the storefront is a mobile-first React and Tailwind CSS interface.",
+    role: "I wrote the system design and most of the code: the API with its primary and replica databases, Redis caching, the Kafka payment worker, the storefront, and the k6 load tests. A teammate fixed inventory reservation and tuned the system for the load tests.",
     technologies: [
       "Node.js",
       "Express",
       "PostgreSQL",
       "Redis",
       "Kafka",
-      "Docker",
+      "Docker Compose",
+      "React",
       "Tailwind CSS",
+      "k6",
     ],
     githubUrl:
       "https://github.com/TEJ-Fellowship/pbl/tree/Eganesh/PBL5/6_E-commerce_Orders",
@@ -272,7 +281,7 @@ export const SERVICES_DATA = {
     {
       title: "Backend services and data",
       description:
-        "Node.js and Python services on PostgreSQL, MongoDB, or Redis, including event-driven designs with Kafka, real-time features over WebSockets, and containerised delivery with Docker.",
+        "Node.js and Python services on PostgreSQL, MongoDB, or Redis, including event-driven designs with Kafka, real-time features over WebSockets, and Docker for local environments.",
     },
     {
       title: "AI-integrated features",
@@ -423,7 +432,7 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     period: "Jan 2026 – Jul 2026",
     bullets: [
       "Built responsive, cross-browser React interfaces for 2 enterprise client applications.",
-      "Turned complex Figma mockups into modular, production-ready front-end code with Tailwind CSS. Strict peer reviews contributed to a 40% reduction in UI rendering bugs.",
+      "Turned complex Figma mockups into modular, production-ready front-end code with Tailwind CSS. Strict peer reviews helped reduce UI rendering bugs.",
       "Worked directly with UI/UX designers and backend engineers in fast-paced Agile sprints, completing every cross-functional milestone on time.",
       "Kept the codebase stable with disciplined Git and GitHub workflows, npm dependency management, and reusable component patterns.",
     ],
@@ -485,11 +494,14 @@ export const EDUCATION_DATA: EducationItem[] = [
   },
 ];
 
+// One place to change the address, for example when a mailbox on the site's own domain is ready.
+const EMAIL = "ganesh98245.np@gmail.com";
+
 export const CONTACT_DATA = {
   heading: "Let's Work Together",
   description:
     "I'm open to full-time roles and freelance projects. If you have something in mind, send a few details and I'll get back to you.",
-  email: "ganesh98245.np@gmail.com",
+  email: EMAIL,
   // Web3Forms access key (safe to expose by design). While empty, the section
   // falls back to the direct email button.
   formAccessKey: "83bf2e7b-a7b7-408a-a9a1-9a3e030c4f3e",
@@ -503,13 +515,13 @@ export const CONTACT_DATA = {
     },
     {
       name: "LinkedIn",
-      url: "https://www.linkedin.com/in/ganesh-chaudhary-684843269",
+      url: "https://www.linkedin.com/in/ganesh-chaudhary",
       icon: "linkedin",
       handle: "Ganesh Chaudhary on LinkedIn",
     },
     {
       name: "Email",
-      url: "mailto:ganesh98245.np@gmail.com",
+      url: `mailto:${EMAIL}`,
       icon: "mail",
     },
   ] satisfies SocialLink[],

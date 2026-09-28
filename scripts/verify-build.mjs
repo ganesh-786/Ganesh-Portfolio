@@ -37,7 +37,7 @@ const BUDGET = {
   initialJsGzip: 176_000, // JavaScript the home page loads up front, gzipped, measured 153,270
   css: 43_000, // all CSS, measured 37,545
   anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 203,522 (index.html)
-  pdf: 2_000_000, // a CV heavier than this is nearly always an uncompressed image, today 151,110
+  pdf: 2_000_000, // a CV heavier than this is nearly always an uncompressed image, today 164,163 (the one-page September resume)
 }
 
 // Sections the navigation scrolls to (NAV_ITEMS in lib/constants.ts) plus the skip link and
@@ -50,6 +50,7 @@ const SECTION_IDS = [
 const REQUIRED_FILES = [
   'index.html',
   '404.html',
+  'resume.html',
   'CNAME',
   'robots.txt',
   'sitemap.xml',
@@ -227,10 +228,14 @@ function parseCsp(html) {
 const home = readText('index.html')
 const homeMarkup = withoutScripts(home)
 const notFound = exists('404.html') ? readText('404.html') : ''
+const resume = exists('resume.html') ? readText('resume.html') : ''
 const pages = [
   ['index.html', home],
   ['404.html', notFound],
+  ['resume.html', resume],
 ]
+// Links from the home page to a PDF on this site, that is, the CV.
+const cvLinks = tagsOf(homeMarkup, 'a').filter((t) => localPath(t.attr.href ?? '')?.toLowerCase().endsWith('.pdf'))
 const ids = [...homeMarkup.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])
 
 // ---------------------------------------------------------------- checks
@@ -372,8 +377,8 @@ check('References', 'scripts and stylesheets all come from this site, and fonts 
   return expect(!foreign.length && !googleFonts, `external: [${foreign}]${googleFonts ? ', requests Google Fonts at runtime' : ''}`)
 })
 check('References', 'the CV link leads to a complete PDF', () => {
-  const pdfs = [...new Set(tagsOf(homeMarkup, 'a').map((t) => t.attr.href ?? '').filter((h) => localPath(h)?.toLowerCase().endsWith('.pdf')))]
-  if (!pdfs.length) return fail('the page links to no PDF, the CV download is missing')
+  const pdfs = [...new Set(cvLinks.map((t) => t.attr.href))]
+  if (!pdfs.length) return fail('the page links to no PDF, the CV link is missing')
   const problems = []
   for (const url of pdfs) {
     const rel = localPath(url)
@@ -384,6 +389,30 @@ check('References', 'the CV link leads to a complete PDF', () => {
     else if (bytes.length < 5000) problems.push(`${rel} is only ${bytes.length} bytes`)
   }
   return expect(problems.length === 0, problems.join('; '), pdfs.join(', '))
+})
+check('References', 'the CV opens in the browser in a new tab, not as a forced download', () => {
+  if (!cvLinks.length) return fail('the page links to no PDF')
+  const forced = cvLinks.filter((t) => 'download' in t.attr).length
+  const sameTab = cvLinks.filter((t) => t.attr.target !== '_blank').length
+  return expect(!forced && !sameTab, `${forced} CV link(s) force a download, ${sameTab} open in the same tab`, `${cvLinks.length} link`)
+})
+check('References', '/resume forwards to the same CV and stays out of search results', () => {
+  if (!resume) return fail('resume.html is missing')
+  const target = cvLinks[0]?.attr.href
+  if (!target) return fail('the home page links to no CV to compare with')
+  const head = resume.slice(0, resume.indexOf('</head>'))
+  const refresh = metaWhere(head, 'http-equiv', 'refresh')[0]?.attr.content ?? ''
+  const refreshUrl = /^\s*0\s*;\s*url=(.+)$/i.exec(refresh)?.[1].trim()
+  const scriptUrl = /<script>location\.replace\(("[^"<]*")\)<\/script>/.exec(resume)?.[1]
+  const problems = []
+  if (refreshUrl !== target) problems.push(`refresh tag in the head goes to "${refreshUrl}"`)
+  if (!scriptUrl || JSON.parse(scriptUrl) !== target) problems.push(`script goes to ${scriptUrl}`)
+  if (!tagsOf(withoutScripts(resume), 'a').some((t) => t.attr.href === target)) problems.push('no visible link to the CV')
+  // Starting a navigation stops the parser, so a script above the links would leave a blank page
+  // whenever the browser hands the PDF off instead of showing it.
+  else if (scriptUrl && resume.search(/<script>location\.replace\(/) < resume.lastIndexOf(`href="${target}"`)) problems.push('the script runs before the links are on the page')
+  if (!metaWhere(resume, 'name', 'robots').some((t) => /noindex/.test(t.attr.content ?? ''))) problems.push('not marked noindex')
+  return expect(problems.length === 0, `expected ${target}: ${problems.join('; ')}`, target)
 })
 
 check('Contact form', 'the form endpoint and access key are in the page bundle', () => {

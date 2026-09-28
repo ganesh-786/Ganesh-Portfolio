@@ -117,7 +117,7 @@ const jsonLd = {
   url: 'https://ganeshtharu.com.np',
   sameAs: [
     'https://github.com/ganesh-786',
-    'https://www.linkedin.com/in/ganesh-chaudhary-684843269',
+    'https://www.linkedin.com/in/ganesh-chaudhary',
   ],
   knowsAbout: [
     'React.js', 'Node.js', 'Next.js', 'TypeScript', 'PostgreSQL',
