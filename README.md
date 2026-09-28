@@ -26,10 +26,11 @@ Hero with an at-a-glance fact sheet, About, Current work (a case study of the
 production app I am building now), Skills, Projects with live demos and code links,
 Services, Experience, Education with clickable certificates, and Contact.
 
-The CV (`public/Ganesh_Chaudhary_CV_2026.pdf`) opens in the browser's own PDF viewer
-in a new tab instead of downloading. The address to share is
-[ganeshtharu.com.np/resume](https://ganeshtharu.com.np/resume): it forwards to the file,
-so renaming the file only means updating `HERO_DATA.resume` in `lib/constants.ts`.
+The CV (`public/Ganesh_Chaudhary_Resume_2026Sep.pdf`) opens in the browser's own PDF
+viewer in a new tab instead of downloading. The address to share is
+[ganeshtharu.com.np/resume](https://ganeshtharu.com.np/resume): it forwards to the file.
+To rename the file, update `HERO_DATA.resume` in `lib/constants.ts` and add the old
+address to `RETIRED_RESUME_PATHS`, so links already sent out still reach the CV.
 
 ## Engineering notes
 
@@ -91,7 +92,7 @@ comes from `public/CNAME`. Every change reaches `main` through a pull request.
 ## Contact
 
 - **GitHub:** [@ganesh-786](https://github.com/ganesh-786)
-- **LinkedIn:** [Ganesh Chaudhary](https://www.linkedin.com/in/ganesh-chaudhary-684843269)
+- **LinkedIn:** [Ganesh Chaudhary](https://www.linkedin.com/in/ganesh-chaudhary)
 
 ---
 

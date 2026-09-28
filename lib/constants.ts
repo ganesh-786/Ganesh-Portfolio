@@ -35,9 +35,10 @@ export const HERO_DATA = {
   },
   // Opens in the browser's own PDF viewer. /resume (app/resume) forwards here, so a shared
   // /resume link keeps working when the file is renamed. scripts/verify-build.mjs checks both.
+  // When you rename the file, add the old address to RETIRED_RESUME_PATHS below.
   resume: {
     label: "View Resume",
-    href: "/Ganesh_Chaudhary_CV_2026.pdf",
+    href: "/Ganesh_Chaudhary_Resume_2026Sep.pdf",
   } as { label: string; href: string } | null,
   facts: [
     { label: "Role", value: "Full-Stack Developer, Compass Decisions Science LLC" },
@@ -53,6 +54,10 @@ export const HERO_DATA = {
     { label: "Also known as", value: "Ganesh Tharu" },
   ],
 } as const;
+
+// Addresses the CV used to live at. They may already be in applications and messages, so the
+// 404 page (app/not-found.tsx) sends them on to /resume instead of showing "not found".
+export const RETIRED_RESUME_PATHS = ["/Ganesh_Chaudhary_CV_2026.pdf"];
 
 export const ABOUT_DATA = {
   paragraphs: [
@@ -510,7 +515,7 @@ export const CONTACT_DATA = {
     },
     {
       name: "LinkedIn",
-      url: "https://www.linkedin.com/in/ganesh-chaudhary-684843269",
+      url: "https://www.linkedin.com/in/ganesh-chaudhary",
       icon: "linkedin",
       handle: "Ganesh Chaudhary on LinkedIn",
     },

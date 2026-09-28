@@ -37,7 +37,7 @@ const BUDGET = {
   initialJsGzip: 176_000, // JavaScript the home page loads up front, gzipped, measured 153,270
   css: 43_000, // all CSS, measured 37,545
   anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 203,522 (index.html)
-  pdf: 2_000_000, // a CV heavier than this is nearly always an uncompressed image, today 151,110
+  pdf: 2_000_000, // a CV heavier than this is nearly always an uncompressed image, today 164,163 (the one-page September resume)
 }
 
 // Sections the navigation scrolls to (NAV_ITEMS in lib/constants.ts) plus the skip link and
