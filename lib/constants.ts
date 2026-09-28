@@ -38,7 +38,7 @@ export const HERO_DATA = {
   // When you rename the file, add the old address to RETIRED_RESUME_PATHS below.
   resume: {
     label: "View Resume",
-    href: "/Ganesh_Chaudhary_Resume_2026Sep.pdf",
+    href: "/Ganesh_Chaudhary_Resume2026Oct.pdf",
   } as { label: string; href: string } | null,
   facts: [
     { label: "Role", value: "Full-Stack Developer, Compass Decisions Science LLC" },
