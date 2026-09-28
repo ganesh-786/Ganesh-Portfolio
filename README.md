@@ -26,6 +26,11 @@ Hero with an at-a-glance fact sheet, About, Current work (a case study of the
 production app I am building now), Skills, Projects with live demos and code links,
 Services, Experience, Education with clickable certificates, and Contact.
 
+The CV (`public/Ganesh_Chaudhary_CV_2026.pdf`) opens in the browser's own PDF viewer
+in a new tab instead of downloading. The address to share is
+[ganeshtharu.com.np/resume](https://ganeshtharu.com.np/resume): it forwards to the file,
+so renaming the file only means updating `HERO_DATA.resume` in `lib/constants.ts`.
+
 ## Engineering notes
 
 - **Fast first paint.** The hero animates with CSS, so it never waits for JavaScript.

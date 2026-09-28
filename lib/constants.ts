@@ -33,8 +33,10 @@ export const HERO_DATA = {
     primary: { label: "View My Work", href: "#projects" },
     secondary: { label: "Get In Touch", href: "#contact" },
   },
+  // Opens in the browser's own PDF viewer. /resume (app/resume) forwards here, so a shared
+  // /resume link keeps working when the file is renamed. scripts/verify-build.mjs checks both.
   resume: {
-    label: "Download Resume",
+    label: "View Resume",
     href: "/Ganesh_Chaudhary_CV_2026.pdf",
   } as { label: string; href: string } | null,
   facts: [

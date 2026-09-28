@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { ArrowDown, Download } from 'lucide-react'
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { CONTACT_DATA, HERO_DATA } from '@/lib/constants'
 
 const delay = (seconds: number) => ({ '--rise-delay': `${seconds}s` }) as CSSProperties
@@ -62,11 +62,17 @@ export function Hero() {
             {HERO_DATA.resume && (
               <a
                 href={HERO_DATA.resume.href}
-                download
-                className="inline-flex items-center justify-center gap-2 px-2 py-3.5 text-sm font-medium text-ink underline decoration-rule decoration-2 underline-offset-8 transition-colors hover:decoration-accent"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-center gap-2 px-2 py-3.5 text-sm font-medium text-ink underline decoration-rule decoration-2 underline-offset-8 transition-colors hover:decoration-accent"
               >
-                <Download size={16} />
                 {HERO_DATA.resume.label}
+                <ArrowUpRight
+                  size={16}
+                  aria-hidden="true"
+                  className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+                <span className="sr-only"> (PDF, opens in a new tab)</span>
               </a>
             )}
           </div>
