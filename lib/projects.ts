@@ -414,40 +414,47 @@ export const PROJECTS: Project[] = [
     badge: 'Team project',
     summary:
       'Real-time chat with text and voice messages, wrapped in an interface designed to feel premium.',
-    status: 'Live demo online',
+    period: 'Sep 2025',
+    status: 'Front end online. The chat backend is no longer running',
     role: 'Chat system, UI and UX design',
     problem: [
       'Real-time chat that handles both text and voice messages, wrapped in an interface that feels premium.',
     ],
     solution: [
       'A WebSocket chat system that supports messaging, voice chat, and editing or deleting your own messages. Voice recordings are stored on Microsoft Azure.',
+      'It has friend requests, live chat and recorded voice notes. A React front end talks to an Express and MongoDB backend, and messages travel over Socket.IO.',
     ],
     myPart: [
       'I built the chat system over WebSockets.',
       'I designed the UI and UX.',
       'Video calling was planned as a next step and put on hold.',
     ],
-    outcome: ['The demo is online.'],
+    outcome: [
+      'The front end of the demo is still online. The backend it talked to is no longer deployed, so signing up and chatting do not work there today. The code for both is public.',
+    ],
     evidence: [
       {
         label: 'Live demo',
-        detail: 'The running application.',
+        detail:
+          'The front end only. Signing up needs the backend, which is no longer deployed, so you can look at the pages but not chat.',
         href: 'https://shambad-d-5y84.vercel.app/',
       },
       {
-        label: 'No public code',
+        label: 'Code',
         detail:
-          'There is no public repository for this project, so my part is described from my own record of the work.',
+          'My repository for the project, with the front end and the backend. Its 11 commits, from 18 to 21 September 2025, are mine.',
+        href: 'https://github.com/ganesh-786/Shambaad',
       },
     ],
-    technologies: ['WebSocket', 'Microsoft Azure'],
+    technologies: ['React', 'Node.js', 'Express', 'Socket.IO', 'MongoDB', 'Azure Blob Storage'],
+    githubUrl: 'https://github.com/ganesh-786/Shambaad',
     liveUrl: 'https://shambad-d-5y84.vercel.app/',
     image: {
       src: '/images/projects/shambaad.webp',
       alt: 'The Shambaad landing page, headed “Where Voices Connect”, with Log In and Sign Up buttons.',
       width: 1440,
       height: 900,
-      caption: 'The live demo, captured on 2 October 2026.',
+      caption: 'The landing page of the demo, captured on 2 October 2026.',
     },
   },
   {
@@ -457,7 +464,7 @@ export const PROJECTS: Project[] = [
     badge: 'Solo project, TEJ Fellowship',
     summary:
       'Learning turned into a game for students in grades 8 and 9: quizzes, a typing race and hangman, with points, levels and streaks.',
-    period: '2025',
+    period: 'Aug 2025',
     status: 'Live demo online',
     role: 'Everything, end to end',
     team: 'Solo',
@@ -479,9 +486,14 @@ export const PROJECTS: Project[] = [
       },
       {
         label: 'Code',
-        detail:
-          'The project folder. Its history on the main branch is a single tidy-up commit made by the programme, so the commit log does not show how it was built.',
+        detail: 'The project folder in the fellowship repository.',
         href: `${PBL}/main/PBL3/Gyaan_Tapari`,
+      },
+      {
+        label: 'Who built it',
+        detail:
+          'The commit history in my own repository for the project. All 12 commits are mine, from 11 to 14 August 2025.',
+        href: 'https://github.com/ganesh-786/GyaanTapari/commits/main',
       },
     ],
     technologies: ['React', 'Vite', 'Tailwind CSS', 'Gemini API'],
@@ -503,7 +515,7 @@ export const PROJECTS: Project[] = [
     summary:
       'A learning platform where educators publish courses and lessons, and students enrol and learn from them.',
     period: 'Aug to Sep 2025',
-    status: 'Live demo online',
+    status: 'Front end online. Its backend is no longer running',
     role: 'Sign-in, roles and permissions, and most of the code',
     team: 'Small fellowship team. 18 of the project’s 21 commits are mine',
     problem: [
@@ -525,12 +537,14 @@ export const PROJECTS: Project[] = [
         body: 'What a student or an educator may do is decided by the API on every request, not by which buttons the page shows. Hiding a button is a courtesy, the server check is the rule.',
       },
     ],
-    outcome: ['The demo is online, with separate registration for students and educators.'],
+    outcome: [
+      'The front end of the demo is still online and shows the separate registration for students and educators. The backend it was built against is no longer deployed, so creating an account does not work there today. The code for both is public.',
+    ],
     evidence: [
       {
         label: 'Live demo',
         detail:
-          'The running application. The figures on its landing page, such as the number of learners, are sample text, not real usage.',
+          'The front end only. Signing in needs the backend, which is no longer deployed, so you can look at the pages but not create an account.',
         href: 'https://gyaan-sathi-psrf.vercel.app/',
       },
       {
