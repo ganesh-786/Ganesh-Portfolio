@@ -6,7 +6,7 @@ import { EXPERIENCE_DATA } from '@/lib/constants'
 export function Experience() {
   return (
     <SectionWrapper id="experience">
-      <SectionHeader index="06" title="Experience" />
+      <SectionHeader index="05" title="Experience" />
 
       <ol className="border-t border-ink">
         {EXPERIENCE_DATA.map((job) => (

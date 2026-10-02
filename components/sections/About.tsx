@@ -11,7 +11,7 @@ export function About() {
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-28">
-            <SectionHeader index="01" title="About" className="mb-0 sm:mb-0" />
+            <SectionHeader index="04" title="About" className="mb-0 sm:mb-0" />
           </div>
         </div>
 

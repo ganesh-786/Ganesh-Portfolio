@@ -32,25 +32,30 @@ const FORM_ENDPOINT = 'https://api.web3forms.com/submit'
 // output does not depend on the machine. Next 16 ships a larger client runtime than Next 15 (about
 // 29 kB more gzipped up front, 124,612 before) and loads no lazy chunks, so it has less JavaScript in
 // total but more of it up front.
+//
+// The limits were left where they were when the project pages arrived on 2026-10-02. That build
+// measures 657,893 of JavaScript, about 155,800 gzipped up front and 39,823 of CSS, so the room
+// left is smaller than 15 percent now, on purpose: the next feature has to earn its bytes.
 const BUDGET = {
   totalJs: 733_000, // all JavaScript under _next/static, measured 637,629 (Next 15 had 874,185)
   initialJsGzip: 176_000, // JavaScript the home page loads up front, gzipped, measured 153,270
   css: 43_000, // all CSS, measured 37,545
-  anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 203,522 (index.html)
+  anyFile: 500_000, // any published file that is not JavaScript or a PDF, largest today 185,185 (index.html)
   pdf: 2_000_000, // a CV heavier than this is nearly always an uncompressed image, today 164,163 (the one-page September resume)
 }
 
-// Sections the navigation scrolls to (NAV_ITEMS in lib/constants.ts) plus the skip link and
-// back-to-top targets. The nav buttons scroll with JavaScript, so a renamed section would
-// leave a button that silently does nothing, and nothing else would notice.
+// Sections the navigation links to (NAV_ITEMS and CONTACT_CTA in lib/constants.ts) plus the skip
+// link and back-to-top targets. Case study pages link to them as "/#work", so a renamed section
+// would leave links on other pages that land at the top of the home page without a word.
 const SECTION_IDS = [
-  'main', 'top', 'about', 'current-work', 'skills', 'projects', 'services', 'experience', 'education', 'contact',
+  'main', 'top', 'work', 'services', 'questions', 'about', 'experience', 'skills', 'education', 'contact',
 ]
 
 const REQUIRED_FILES = [
   'index.html',
   '404.html',
   'resume.html',
+  'projects.html',
   'CNAME',
   'robots.txt',
   'sitemap.xml',
@@ -229,11 +234,17 @@ const home = readText('index.html')
 const homeMarkup = withoutScripts(home)
 const notFound = exists('404.html') ? readText('404.html') : ''
 const resume = exists('resume.html') ? readText('resume.html') : ''
+// The page that lists the projects, and one case study page per project (app/projects/[slug]).
+const caseStudies = files.filter((f) => /^projects\/[^/]+\.html$/.test(f.rel)).map((f) => f.rel).sort()
+const projectPages = ['projects.html', ...caseStudies].filter(exists).map((rel) => [rel, readText(rel)])
 const pages = [
   ['index.html', home],
   ['404.html', notFound],
   ['resume.html', resume],
+  ...projectPages,
 ]
+// "projects/untangler.html" is served at "/projects/untangler".
+const pathOf = (rel) => `/${rel.replace(/\.html$/, '')}`
 // Links from the home page to a PDF on this site, that is, the CV.
 const cvLinks = tagsOf(homeMarkup, 'a').filter((t) => localPath(t.attr.href ?? '')?.toLowerCase().endsWith('.pdf'))
 const ids = [...homeMarkup.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])
@@ -415,14 +426,89 @@ check('References', '/resume forwards to the same CV and stays out of search res
   return expect(problems.length === 0, `expected ${target}: ${problems.join('; ')}`, target)
 })
 
-check('Contact form', 'the form endpoint and access key are in the page bundle', () => {
+check('Contact form', 'the home page has the form, and its scripts carry the endpoint and an access key', () => {
+  // The bundler may put the endpoint and the key in different files, so this looks at every
+  // script the home page loads. Without a key the page shows a plain email button and no form.
   const uuid = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
-  const wired = files.some((f) => f.rel.endsWith('.js') && f.rel.startsWith('_next/static/') && (() => {
-    const text = readFileSync(f.full, 'utf8')
-    const urls = text.match(/https:\/\/[^\s"'`\\)]+/g) ?? []
-    return urls.some((u) => u === FORM_ENDPOINT) && uuid.test(text)
-  })())
-  return expect(wired, 'no script contains both the Web3Forms endpoint and an access key, so the site would fall back to no form')
+  const loaded = [...new Set(tagsOf(home, 'script').map((t) => t.attr.src).filter((src) => src?.startsWith('/_next/static/')))]
+    .map((src) => readText(localPath(src)))
+  const endpoint = loaded.some((text) => (text.match(/https:\/\/[^\s"'`\\)]+/g) ?? []).some((u) => u === FORM_ENDPOINT))
+  const key = loaded.some((text) => uuid.test(text))
+  const form = /<form\b/.test(homeMarkup) && tagsOf(homeMarkup, 'input').some((t) => t.attr.name === 'email')
+  const problems = []
+  if (!form) problems.push('no form with an email field on the home page, the site fell back to the email button')
+  if (!endpoint) problems.push('no loaded script contains the Web3Forms endpoint')
+  if (!key) problems.push('no loaded script contains an access key')
+  return expect(problems.length === 0, problems.join('; '))
+})
+
+check('Project pages', 'the home page links to the project list and to every case study', () => {
+  if (!caseStudies.length) return fail('found no case study pages under projects/')
+  const linked = new Set(tagsOf(homeMarkup, 'a').map((t) => t.attr.href))
+  const missing = ['projects.html', ...caseStudies].map(pathOf).filter((path) => !linked.has(path))
+  return expect(missing.length === 0, `not linked from the home page: ${missing.join(', ')}`, `${caseStudies.length} case studies`)
+})
+check('Project pages', 'each one is a complete page with its own title, description and address', () => {
+  const problems = []
+  const titleOf = (html) => /<title>([\s\S]*?)<\/title>/.exec(html)?.[1].trim()
+  const titles = new Map([[titleOf(home), 'index.html']])
+  for (const [rel, html] of projectPages) {
+    const markup = withoutScripts(html)
+    const title = titleOf(html)
+    const canonical = tagsOf(html, 'link').find((t) => t.attr.rel === 'canonical')?.attr.href
+    const blocked = ['robots', 'googlebot'].flatMap((name) => metaWhere(html, 'name', name)).some((t) => /noindex|none/i.test(t.attr.content ?? ''))
+    const h1 = (markup.match(/<h1\b/g) ?? []).length
+    const main = (markup.match(/<main\b/g) ?? []).length
+    if (h1 !== 1 || main !== 1) problems.push(`${rel} has ${h1} h1 and ${main} main`)
+    if (!title) problems.push(`${rel} has no title`)
+    else if (titles.has(title)) problems.push(`${rel} has the same title as ${titles.get(title)}`)
+    else titles.set(title, rel)
+    if (!metaWhere(html, 'name', 'description')[0]?.attr.content?.trim()) problems.push(`${rel} has no description`)
+    if (canonical !== `${ORIGIN}${pathOf(rel)}`) problems.push(`${rel} canonical is "${canonical}"`)
+    if (blocked) problems.push(`${rel} is marked noindex`)
+  }
+  return expect(problems.length === 0, problems.join('; '), `${projectPages.length} pages`)
+})
+check('Project pages', 'every case study leads to the contact form and back to the list', () => {
+  const problems = []
+  for (const [rel, html] of projectPages.filter(([rel]) => rel !== 'projects.html')) {
+    const hrefs = tagsOf(withoutScripts(html), 'a').map((t) => t.attr.href)
+    if (!hrefs.includes('/#contact')) problems.push(`${rel} has no link to /#contact`)
+    if (!hrefs.includes('/projects')) problems.push(`${rel} has no link to /projects`)
+  }
+  return expect(problems.length === 0, problems.join('; '))
+})
+check('Project pages', 'links into the home page point at sections that exist', () => {
+  const dangling = []
+  let count = 0
+  for (const [rel, html] of pages.slice(1)) {
+    const markup = withoutScripts(html)
+    const own = [...markup.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])
+    for (const href of tagsOf(markup, 'a').map((t) => t.attr.href ?? '')) {
+      const toHome = /^\/#(.+)$/.exec(href)?.[1]
+      const toSelf = /^#(.+)$/.exec(href)?.[1]
+      if (toHome || toSelf) count++
+      if (toHome && !ids.includes(toHome)) dangling.push(`${href} (from ${rel})`)
+      if (toSelf && !own.includes(toSelf)) dangling.push(`${href} (from ${rel})`)
+    }
+  }
+  return expect(dangling.length === 0, `no such section: ${[...new Set(dangling)].join(', ')}`, `${count} links`)
+})
+check('Project pages', 'external links open safely and every image has alt text', () => {
+  const problems = []
+  for (const [rel, html] of projectPages) {
+    const markup = withoutScripts(html)
+    const anchors = tagsOf(markup, 'a')
+    const images = tagsOf(markup, 'img')
+    for (const t of anchors) {
+      if (t.attr.target === '_blank' && !/\bnoopener\b/.test(t.attr.rel ?? '')) problems.push(`${rel}: target=_blank without noopener on ${t.attr.href}`)
+    }
+    for (const t of [...anchors, ...images]) {
+      if ((t.attr.href ?? t.attr.src ?? '').startsWith('http://')) problems.push(`${rel}: http:// URL ${t.attr.href ?? t.attr.src}`)
+    }
+    for (const t of images) if (!('alt' in t.attr)) problems.push(`${rel}: no alt attribute on ${t.attr.src}`)
+  }
+  return expect(problems.length === 0, problems.join('; '))
 })
 
 check('Security', 'a Content-Security-Policy is set once per page, before the body', () => {
@@ -464,6 +550,12 @@ check('404 page', 'the custom 404 is a real page with a way back', () => {
   return expect(h1 === 1 && homeLink && noindex, `h1 count ${h1}, link to home: ${homeLink}, noindex: ${noindex}`)
 })
 
+check('404 page', 'a project address typed with a slash on the end is passed on', () => {
+  // GitHub Pages serves projects.html at /projects but answers /projects/ with the 404 page.
+  const missing = projectPages.map(([rel]) => `${pathOf(rel)}/`).filter((path) => !notFound.includes(JSON.stringify(path)))
+  return expect(projectPages.length > 0 && missing.length === 0, `the 404 page does not forward: ${missing.join(', ')}`, `${projectPages.length} addresses`)
+})
+
 check('Crawlers', 'robots.txt welcomes crawlers and lists the sitemap', () => {
   const robots = readText('robots.txt')
   const problems = []
@@ -476,6 +568,13 @@ check('Crawlers', 'sitemap.xml only lists pages on the live domain', () => {
   const locs = [...readText('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
   const wrong = locs.filter((u) => !isOurs(u))
   return expect(locs.length > 0 && wrong.length === 0, locs.length ? `off-domain: ${wrong.join(', ')}` : 'no URLs listed', `${locs.length} URL`)
+})
+check('Crawlers', 'sitemap.xml lists the home page and every project page', () => {
+  const locs = new Set([...readText('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(/\/$/, '')))
+  const expected = [ORIGIN, ...projectPages.map(([rel]) => `${ORIGIN}${pathOf(rel)}`)]
+  const missing = expected.filter((url) => !locs.has(url))
+  const unknown = [...locs].filter((url) => !expected.includes(url))
+  return expect(!missing.length && !unknown.length, `missing: [${missing.join(', ')}], not a page of this site: [${unknown.join(', ')}]`, `${locs.size} URLs`)
 })
 check('Crawlers', 'the web app manifest parses and its icons exist', () => {
   const manifest = JSON.parse(readText('manifest.webmanifest'))

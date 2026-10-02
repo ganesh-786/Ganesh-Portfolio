@@ -23,6 +23,8 @@ export function ContactForm({ accessKey }: { accessKey: string }) {
 
     if (data.get('botcheck')) return
 
+    const topic = String(data.get('topic') ?? '')
+
     setStatus('submitting')
     try {
       const response = await fetch(ENDPOINT, {
@@ -30,10 +32,11 @@ export function ContactForm({ accessKey }: { accessKey: string }) {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: accessKey,
-          subject: CONTACT_DATA.formSubject,
+          subject: topic ? `${CONTACT_DATA.formSubject}: ${topic}` : CONTACT_DATA.formSubject,
           from_name: 'Portfolio contact form',
           name: data.get('name'),
           email: data.get('email'),
+          topic: topic || 'Not chosen',
           message: data.get('message'),
         }),
       })
@@ -87,6 +90,20 @@ export function ContactForm({ accessKey }: { accessKey: string }) {
       </div>
 
       <div>
+        <label htmlFor="contact-topic" className={labelClass}>
+          What is it about? <span className="font-normal text-muted">(optional)</span>
+        </label>
+        <select id="contact-topic" name="topic" defaultValue="" className={fieldClass}>
+          <option value="">Choose one</option>
+          {CONTACT_DATA.topics.map((topic) => (
+            <option key={topic} value={topic}>
+              {topic}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
         <label htmlFor="contact-message" className={labelClass}>
           Message
         </label>
@@ -97,7 +114,7 @@ export function ContactForm({ accessKey }: { accessKey: string }) {
           minLength={10}
           maxLength={3000}
           rows={6}
-          placeholder="What are you working on, and how can I help?"
+          placeholder="What are you building, what is in the way, and when do you need it?"
           className={`${fieldClass} resize-y`}
         />
       </div>
@@ -125,7 +142,8 @@ export function ContactForm({ accessKey }: { accessKey: string }) {
           {status === 'success' && (
             <span className="inline-flex items-start gap-2 text-ok">
               <CheckCircle2 size={16} className="mt-1 shrink-0" />
-              Thanks, your message is on its way. I will reply to the address you gave.
+              Thanks, your message is on its way. I reply {CONTACT_DATA.replyWindow}, to the
+              address you gave.
             </span>
           )}
           {status === 'error' && (

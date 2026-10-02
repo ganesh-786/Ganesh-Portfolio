@@ -112,6 +112,52 @@ body {
   animation: fade-in 0.2s ease-out both;
 }
 
+/* Hero typed line (components/ui/TypedLine.tsx). The full sentence is the default. The animated
+   copy replaces it only when scripts run and motion is allowed. The head script sets the js
+   class before the first paint, so the swap never shows. */
+.typed-live {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .typed-live {
+    display: flex;
+  }
+
+  /* Same as sr-only: out of sight, still read by a screen reader. */
+  .js .typed-full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.typed-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-left: 0.08em;
+  vertical-align: -0.12em;
+  background-color: var(--accent);
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+.typed-caret-still {
+  animation: none;
+}
+
 h1,
 h2,
 h3 {

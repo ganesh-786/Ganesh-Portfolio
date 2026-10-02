@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { ArrowLeft } from 'lucide-react'
 import { HERO_DATA, RETIRED_RESUME_PATHS } from '@/lib/constants'
+import { PROJECTS, projectPath } from '@/lib/projects'
 
 export const metadata: Metadata = {
   title: 'Page not found | Ganesh Chaudhary',
@@ -9,12 +10,20 @@ export const metadata: Metadata = {
 // GitHub Pages answers /resume/ and the CV's old file names with this page, so pass them on.
 const toResume = JSON.stringify(['/resume/', ...RETIRED_RESUME_PATHS])
 
+// It also answers a page address typed with a slash on the end with this page, because the
+// export writes projects.html, not projects/index.html. Only addresses that exist are passed
+// on, so a mistyped one still lands here.
+const withSlash = JSON.stringify(
+  ['/projects', ...PROJECTS.map((project) => projectPath(project.slug))].map((path) => `${path}/`),
+)
+
 export default function NotFound() {
   return (
     <main id="main" className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-5 py-24 sm:px-8">
       <script
         dangerouslySetInnerHTML={{
-          __html: `if (${toResume}.indexOf(location.pathname) !== -1) location.replace('/resume')`,
+          __html: `if (${toResume}.indexOf(location.pathname) !== -1) location.replace('/resume')
+else if (${withSlash}.indexOf(location.pathname) !== -1) location.replace(location.pathname.slice(0, -1) + location.search + location.hash)`,
         }}
       />
       <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">404</p>
@@ -37,7 +46,7 @@ export default function NotFound() {
           Back to {HERO_DATA.name}
         </a>
         <a
-          href="/#projects"
+          href="/projects"
           className="inline-flex min-h-11 items-center justify-center px-2 text-sm font-medium text-ink underline decoration-rule decoration-2 underline-offset-8 transition-colors hover:decoration-accent"
         >
           See the projects
