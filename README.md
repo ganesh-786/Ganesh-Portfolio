@@ -1,8 +1,8 @@
 # Ganesh Chaudhary — Full Stack Developer Portfolio
 
 A personal portfolio built with Next.js and exported as a fully static site. It shows
-current work, projects with live demos, experience and certificates, and gives
-recruiters and clients a direct way to get in touch.
+the work as case studies, says plainly what a client gets and how a project starts, and
+gives clients and recruiters a direct way to get in touch.
 
 **Live site:** [ganeshtharu.com.np](https://ganeshtharu.com.np)
 
@@ -20,11 +20,19 @@ recruiters and clients a direct way to get in touch.
 | **Theming**   | next-themes, follows the visitor's system setting by default   |
 | **Forms**     | Web3Forms (client side, no backend of my own)                  |
 
-## What is on the page
+## What is on the site
 
-Hero with an at-a-glance fact sheet, About, Current work (a case study of the
-production app I am building now), Skills, Projects with live demos and code links,
-Services, Experience, Education with clickable certificates, and Contact.
+The home page runs in the order a client reads it: a hero with an at-a-glance fact
+sheet, Selected work, What you get when we work together, the questions a client asks
+before writing (reply time, price model, availability), then About, Experience, Skills,
+Education with clickable certificates, and a contact form.
+
+Every project has its own case study at `/projects/<name>`, and `/projects` lists them
+all. Each case study has the same parts in the same order: the problem, what was built,
+my part and the team's, the decisions that shaped it, the outcome, and what a reader can
+check for themselves. A case study only says what a source backs up (the repository and
+its history, a published report, or my own record), and it says so where a figure is an
+estimate or something is private.
 
 The CV (`public/Ganesh_Chaudhary_Resume2026Oct.pdf`) opens in the browser's own PDF
 viewer in a new tab instead of downloading. The address to share is
@@ -37,6 +45,13 @@ address to `RETIRED_RESUME_PATHS`, so links already sent out still reach the CV.
 - **Fast first paint.** The hero animates with CSS, so it never waits for JavaScript.
   Sections reveal through a tiny script that fails open, which means a broken script
   can never leave a blank page. There is no client-side animation library.
+- **A typed line that degrades.** The line under the name types out what I build. The
+  whole sentence is always in the page as ordinary text: that is what a screen reader
+  reads, and what shows without JavaScript or with reduced motion. The animation has a
+  pause button, reserves its space so nothing below it moves, and stops while it is off
+  screen.
+- **Navigation without JavaScript.** Every item in the bar is a real link, so it works
+  with scripts off and from a case study page.
 - **Accessible.** axe-core reports no WCAG 2.2 AA violations in light and dark. There is
   a skip link, visible focus on every control, the mobile menu closes with Escape, and
   reduced-motion preferences are respected. Touch targets are at least 44px.
@@ -61,14 +76,17 @@ Edge 111, Safari 16.4 and Firefox 128.
 app/                # Routes, layout, metadata (sitemap, robots, manifest, icons), 404
 components/
   layout/            # Navbar, Footer
-  sections/          # One file per section of the page
-  ui/                # Section wrapper, section header, theme provider
+  sections/          # One file per section of the home page
+  projects/          # The case study page
+  ui/                # Section wrapper and header, typed line, call to action, theme provider
 lib/                 # Typed content, shared types, utilities
 public/              # Static assets
 ```
 
-Content lives in `lib/constants.ts`, so copy changes never touch components. The
-colour tokens and the two small CSS animations live in `app/globals.css`.
+Content lives in `lib/constants.ts` and the case studies in `lib/projects.ts`, so copy
+changes never touch components. Adding a project to `lib/projects.ts` creates its page,
+lists it and adds it to the sitemap. The colour tokens and the small CSS animations live
+in `app/globals.css`.
 
 ## Getting started
 
