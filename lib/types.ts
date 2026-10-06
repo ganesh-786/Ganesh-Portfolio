@@ -31,6 +31,8 @@ export interface Project {
   role: string
   team?: string
   problem: string[]
+  // What the result had to do, as a short list. Shown under the problem.
+  needs?: string[]
   solution: string[]
   flow?: string[]
   myPart: string[]
@@ -60,10 +62,9 @@ export interface ServiceItem {
   proof: ServiceProof[]
 }
 
-export interface FaqItem {
-  question: string
-  answer: string
-  link?: { label: string; href: string; external?: boolean }
+export interface TermItem {
+  label: string
+  value: string
 }
 
 export interface SkillItem {
@@ -113,8 +114,7 @@ export interface EducationItem {
 export interface CaseStudyHighlight {
   label: string
   title: string
-  body: string
-  points?: string[]
+  points: string[]
 }
 
 export interface CaseStudyFigure {

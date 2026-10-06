@@ -3,22 +3,25 @@ import type {
   Highlight,
   SocialLink,
   ServiceItem,
-  FaqItem,
+  TermItem,
   SkillCategory,
   ExperienceItem,
   EducationItem,
 } from "./types";
 
-// Stated in the hero, the services section, the questions and the contact form. One place to
-// change it, so the site never promises two different things.
+// The reply time, the pricing model and the hours are the owner's own answers (2026-10-02), so
+// change them only with the owner. The reply time and the scope and price line are repeated
+// across the pages, so each is written once here and the site never promises two different things.
 const REPLY_WINDOW = "within two working days";
+const SCOPE_AND_PRICE = "a written scope and a fixed price before any work starts";
 
-// The page runs in the order a client reads it: the work, what they get, their questions, then
-// who is behind it. "Discuss your project" sits in the bar as a button, so Contact is not listed.
+const sentence = (text: string) => `${text[0].toUpperCase()}${text.slice(1)}.`;
+
+// The page runs in the order a client reads it: the work, what they get, then who is behind it.
+// "Discuss your project" sits in the bar as a button, so Contact is not listed.
 export const NAV_ITEMS: NavItem[] = [
   { label: "Work", href: "#work" },
   { label: "Services", href: "#services" },
-  { label: "Questions", href: "#questions" },
   { label: "About", href: "#about" },
   { label: "Experience", href: "#experience" },
   { label: "Skills", href: "#skills" },
@@ -26,6 +29,9 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const CONTACT_CTA = { label: "Discuss your project", href: "#contact" };
+
+// The line beside the call to action under the project list and at the end of every case study.
+export const PROJECT_CTA_BODY = `Tell me what you are building. You get ${SCOPE_AND_PRICE}.`;
 
 export const HERO_DATA = {
   name: "Ganesh Chaudhary",
@@ -46,7 +52,7 @@ export const HERO_DATA = {
     ],
   },
   description:
-    "I build websites, web applications and AI features, and I own the whole job: the screens people use, the API and database behind them, and getting it live. Right now I do that on UnTangler, a production app for students with ADHD.",
+    "I own the whole job: the screens people use, the API and database behind them, and getting it live. Right now that is UnTangler, a production app for students with ADHD.",
   cta: {
     primary: CONTACT_CTA,
     secondary: { label: "See the work", href: "#work" },
@@ -79,9 +85,11 @@ export const HERO_DATA = {
 export const RETIRED_RESUME_PATHS = ["/Ganesh_Chaudhary_CV_2026.pdf"];
 
 export const ABOUT_DATA = {
+  // The roles, the dates and the courses are in Experience and Education right below, so this
+  // only says what those lists cannot: how I like to work and where I started.
   paragraphs: [
-    "I'm a full stack developer who likes owning a feature end to end: the React interface, the API behind it, and the database it depends on. Right now that means UnTangler, a voice-first app for students with ADHD, where I work everywhere from the database and API to voice, notifications and accessibility.",
-    "Before that I was at TEJ Center, where I built React interfaces for two enterprise client applications inside Agile sprints and, through the fellowship, systems ranging from event-driven order processing to AI support agents. I started on the design side, as a web design intern turning Figma wireframes into responsive layouts, and I have freelanced as a front-end developer building dashboards for training platforms. I keep my foundations current through structured coursework, most recently the University of Helsinki's Full Stack Open and Anthropic's Claude Code in Action, and I care about readable code, disciplined Git workflows, and honest peer review.",
+    "I like owning a feature end to end: the React interface, the API behind it and the database it depends on.",
+    "I started on the design side, turning Figma wireframes into responsive layouts. I care about readable code, disciplined Git workflows and honest peer review.",
   ],
   highlights: [
     { label: "Projects Built", value: "9" },
@@ -170,16 +178,15 @@ export const SKILLS_DATA: SkillCategory[] = [
 // project where the same work is already done, so nothing here is a promise without a precedent.
 export const SERVICES_DATA = {
   heading: "What you get when we work together",
-  intro:
-    "Four kinds of work I take on, described by what you end up with. Each one points to a project where I have already done it.",
+  intro: "Four kinds of work. Each one links to a project where it is already done.",
   items: [
     {
       title: "Website development",
       description:
-        "A company site, a landing page or an online store that loads fast, reads well on a phone and is set up to be found on Google.",
+        "A company site, landing page or online store that loads fast and is set up to be found on Google.",
       includes: [
-        "Pages that work on every screen size, built from your design or mine",
-        "Search basics done properly: titles, descriptions, a sitemap and structured data",
+        "Works on every screen size, from your design or mine",
+        "Titles, descriptions, a sitemap and structured data",
         "Accessibility checked against WCAG AA",
       ],
       proof: [
@@ -192,12 +199,11 @@ export const SERVICES_DATA = {
     },
     {
       title: "Web applications",
-      description:
-        "A product people sign in to and use every day: accounts, roles, dashboards and real data behind every screen.",
+      description: "A product people sign in to and use every day.",
       includes: [
         "Sign-in, roles and permissions",
         "The database and the API behind the screens",
-        "Installable on a phone like an app, with notifications",
+        "Installable on a phone, with notifications",
       ],
       proof: [
         { label: "UnTangler", href: "/projects/untangler" },
@@ -206,8 +212,7 @@ export const SERVICES_DATA = {
     },
     {
       title: "AI features",
-      description:
-        "AI added where it earns its place: an assistant that answers from your own documents, voice input, or summaries inside a product you already have.",
+      description: "AI added to a product where it earns its place.",
       includes: [
         "Assistants that answer from your own documents",
         "Voice input and spoken conversation",
@@ -220,8 +225,7 @@ export const SERVICES_DATA = {
     },
     {
       title: "Integrations and fixes",
-      description:
-        "Work on a product you already have: connect it to another service, or fix what is slow, unreliable or hard to use.",
+      description: "Work on a product you already have.",
       includes: [
         "Google Calendar, Tasks and Classroom sync",
         "Push notifications and scheduled jobs",
@@ -233,68 +237,36 @@ export const SERVICES_DATA = {
       ],
     },
   ] satisfies ServiceItem[],
+  // What a client asks before writing, as four facts. They replaced the questions section on
+  // 2026-10-06 and keep the owner's answers from it, in the owner's words.
+  terms: {
+    label: "On every project",
+    items: [
+      { label: "Reply", value: `By email, ${REPLY_WINDOW}` },
+      { label: "Price", value: "Fixed, for a written scope agreed before work starts" },
+      { label: "Hours", value: "Part-time, evenings and weekends, Nepal time (UTC+5:45)" },
+      { label: "Updates", value: "Written, in plain language. You deal with me directly" },
+    ] satisfies TermItem[],
+  },
   cta: {
     heading: "Not sure which one you need?",
-    body: `Tell me what you are building and what is in the way. I reply ${REPLY_WINDOW} with what it would take, in plain language.`,
+    body: "Tell me what you are building and what is in the way.",
   },
 };
 
-// The questions a client has before writing, answered with facts. The reply time, the hours and
-// the pricing model are the owner's own answers (2026-10-02), so change them only with the owner.
-export const FAQ_DATA = {
-  heading: "Before you get in touch",
-  intro: "Price, timing, availability and how the work runs, answered plainly.",
-  items: [
-    {
-      question: "What happens after I send a message?",
-      answer: `I reply by email ${REPLY_WINDOW}. If the project looks like a fit we have a short call, and then I send you a written scope: what will be built, what is left out, the timeline and the price. Nothing starts until you have agreed to it.`,
-    },
-    {
-      question: "How do you charge?",
-      answer:
-        "A fixed price for a written scope, agreed before any work starts, so you know the cost up front. If you want to add something later, we scope and price that separately.",
-    },
-    {
-      question: "When are you available?",
-      answer:
-        "I work full time as a developer and take freelance projects part-time, in the evenings and at weekends, with my employer’s agreement. I am in Kathmandu, Nepal (UTC+5:45). A 9 am call in New York is 6:45 pm here in the US summer and 7:45 pm in the US winter, so a regular call fits the hours I keep for freelance work.",
-    },
-    {
-      question: "Can you work on a product that already exists?",
-      answer:
-        "Yes, that is what I do every day. On UnTangler I work inside an existing codebase with another developer and a product owner, in small changes that are each reviewed before they go in.",
-      link: { label: "Read the UnTangler case study", href: "/projects/untangler" },
-    },
-    {
-      question: "How will I know how the work is going?",
-      answer:
-        "You get written updates in plain language that say what changed for your users and what is next, not which files were edited. The work itself arrives in small pieces you can look at as they are finished.",
-    },
-    {
-      question: "Do you work alone?",
-      answer:
-        "Yes. You deal with me directly and I do the work myself. Some projects shown here were built in teams, and each case study says which part was mine and which was a teammate’s.",
-    },
-    {
-      question: "Are you open to a full-time role?",
-      answer:
-        "Yes. I am open to full-time roles as well as freelance projects. My resume is one page and opens in the browser.",
-      link: { label: "View the resume", href: "/resume", external: true },
-    },
-  ] satisfies FaqItem[],
-};
-
+// Short on purpose: one fact per line, the way the resume states them. The detail behind the
+// current role is its case study.
 export const EXPERIENCE_DATA: ExperienceItem[] = [
   {
     role: "Full-Stack Developer",
     company: "Compass Decisions Science LLC",
     period: "Jul 2026 – Present",
     bullets: [
-      "Building UnTangler, a production voice-first PWA that turns an overwhelming task into small steps for students with ADHD and schedules them into Google Calendar, Tasks and Classroom.",
-      "Built the Gemini Live voice-to-schedule pipeline, timezone-aware date handling, and Calendar, Tasks and Classroom sync.",
-      "Designed the end-of-day check-in flow and its notifications: Web Push, an in-app notification bell, and a scheduled dispatch job.",
-      "Ran an app-wide accessibility audit and fixed the findings to WCAG AA, and set up CI and versioned Supabase migrations.",
-      "Work in a two-developer team with a product owner, tracked in Jira, with every change reviewed through a pull request.",
+      "Building UnTangler, a production voice-first PWA for students with ADHD.",
+      "Built the Gemini Live voice-to-schedule pipeline, timezone-aware dates, and Calendar, Tasks and Classroom sync.",
+      "Designed the end-of-day check-in flow: Web Push, an in-app bell and a scheduled dispatch job.",
+      "Ran an app-wide accessibility audit, fixed to WCAG AA. Set up CI and versioned Supabase migrations.",
+      "Two developers and a product owner, Jira, every change reviewed in a pull request.",
     ],
     link: { label: "Read the UnTangler case study", href: "/projects/untangler" },
   },
@@ -304,9 +276,8 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     period: "Jan 2026 – Jul 2026",
     bullets: [
       "Built responsive, cross-browser React interfaces for 2 enterprise client applications.",
-      "Turned complex Figma mockups into modular, production-ready front-end code with Tailwind CSS. Strict peer reviews helped reduce UI rendering bugs.",
-      "Worked directly with UI/UX designers and backend engineers in fast-paced Agile sprints.",
-      "Kept the codebase stable with disciplined Git and GitHub workflows, npm dependency management, and reusable component patterns.",
+      "Turned Figma mockups into modular Tailwind CSS components. Strict peer review helped reduce UI rendering bugs.",
+      "Worked in Agile sprints with UI/UX designers and backend engineers, with disciplined Git workflows.",
     ],
   },
   {
@@ -314,9 +285,9 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     company: "TEJ Center Private Limited",
     period: "Jul 2025 – Dec 2025",
     bullets: [
-      "Worked in an intensive, project-driven program covering full-stack development, distributed system design, code reviews, and technical presentations.",
-      "Built real-world projects in cross-functional teams, including a RAG-based support agent and an event-driven order system.",
-      "Completed the University of Helsinki Full Stack Open certification (7 ECTS, Grade 5).",
+      "A project-driven program: full-stack development, distributed system design, code reviews and technical presentations.",
+      "Built team projects, including a RAG-based support agent and an event-driven order system.",
+      "Completed the University of Helsinki Full Stack Open certificate (7 ECTS, Grade 5).",
     ],
   },
   {
@@ -324,18 +295,15 @@ export const EXPERIENCE_DATA: ExperienceItem[] = [
     company: "Nobel PBC Learning",
     period: "May 2025 – Jul 2025",
     bullets: [
-      "Designed and refined user interfaces and page layouts, bridging visual mockups and semantic, performant web pages.",
-      "Ran user flow research and accessibility audits to sharpen layout hierarchy on landing pages.",
-      "Created high-fidelity wireframes and responsive UI designs in Figma, iterating on feedback from internal stakeholders.",
+      "Designed user interfaces and page layouts in Figma, from wireframes to semantic web pages.",
+      "Ran user flow research and accessibility audits on landing pages.",
     ],
   },
   {
     role: "Front-End Developer (Remote)",
     company: "Freelance",
     period: "2023 – 2025",
-    bullets: [
-      "Developed interactive dashboards using vanilla JavaScript, improving UX for training platforms.",
-    ],
+    bullets: ["Built interactive dashboards in vanilla JavaScript for training platforms."],
   },
 ];
 
@@ -371,13 +339,15 @@ const EMAIL = "ganesh98245.np@gmail.com";
 
 export const CONTACT_DATA = {
   heading: "Discuss your project",
-  description: `Tell me what you are building, what is in the way and when you need it. I reply by email ${REPLY_WINDOW}. Hiring for a full-time role? Use the same form.`,
+  description:
+    "Tell me what you are building and when you need it. Hiring for a full-time role? Use the same form.",
   replyWindow: REPLY_WINDOW,
-  // The short version of the first question in FAQ_DATA, for a visitor who came straight here.
+  // What a client can count on after pressing send. The reply time is the first step, so the
+  // description above does not repeat it.
   next: [
     `I reply by email ${REPLY_WINDOW}.`,
     "A short call, if the project looks like a fit.",
-    "A written scope and a fixed price, before any work starts.",
+    sentence(SCOPE_AND_PRICE),
   ],
   // What the message is about. It is sent with the form, so the subject line says it at a glance.
   topics: [

@@ -3,26 +3,29 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
 import { EXPERIENCE_DATA } from '@/lib/constants'
 
+// A ledger: who and when on the left, what was done on the right, so a recruiter can run an eye
+// down the left column alone. Stacked on a phone and a tablet.
 export function Experience() {
   return (
     <SectionWrapper id="experience">
-      <SectionHeader index="05" title="Experience" />
+      <SectionHeader index="04" title="Experience" />
 
       <ol className="border-t border-ink">
         {EXPERIENCE_DATA.map((job) => (
           <li
             key={`${job.role}-${job.company}`}
-            className="grid gap-x-12 gap-y-3 border-b border-rule py-9 md:grid-cols-12"
+            className="grid gap-x-12 gap-y-5 border-b border-rule py-9 lg:grid-cols-12"
           >
-            <p className="font-mono text-sm text-muted md:col-span-3 md:pt-2">{job.period}</p>
-
-            <div className="md:col-span-9">
+            <div className="lg:col-span-5">
+              <p className="mb-2 font-mono text-sm text-muted">{job.period}</p>
               <h3 className="font-display text-3xl leading-tight tracking-tight text-ink">
                 {job.role}
               </h3>
               <p className="mt-1 text-base font-medium text-accent">{job.company}</p>
+            </div>
 
-              <ul className="mt-5 max-w-3xl space-y-3">
+            <div className="lg:col-span-7 lg:pt-8">
+              <ul className="space-y-2.5">
                 {job.bullets.map((bullet) => (
                   <li key={bullet} className="flex gap-4 text-base leading-7 text-muted">
                     <span aria-hidden="true" className="mt-3.5 h-px w-3 shrink-0 bg-ink/40" />

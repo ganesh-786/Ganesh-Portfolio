@@ -4,7 +4,7 @@ import { Footer } from '@/components/layout/Footer'
 import { Navbar } from '@/components/layout/Navbar'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { ProjectLinks } from '@/components/ui/ProjectLinks'
-import { HERO_DATA } from '@/lib/constants'
+import { HERO_DATA, PROJECT_CTA_BODY } from '@/lib/constants'
 import { PROJECTS, projectPath } from '@/lib/projects'
 
 const title = `Projects and case studies | ${HERO_DATA.name}`
@@ -55,9 +55,8 @@ export default function Projects() {
             Projects and <em className="font-normal italic">case studies</em>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
-            Every project has its own page with the same parts: the problem, what was built, the
-            part that was mine, the decisions behind it and what you can check for yourself.
-            Team projects say which part was a teammate’s.
+            Every project, with the problem, the part that was mine and what you can check for
+            yourself. Team projects say which part was a teammate’s.
           </p>
         </header>
 
@@ -125,11 +124,7 @@ export default function Projects() {
           </ol>
 
           <div className="mt-20">
-            <CtaBand
-              heading="Have a project of your own?"
-              body="Tell me what you are building and what is in the way. You get a written scope and a fixed price before any work starts."
-              href="/#contact"
-            />
+            <CtaBand heading="Have a project of your own?" body={PROJECT_CTA_BODY} href="/#contact" />
           </div>
         </div>
       </main>

@@ -48,8 +48,20 @@ const BUDGET = {
 // link and back-to-top targets. Case study pages link to them as "/#work", so a renamed section
 // would leave links on other pages that land at the top of the home page without a word.
 const SECTION_IDS = [
-  'main', 'top', 'work', 'services', 'questions', 'about', 'experience', 'skills', 'education', 'contact',
+  'main', 'top', 'work', 'services', 'about', 'experience', 'skills', 'education', 'contact',
 ]
+
+// How much a visitor is asked to read, in words they can see inside <main>. On 2026-10-06 the
+// pages were cut down because they read as walls of text: the home page went from 1,854 words
+// to 1,249, the longest case study from 1,524 to 1,113 and the longest paragraph from 100 words
+// to 36, and the questions section was removed. These limits keep it that way. A new section or
+// a longer case study is a decision, so raise the number in the same pull request instead of
+// letting the pages grow back quietly.
+const READING = {
+  homeWords: 1_400, // the home page, measured 1,249
+  caseStudyWords: 1_250, // any one case study, the longest today is UnTangler with 1,113
+  blockWords: 45, // one paragraph, list item or table cell on any page, longest today 36
+}
 
 const REQUIRED_FILES = [
   'index.html',
@@ -176,6 +188,17 @@ function withoutScripts(html) {
 }
 const metaWhere = (html, key, value) =>
   tagsOf(html, 'meta').filter((t) => t.attr[key]?.toLowerCase() === value.toLowerCase())
+
+// The inside of <main> as a visitor sees it. Three kinds of text are in the page without being
+// shown: wording for screen readers (sr-only), the whole sentence the hero keeps for them
+// (typed-full) and the copies of each phrase that hold the typed line's space (invisible).
+const UNSEEN = /<(span|p)\b[^>]*\sclass="(?:[^"]*\s)?(?:sr-only|typed-full|invisible)(?:\s[^"]*)?"[^>]*>[\s\S]*?<\/\1>/g
+const seenMain = (html) => (/<main\b[^>]*>([\s\S]*)<\/main>/.exec(withoutScripts(html))?.[1] ?? '').replace(UNSEEN, ' ')
+const wordsIn = (markup) => (decode(markup.replace(/<[^>]*>/g, ' ')).match(/\S+/g) ?? []).length
+// The pieces of text a reader takes in one go: a paragraph, a list item, a label or its value.
+// Only the innermost ones, so a list item that holds paragraphs is counted through them.
+const BLOCK = /<(p|li|dd|dt|figcaption)\b[^>]*>((?:(?!<\/?(?:p|li|dd|dt|ul|ol|dl|div|article|section|figure|figcaption|h[1-6])\b)[\s\S])*?)<\/\1>/g
+const blocksIn = (markup) => [...markup.matchAll(BLOCK)].map((m) => ({ words: wordsIn(m[2]), start: decode(m[2].replace(/<[^>]*>/g, ' ')).trim().replace(/\s+/g, ' ').slice(0, 40) }))
 
 // True when an absolute URL belongs to this site. The origin is compared exactly, because a prefix
 // test such as startsWith(ORIGIN) would also accept https://ganeshtharu.com.np.example.org.
@@ -605,6 +628,31 @@ check('Size', 'no single published file is oversized', () => {
   const limit = (f) => (f.rel.toLowerCase().endsWith('.pdf') ? BUDGET.pdf : BUDGET.anyFile)
   const big = files.filter((f) => !f.rel.endsWith('.js') && f.size > limit(f)).map((f) => `${f.rel} (${kb(f.size)}, limit ${kb(limit(f))})`)
   return expect(big.length === 0, `too large: ${big.join(', ')}`)
+})
+
+check('Reading', 'the home page stays within its word budget', () => {
+  const words = wordsIn(seenMain(home))
+  if (!words) return fail('found no text inside <main> on the home page')
+  return expect(words <= READING.homeWords, `${words} words is over the budget of ${READING.homeWords}`, `${words} of ${READING.homeWords} words`)
+})
+check('Reading', 'no case study is longer than its word budget', () => {
+  const counted = caseStudies.map((rel) => [rel, wordsIn(seenMain(readText(rel)))])
+  if (!counted.length || counted.some(([, words]) => !words)) return fail('a case study has no text inside <main>, or there are no case studies')
+  const over = counted.filter(([, words]) => words > READING.caseStudyWords).map(([rel, words]) => `${rel} (${words})`)
+  const [longest, most] = counted.reduce((a, b) => (b[1] > a[1] ? b : a))
+  return expect(over.length === 0, `over the budget of ${READING.caseStudyWords} words: ${over.join(', ')}`, `longest is ${longest} with ${most} of ${READING.caseStudyWords} words`)
+})
+check('Reading', 'no paragraph or list item on any page runs long', () => {
+  const long = []
+  let longest = 0
+  for (const [rel, html] of [['index.html', home], ...projectPages]) {
+    for (const block of blocksIn(seenMain(html))) {
+      longest = Math.max(longest, block.words)
+      if (block.words > READING.blockWords) long.push(`${rel}: ${block.words} words starting "${block.start}"`)
+    }
+  }
+  if (!longest) return fail('found no paragraphs or list items to measure')
+  return expect(long.length === 0, `longer than ${READING.blockWords} words, split it or turn it into a list: ${long.join('; ')}`, `longest is ${longest} of ${READING.blockWords} words`)
 })
 
 // ---------------------------------------------------------------- report

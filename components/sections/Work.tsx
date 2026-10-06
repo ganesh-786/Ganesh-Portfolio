@@ -13,8 +13,8 @@ export function Work() {
     <SectionWrapper id="work">
       <SectionHeader index="01" title="Selected work">
         <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
-          Three projects in detail. Each case study gives the problem, what was built, the part
-          that was mine, the decisions behind it and what you can check for yourself.
+          Each case study gives the problem, the part that was mine and what you can check for
+          yourself.
         </p>
       </SectionHeader>
 
