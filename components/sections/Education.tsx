@@ -10,7 +10,7 @@ const certificates = EDUCATION_DATA.filter((item) => item.certificateImage)
 export function Education() {
   return (
     <SectionWrapper id="education">
-      <SectionHeader index="07" title="Education" />
+      <SectionHeader index="06" title="Education" />
 
       <ul className="border-t border-ink">
         {degrees.map((degree) => (

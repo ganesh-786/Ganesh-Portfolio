@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { ProjectLinks } from '@/components/ui/ProjectLinks'
+import { PROJECT_CTA_BODY } from '@/lib/constants'
 import { PROJECTS, projectPath } from '@/lib/projects'
 import type { Project } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -20,11 +21,19 @@ function Block({ title, children }: { title: string; children: ReactNode }) {
   )
 }
 
-function Paragraphs({ items }: { items: string[] }) {
+// With `lead`, the first paragraph is set large, the way the summary under the title is.
+function Paragraphs({ items, lead }: { items: string[]; lead?: boolean }) {
   return (
     <div className="max-w-2xl space-y-5">
-      {items.map((text) => (
-        <p key={text} className="text-lg leading-8 text-muted">
+      {items.map((text, i) => (
+        <p
+          key={text}
+          className={
+            lead && i === 0
+              ? 'font-display text-xl leading-snug text-ink sm:text-2xl'
+              : 'text-lg leading-8 text-muted'
+          }
+        >
           {text}
         </p>
       ))}
@@ -127,7 +136,13 @@ export function CaseStudy({ project }: { project: Project }) {
 
             <div className="space-y-16 lg:col-span-8">
               <Block title="The problem">
-                <Paragraphs items={project.problem} />
+                <Paragraphs items={project.problem} lead />
+                {project.needs && (
+                  <>
+                    <h3 className={cn(label, 'mb-3 mt-8 tracking-[0.16em]')}>What it had to do</h3>
+                    <Dashes items={project.needs} />
+                  </>
+                )}
               </Block>
 
               <Block title="What was built">
@@ -182,25 +197,19 @@ export function CaseStudy({ project }: { project: Project }) {
 
               {project.highlights && (
                 <Block title="What I built, in detail">
-                  <ol className="border-t border-rule">
+                  <ul className="grid gap-x-10 gap-y-10 md:grid-cols-2">
                     {project.highlights.map((item) => (
-                      <li
-                        key={item.label}
-                        className="grid gap-x-10 gap-y-2 border-b border-rule py-7 md:grid-cols-12"
-                      >
-                        <p className="pt-1.5 font-mono text-xs uppercase tracking-wider text-accent md:col-span-3">
+                      <li key={item.label} className="border-t border-rule pt-4">
+                        <p className="mb-2 font-mono text-xs uppercase tracking-wider text-accent">
                           {item.label}
                         </p>
-                        <div className="md:col-span-9">
-                          <h3 className="font-display text-2xl leading-tight tracking-tight text-ink">
-                            {item.title}
-                          </h3>
-                          <p className="mt-3 text-base leading-7 text-muted">{item.body}</p>
-                          {item.points && <Dashes items={item.points} className="mt-4" />}
-                        </div>
+                        <h3 className="font-display text-2xl leading-tight tracking-tight text-ink">
+                          {item.title}
+                        </h3>
+                        <Dashes items={item.points} className="mt-4" />
                       </li>
                     ))}
-                  </ol>
+                  </ul>
                 </Block>
               )}
 
@@ -330,7 +339,7 @@ export function CaseStudy({ project }: { project: Project }) {
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <CtaBand
             heading="Have something like this in mind?"
-            body="Tell me what you are building and what is in the way. You get a written scope and a fixed price before any work starts."
+            body={PROJECT_CTA_BODY}
             href="/#contact"
           />
         </div>

@@ -3,6 +3,7 @@ import { CtaBand } from '@/components/ui/CtaBand'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { SectionWrapper } from '@/components/ui/SectionWrapper'
 import { SERVICES_DATA } from '@/lib/constants'
+import { cn } from '@/lib/utils'
 
 const proofLink =
   'group inline-flex min-h-11 items-center gap-1 text-sm font-medium text-accent underline-offset-4 hover:underline'
@@ -74,7 +75,31 @@ export function Services() {
         ))}
       </ol>
 
-      <div className="mt-20">
+      {/* The terms a client asks about before writing. A row of label and value on a phone, two
+          columns on a tablet, one line of four on a desktop. */}
+      <h3 className="mb-4 mt-20 font-mono text-xs uppercase tracking-[0.2em] text-accent">
+        {SERVICES_DATA.terms.label}
+      </h3>
+      <dl className="border-t border-ink sm:grid sm:grid-cols-2 lg:grid-cols-4">
+        {SERVICES_DATA.terms.items.map((term, i) => (
+          <div
+            key={term.label}
+            className={cn(
+              'grid grid-cols-[5.5rem_1fr] gap-4 border-b border-rule py-4',
+              'sm:block sm:py-6 sm:pr-6',
+              i % 2 === 1 && 'sm:border-l sm:pl-6',
+              i % 2 === 0 && i > 0 && 'lg:border-l lg:pl-6',
+            )}
+          >
+            <dt className="pt-1.5 font-mono text-xs uppercase tracking-wider text-muted sm:pt-0">
+              {term.label}
+            </dt>
+            <dd className="font-display text-xl leading-snug text-ink sm:mt-3">{term.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div className="mt-16">
         <CtaBand heading={SERVICES_DATA.cta.heading} body={SERVICES_DATA.cta.body} />
       </div>
     </SectionWrapper>

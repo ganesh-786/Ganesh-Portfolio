@@ -23,9 +23,9 @@ gives clients and recruiters a direct way to get in touch.
 ## What is on the site
 
 The home page runs in the order a client reads it: a hero with an at-a-glance fact
-sheet, Selected work, What you get when we work together, the questions a client asks
-before writing (reply time, price model, availability), then About, Experience, Skills,
-Education with clickable certificates, and a contact form.
+sheet, Selected work, What you get when we work together (four kinds of work, then the
+terms on every project: reply time, price model, hours and updates), then About,
+Experience, Skills, Education with clickable certificates, and a contact form.
 
 Every project has its own case study at `/projects/<name>`, and `/projects` lists them
 all. Each case study has the same parts in the same order: the problem, what was built,
@@ -33,6 +33,11 @@ my part and the team's, the decisions that shaped it, the outcome, and what a re
 check for themselves. A case study only says what a source backs up (the repository and
 its history, a published report, or my own record), and it says so where a figure is an
 estimate or something is private.
+
+The pages are written to be scanned: short paragraphs, and a list wherever the text is a
+list. The build check holds that line with a word budget for the home page and for a case
+study, and a limit on the length of any one paragraph (`READING` in
+`scripts/verify-build.mjs`).
 
 The CV (`public/Ganesh_Chaudhary_Resume2026Oct.pdf`) opens in the browser's own PDF
 viewer in a new tab instead of downloading. The address to share is
