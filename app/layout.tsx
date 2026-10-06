@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
   title: 'Ganesh Chaudhary | Full Stack Developer',
   description:
-    'Full Stack Developer specializing in React, Node.js, microservices, and AI-integrated systems. View my portfolio of production-grade web applications.',
+    'Full-stack developer in Kathmandu, Nepal. I build websites, web applications and AI features with React, TypeScript and Node.js. See the case studies.',
   keywords: [
     'Full Stack Developer',
     'React',
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     url: 'https://ganeshtharu.com.np',
     title: 'Ganesh Chaudhary | Full Stack Developer',
     description:
-      'Full Stack Developer building production-grade web applications with React, Node.js, and AI integrations.',
+      'Websites, web applications and AI features, built with React, TypeScript and Node.js. Case studies, services and how to start a project.',
     siteName: 'Ganesh Chaudhary Portfolio',
     images: [
       {
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ganesh Chaudhary | Full Stack Developer',
     description:
-      'Full Stack Developer building production-grade web applications with React, Node.js, and AI integrations.',
+      'Websites, web applications and AI features, built with React, TypeScript and Node.js. Case studies, services and how to start a project.',
     images: ['/og-image.png'],
   },
   robots: {

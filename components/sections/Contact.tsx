@@ -9,9 +9,23 @@ export function Contact() {
     <SectionWrapper id="contact">
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
-          <SectionHeader index="08" title={CONTACT_DATA.heading} className="mb-6 sm:mb-6">
+          <SectionHeader index="07" title={CONTACT_DATA.heading} className="mb-8 sm:mb-8">
             <p className="mt-6 text-lg leading-8 text-muted">{CONTACT_DATA.description}</p>
           </SectionHeader>
+
+          <h3 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent">
+            What happens next
+          </h3>
+          <ol className="mb-10 border-t border-ink">
+            {CONTACT_DATA.next.map((step, i) => (
+              <li key={step} className="flex gap-4 border-b border-rule py-3.5">
+                <span aria-hidden="true" className="pt-1 font-mono text-xs text-muted">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="text-base leading-7 text-ink">{step}</span>
+              </li>
+            ))}
+          </ol>
 
           <ul className="border-t border-ink">
             {CONTACT_DATA.socials.map((social) => {

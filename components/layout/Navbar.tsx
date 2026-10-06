@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import { Menu, Moon, Sun, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { HERO_DATA, NAV_ITEMS } from '@/lib/constants'
+import { CONTACT_CTA, HERO_DATA, NAV_ITEMS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 function scrollBehavior(): ScrollBehavior {
@@ -13,7 +14,11 @@ function scrollBehavior(): ScrollBehavior {
 const iconButton =
   'inline-flex h-11 w-11 items-center justify-center rounded-md text-muted transition-colors hover:text-ink'
 
+// The sections live on the home page. Every item is a real link, so it works without JavaScript
+// and from a case study page, where "#work" becomes "/#work". Smooth scrolling and the offset
+// for the fixed header come from app/globals.css.
 export function Navbar() {
+  const onHome = usePathname() === '/'
   const [scrolled, setScrolled] = useState(false)
   const [pastHero, setPastHero] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -21,6 +26,12 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme, setTheme } = useTheme()
   const menuButtonRef = useRef<HTMLButtonElement>(null)
+
+  const to = (hash: string) => (onHome ? hash : `/${hash}`)
+  // A case study belongs to the work section, so that is the item to mark while reading one.
+  const current = onHome ? activeSection : '#work'
+  // The home page already shows the name in the hero. Elsewhere the bar is the only place for it.
+  const showName = pastHero || !onHome
 
   useEffect(() => {
     setMounted(true)
@@ -38,7 +49,7 @@ export function Navbar() {
 
   useEffect(() => {
     // The scroll highlight is a nicety, so it must never be able to break the page.
-    if (!('IntersectionObserver' in window)) return
+    if (!onHome || !('IntersectionObserver' in window)) return
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -49,12 +60,12 @@ export function Navbar() {
       },
       { rootMargin: '-40% 0px -55% 0px' },
     )
-    ;['top', ...NAV_ITEMS.map((item) => item.href.slice(1))].forEach((id) => {
+    ;['top', ...[...NAV_ITEMS, CONTACT_CTA].map((item) => item.href.slice(1))].forEach((id) => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
-  }, [])
+  }, [onHome])
 
   useEffect(() => {
     if (!mobileOpen) return
@@ -73,18 +84,6 @@ export function Navbar() {
     }
   }, [mobileOpen])
 
-  const goTo = useCallback(
-    (href: string) => {
-      const wasOpen = mobileOpen
-      setMobileOpen(false)
-      const scroll = () =>
-        document.querySelector(href)?.scrollIntoView({ behavior: scrollBehavior() })
-      if (wasOpen) setTimeout(scroll, 250)
-      else scroll()
-    },
-    [mobileOpen],
-  )
-
   const toggleTheme = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
 
   return (
@@ -97,27 +96,27 @@ export function Navbar() {
       <nav aria-label="Primary" className="mx-auto flex h-16 max-w-6xl items-center px-5 sm:px-8">
         <div className="flex flex-1 items-center">
           <a
-            href="#"
-            aria-label={`GC, ${HERO_DATA.name}, back to top`}
+            href={onHome ? '#top' : '/'}
+            aria-label={`GC, ${HERO_DATA.name}, ${onHome ? 'back to top' : 'home'}`}
             onClick={(e) => {
+              if (!onHome) return
               e.preventDefault()
               window.scrollTo({ top: 0, behavior: scrollBehavior() })
             }}
             className="inline-flex min-h-11 min-w-11 items-center font-display text-xl tracking-tight text-ink"
           >
-            <span className={cn(pastHero && 'sm:hidden')}>GC</span>
-            {pastHero && <span className="hidden sm:inline">{HERO_DATA.name}</span>}
+            <span className={cn(showName && 'sm:hidden')}>GC</span>
+            {showName && <span className="hidden sm:inline">{HERO_DATA.name}</span>}
           </a>
         </div>
 
-        <ul className="hidden items-center gap-7 xl:flex">
+        <ul className="hidden items-center gap-6 xl:flex">
           {NAV_ITEMS.map((item) => {
-            const active = activeSection === item.href
+            const active = current === item.href
             return (
               <li key={item.href}>
-                <button
-                  type="button"
-                  onClick={() => goTo(item.href)}
+                <a
+                  href={to(item.href)}
                   aria-current={active ? 'true' : undefined}
                   className={cn(
                     'inline-flex min-h-11 min-w-11 items-center justify-center text-sm transition-colors',
@@ -127,13 +126,19 @@ export function Navbar() {
                   )}
                 >
                   {item.label}
-                </button>
+                </a>
               </li>
             )
           })}
         </ul>
 
         <div className="flex flex-1 items-center justify-end gap-1">
+          <a
+            href={to(CONTACT_CTA.href)}
+            className="mr-1 hidden min-h-11 items-center whitespace-nowrap rounded-md bg-ink px-4 text-sm font-medium text-paper transition-colors hover:bg-accent hover:text-accent-ink sm:inline-flex"
+          >
+            {CONTACT_CTA.label}
+          </a>
           {mounted && (
             <button
               type="button"
@@ -165,19 +170,28 @@ export function Navbar() {
         >
           <ul className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
             {NAV_ITEMS.map((item) => (
-              <li key={item.href} className="border-b border-rule last:border-b-0">
-                <button
-                  type="button"
-                  onClick={() => goTo(item.href)}
+              <li key={item.href} className="border-b border-rule">
+                <a
+                  href={to(item.href)}
+                  onClick={() => setMobileOpen(false)}
                   className={cn(
                     'block w-full py-4 text-left font-display text-2xl tracking-tight',
-                    activeSection === item.href ? 'text-accent' : 'text-ink',
+                    current === item.href ? 'text-accent' : 'text-ink',
                   )}
                 >
                   {item.label}
-                </button>
+                </a>
               </li>
             ))}
+            <li className="py-5">
+              <a
+                href={to(CONTACT_CTA.href)}
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center rounded-md bg-ink px-6 py-3.5 text-sm font-medium text-paper transition-colors hover:bg-accent hover:text-accent-ink"
+              >
+                {CONTACT_CTA.label}
+              </a>
+            </li>
           </ul>
         </div>
       )}

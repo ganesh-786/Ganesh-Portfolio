@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
-import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { TypedLine } from '@/components/ui/TypedLine'
 import { CONTACT_DATA, HERO_DATA } from '@/lib/constants'
 
 const delay = (seconds: number) => ({ '--rise-delay': `${seconds}s` }) as CSSProperties
@@ -17,7 +18,7 @@ export function Hero() {
             style={delay(0)}
             className="rise mb-8 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-muted"
           >
-            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
+            <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-accent" />
             {HERO_DATA.status}
           </p>
 
@@ -28,9 +29,9 @@ export function Hero() {
             {firstName} <em className="font-normal italic">{rest.join(' ')}</em>
           </h1>
 
-          <p style={delay(0.08)} className="rise mt-6 font-display text-2xl text-ink sm:text-3xl">
-            {HERO_DATA.title}
-          </p>
+          <div style={delay(0.08)} className="rise mt-6">
+            <TypedLine prefix={HERO_DATA.typed.prefix} phrases={HERO_DATA.typed.phrases} />
+          </div>
 
           <p
             style={delay(0.12)}
@@ -48,16 +49,22 @@ export function Hero() {
               className="group inline-flex items-center justify-center gap-2 rounded-md bg-ink px-6 py-3.5 text-sm font-medium text-paper transition-colors hover:bg-accent hover:text-accent-ink"
             >
               {HERO_DATA.cta.primary.label}
-              <ArrowDown
+              <ArrowRight
                 size={16}
-                className="transition-transform group-hover:translate-y-0.5"
+                aria-hidden="true"
+                className="transition-transform group-hover:translate-x-0.5"
               />
             </a>
             <a
               href={HERO_DATA.cta.secondary.href}
-              className="inline-flex items-center justify-center rounded-md border border-ink/30 px-6 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink"
+              className="group inline-flex items-center justify-center gap-2 rounded-md border border-ink/30 px-6 py-3.5 text-sm font-medium text-ink transition-colors hover:border-ink"
             >
               {HERO_DATA.cta.secondary.label}
+              <ArrowDown
+                size={16}
+                aria-hidden="true"
+                className="transition-transform group-hover:translate-y-0.5"
+              />
             </a>
             {HERO_DATA.resume && (
               <a
